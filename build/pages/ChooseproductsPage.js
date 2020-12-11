@@ -67,14 +67,23 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "selectProduct", function (product) {
       var flavor = product.name == "Cold Brew" ? ["House", 1] : "";
-      var size = product.name == "Amour Jam" ? ["9oz", 1] : "";
+      var size = product.name == "Amour Jam" ? ["9 oz", 1] : "";
 
       _this.setState({
         productSelected: product,
         flavorSelected: flavor,
         sizeSelected: size,
-        selectedPrice: product.basePrice
+        selectedPrice: product.basePrice,
+        reelPosition: "showReel"
       });
+
+      setTimeout(function () {
+        var element = document.getElementById("step2");
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 200);
     });
 
     _defineProperty(_assertThisInitialized(_this), "selectFlavor", function (flavor) {
@@ -83,7 +92,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
           name = _this$state$productSe.name,
           basePrice = _this$state$productSe.basePrice,
           sizeSelected = _this$state.sizeSelected;
-      var size = name == "Amour Jam" ? ["9oz", 1] : sizeSelected;
+      var size = name == "Amour Jam" ? ["9 oz", 1] : sizeSelected;
       var sizePrice = sizeSelected ? sizeSelected[1] : 1;
       var price = Math.round(basePrice * flavor[1] * sizePrice * 100) / 100;
 
@@ -92,6 +101,14 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         sizeSelected: size,
         selectedPrice: price
       });
+
+      setTimeout(function () {
+        var element = document.getElementById("step3");
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 200);
     });
 
     _defineProperty(_assertThisInitialized(_this), "selectSize", function (size) {
@@ -104,21 +121,97 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         sizeSelected: size,
         selectedPrice: price
       });
+
+      setTimeout(function () {
+        var element = document.getElementById("step4");
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 200);
     });
 
     _defineProperty(_assertThisInitialized(_this), "selectFrequency", function (frequency) {
-      // const { productSelected: { basePrice }, flavorSelected } = this.state;
-      // let price = Math.round(basePrice * flavorSelected[1] * size[1]*100)/100;
+      var _this$state3 = _this.state,
+          basePrice = _this$state3.productSelected.basePrice,
+          flavorSelected = _this$state3.flavorSelected,
+          sizeSelected = _this$state3.sizeSelected,
+          quantitySelected = _this$state3.quantitySelected;
+      var price = Math.round(quantitySelected * basePrice * flavorSelected[1] * sizeSelected[1] * 100) / 100;
+      var ppm = price;
+
+      switch (frequency.name) {
+        case "Daily":
+          ppm *= 30;
+          break;
+
+        case "Work Days":
+          ppm *= 20;
+          break;
+
+        case "Weekend":
+          ppm *= 8;
+          break;
+
+        case "Weekly":
+          ppm *= 4;
+          break;
+
+        case "Bi-Weekly":
+          ppm *= 2;
+          break;
+      }
+
       _this.setState({
-        frequencySelected: frequency
+        frequencySelected: frequency,
+        selectedPrice: price,
+        pricePerMonth: ppm
       });
+
+      setTimeout(function () {
+        var element = document.getElementById("step5");
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 200);
     });
 
     _defineProperty(_assertThisInitialized(_this), "selectQuantity", function (event) {
-      // const { productSelected: { basePrice }, flavorSelected } = this.state;
-      // let price = Math.round(basePrice * flavorSelected[1] * size[1]*100)/100;
+      var val = event.currentTarget.value < 1 ? 1 : event.currentTarget.value;
+      var _this$state4 = _this.state,
+          basePrice = _this$state4.productSelected.basePrice,
+          flavorSelected = _this$state4.flavorSelected,
+          sizeSelected = _this$state4.sizeSelected;
+      var price = Math.round(val * basePrice * flavorSelected[1] * sizeSelected[1] * 100) / 100;
+
       _this.setState({
-        quantitySelected: event.currentTarget.value
+        quantitySelected: val,
+        selectedPrice: price
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "selectStartDate", function (event) {
+      console.log(event.currentTarget.value);
+
+      _this.setState({
+        startDateSelected: event.currentTarget.value
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "selectTime", function (event) {
+      console.log(event.currentTarget.value);
+
+      _this.setState({
+        timeSelected: event.currentTarget.value
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "manageReel", function () {
+      var position = _this.state.reelPosition == "showReel" ? "hideReel" : "showReel";
+
+      _this.setState({
+        reelPosition: position
       });
     });
 
@@ -126,12 +219,14 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
       productSelected: "",
       flavorSelected: "",
       sizeSelected: "",
-      quantitySelected: "",
+      quantitySelected: 1,
       frequencySelected: "",
       startDateSelected: "",
       timeSelected: "",
       selectedPrice: "",
-      priceMessage: ""
+      priceMessage: "",
+      pricePerMonth: "",
+      reelPosition: ""
     };
     return _this;
   }
@@ -141,31 +236,44 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var _this$state3 = this.state,
-          productSelected = _this$state3.productSelected,
-          flavorSelected = _this$state3.flavorSelected,
-          sizeSelected = _this$state3.sizeSelected,
-          selectedPrice = _this$state3.selectedPrice,
-          frequencySelected = _this$state3.frequencySelected,
-          quantitySelected = _this$state3.quantitySelected;
+      var _this$state5 = this.state,
+          productSelected = _this$state5.productSelected,
+          flavorSelected = _this$state5.flavorSelected,
+          sizeSelected = _this$state5.sizeSelected,
+          selectedPrice = _this$state5.selectedPrice,
+          frequencySelected = _this$state5.frequencySelected,
+          quantitySelected = _this$state5.quantitySelected,
+          pricePerMonth = _this$state5.pricePerMonth,
+          startDateSelected = _this$state5.startDateSelected,
+          timeSelected = _this$state5.timeSelected,
+          reelPosition = _this$state5.reelPosition;
+      var sizeoptions = "";
+
+      if (productSelected) {
+        sizeoptions = flavorSelected[0] == "rotating single origin" ? "singleoriginsizes" : productSelected.sizeOptions;
+      }
+
       return /*#__PURE__*/_react["default"].createElement(_chooseproducts.ChooseproductsWrapper, null, /*#__PURE__*/_react["default"].createElement(_Header["default"], null), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ChooseproductsContent, null, /*#__PURE__*/_react["default"].createElement(_chooseproducts.FlagWrapper, {
-        className: selectedPrice ? "showReel" : ""
+        className: reelPosition,
+        onClick: this.manageReel
       }, selectedPrice && /*#__PURE__*/_react["default"].createElement("h2", {
         style: {
           color: "#fff",
           zIndex: 100
         }
-      }, "$", selectedPrice), frequencySelected && /*#__PURE__*/_react["default"].createElement("h2", {
+      }, "$", selectedPrice, "/Day"), frequencySelected && /*#__PURE__*/_react["default"].createElement("h2", {
         style: {
           color: "#fff",
           zIndex: 100
         }
-      }, frequencySelected.name), /*#__PURE__*/_react["default"].createElement(_chooseproducts.Flag, null, /*#__PURE__*/_react["default"].createElement("path", {
+      }, "$", pricePerMonth, "/Month"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.Flag, null, /*#__PURE__*/_react["default"].createElement("path", {
         fill: _colors.lightblue,
         d: "M 1 1 L 149 1 L 149 99 L 139 93 L 129 99 L 119 93 L 109 99 L 99 93 L 89 99 L 79 93 L 69 99 L 59 93 L 49 99 L 39 93 L 29 99 L 19 93 L 9 99 L 1 93 L 1 1 ",
         stroke: _colors.darkblue,
         strokeWidth: "2"
-      }))), /*#__PURE__*/_react["default"].createElement("h2", null, "Step 1: Select Product"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductWrapper, null, _products["default"].map(function (product, i) {
+      }))), /*#__PURE__*/_react["default"].createElement("h2", {
+        id: "step1"
+      }, "Step 1: Select Product"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductWrapper, null, _products["default"].map(function (product, i) {
         return /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
           key: i,
           onClick: function onClick() {
@@ -175,7 +283,9 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/_react["default"].createElement("img", {
           src: product.img
         }), /*#__PURE__*/_react["default"].createElement("p", null, product.name));
-      })), productSelected && /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Step 2: Select Flavor"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductWrapper, null, _flavors["default"][productSelected.flavorOptions].map(function (flavor, i) {
+      })), productSelected && /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("h2", {
+        id: "step2"
+      }, "Step 2: Select Flavor"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductWrapper, null, _flavors["default"][productSelected.flavorOptions].map(function (flavor, i) {
         return /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
           key: i,
           onClick: function onClick() {
@@ -183,7 +293,9 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
           },
           className: flavor[0] == flavorSelected[0] ? "productSelected" : ""
         }, /*#__PURE__*/_react["default"].createElement("p", null, flavor[0]));
-      }))), productSelected && flavorSelected && /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Step 3: Select Size"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductWrapper, null, _sizes["default"][productSelected.sizeOptions].map(function (size, i) {
+      }))), productSelected && flavorSelected && /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("h2", {
+        id: "step3"
+      }, "Step 3: Select Size"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductWrapper, null, _sizes["default"][sizeoptions].map(function (size, i) {
         return /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
           key: i,
           onClick: function onClick() {
@@ -191,7 +303,23 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
           },
           className: size[0] == sizeSelected[0] ? "productSelected" : ""
         }, /*#__PURE__*/_react["default"].createElement("p", null, size[0]));
-      }))), productSelected && flavorSelected && sizeSelected && /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Step 4: Select Frequency and Quantity"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductWrapper, null, _frequencies["default"].map(function (frequency, i) {
+      }))), productSelected && flavorSelected && sizeSelected && /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("h2", {
+        id: "step4"
+      }, "Step 4: Select Frequency and Quantity"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
+        style: {
+          margin: "auto"
+        },
+        className: quantitySelected ? "productSelected" : ""
+      }, /*#__PURE__*/_react["default"].createElement("input", {
+        style: {
+          width: "62px",
+          textAlign: "center"
+        },
+        placeholder: "Quantity",
+        type: "number",
+        value: quantitySelected,
+        onChange: this.selectQuantity
+      })), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductWrapper, null, _frequencies["default"].map(function (frequency, i) {
         return /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
           key: i,
           onClick: function onClick() {
@@ -201,13 +329,29 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/_react["default"].createElement("p", {
           title: frequency.label
         }, frequency.name));
-      })), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
-        className: quantitySelected ? "productSelected" : ""
+      }))), productSelected && flavorSelected && sizeSelected && frequencySelected && /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("h2", {
+        id: "step5"
+      }, "Step 5: Select Start Date and Preferred Time of Delivery"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
+        style: {
+          margin: "auto"
+        },
+        className: startDateSelected ? "productSelected" : ""
       }, /*#__PURE__*/_react["default"].createElement("input", {
-        placeholder: "Quantity",
-        value: quantitySelected,
-        onChange: this.selectQuantity
-      })))), /*#__PURE__*/_react["default"].createElement(_Footer["default"], null));
+        placeholder: "Select Start Date",
+        type: "date",
+        value: startDateSelected,
+        onChange: this.selectStartDate
+      })), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
+        style: {
+          margin: "auto"
+        },
+        className: timeSelected ? "productSelected" : ""
+      }, /*#__PURE__*/_react["default"].createElement("input", {
+        placeholder: "Select Preferred Delivery Time",
+        type: "time",
+        value: timeSelected,
+        onChange: this.selectTime
+      }))), productSelected && flavorSelected && sizeSelected && frequencySelected && startDateSelected && timeSelected && /*#__PURE__*/_react["default"].createElement(_chooseproducts.Button, null, "Add To Cart")), /*#__PURE__*/_react["default"].createElement(_Footer["default"], null));
     }
   }]);
 
