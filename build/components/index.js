@@ -15,6 +15,18 @@ Object.defineProperty(exports, "Header", {
     return _Header["default"];
   }
 });
+Object.defineProperty(exports, "Signup", {
+  enumerable: true,
+  get: function get() {
+    return _Signup["default"];
+  }
+});
+Object.defineProperty(exports, "Login", {
+  enumerable: true,
+  get: function get() {
+    return _Login["default"];
+  }
+});
 Object.defineProperty(exports, "SignupOrLogin", {
   enumerable: true,
   get: function get() {
@@ -31,6 +43,10 @@ Object.defineProperty(exports, "SubscriptionPreview", {
 var _Footer = _interopRequireDefault(require("./Footer"));
 
 var _Header = _interopRequireDefault(require("./Header"));
+
+var _Signup = _interopRequireDefault(require("./Signup"));
+
+var _Login = _interopRequireDefault(require("./Login"));
 
 var _SignupOrLogin = _interopRequireDefault(require("./SignupOrLogin"));
 

@@ -10,4 +10,15 @@ import styled from 'styled-components';
     padding: 16px;
     min-height: 300px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    @media(min-width: 700px){
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+      max-width: 900px;
+      margin: 60px auto;
+    }
   `;

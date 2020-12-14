@@ -1,9 +1,12 @@
 import styled from 'styled-components';
-import {darkblue, white, lightblue, pink, green} from '../colors';
 
 export const SubscriptionPreviewWrap = styled.div`
-  width: 100vw;
-  max-width: 900px;
-  margin: auto;
-  margin-top: 20px;
+  width: calc(100vw - 56px);
+  margin: 12px;
+  padding: 12px;
+  padding-bottom: 24px;
+  border: 1px solid #8d8d8d;
+  @media (min-width: 700px){
+    width: initial;
+  }
 `;

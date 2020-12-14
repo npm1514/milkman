@@ -222,7 +222,7 @@ function returnHTML(data, bundle, Page, title){
           <link rel="stylesheet" href="https://use.typekit.net/mno0keq.css">
           <script src="https://kit.fontawesome.com/7fa747235e.js" crossorigin="anonymous"></script>
           <style>
-            body {
+            body, button, input {
               margin: 0;
               font-family: diazo-mvb-ex-cond, sans-serif;
               font-weight: 400; font-style: normal;
@@ -231,13 +231,13 @@ function returnHTML(data, bundle, Page, title){
             }
             h1, h2 { font-weight: 700; font-size: 16px; }
             th { font-weight: 700; font-size: 14px; }
-            td { font-size: 12px; }
+            td, button, input { font-size: 12px; }
             p { font-weight: 100; font-size: 12px; }
             a { text-decoration: none;}
             i { font-size: 30px;}
             @media (min-width: 700px){
               body, th, h1, h2, td { font-size: 30px; }
-              p { font-size: 18px; }
+              p, input, button { font-size: 18px; }
             }
           </style>
           ${styles}

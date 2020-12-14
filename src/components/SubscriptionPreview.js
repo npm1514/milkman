@@ -7,17 +7,18 @@ class SubscriptionPreviewComponent extends Component {
     const { deliveryFrequency, flavor, payPeriodFrequency, pricePerDelivery, pricePerPayPeriod, product, quantity, recurringPayment, size, startDate, timeOfDelivery, _id } = this.props.subscription;
     return (
       <SubscriptionPreviewWrap>
-        <div>Subscription ID: {_id}</div>
-        <div>Product: {product}</div>
-        <div>Flavor: {flavor}</div>
-        <div>Size: {size}</div>
-        <div>Quantity: {quantity}</div>
+        <p>{_id}</p>
+        <h2>Your Subscription Cart</h2>
+        <div>({quantity}) {size} {flavor} {product}</div>
+        <br/>
+        <hr/>
+        <br/>
         <div>Delivery Frequency: {deliveryFrequency}</div>
         <div>Start Date: {startDate}</div>
         <div>Time Of Delivery: {timeOfDelivery}</div>
         <div>Payment Frequency: {payPeriodFrequency}</div>
-        <div>Price Per Payment Period</div>
-        <div>Recurring Payment: {recurringPayment}</div>
+        <div>Price Per Payment Period: { new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(pricePerPayPeriod) }</div>
+        <div>Recurring Payment: {recurringPayment.toString()}</div>
       </SubscriptionPreviewWrap>
     );
   }

@@ -9,9 +9,7 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _ = require("./");
-
-var _signuporlogin = require("../styled-components/components/signuporlogin");
+var _login = require("../styled-components/components/login");
 
 var _colors = require("../styled-components/colors");
 
@@ -41,43 +39,72 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var SignupOrLoginComponent = /*#__PURE__*/function (_Component) {
-  _inherits(SignupOrLoginComponent, _Component);
+var LoginComponent = /*#__PURE__*/function (_Component) {
+  _inherits(LoginComponent, _Component);
 
-  var _super = _createSuper(SignupOrLoginComponent);
+  var _super = _createSuper(LoginComponent);
 
-  function SignupOrLoginComponent(props) {
+  function LoginComponent(props) {
     var _this;
 
-    _classCallCheck(this, SignupOrLoginComponent);
+    _classCallCheck(this, LoginComponent);
 
     _this = _super.call(this, props);
 
-    _defineProperty(_assertThisInitialized(_this), "switchDisplay", function () {
-      _this.setState({
-        loggingIn: !_this.state.loggingIn
-      });
+    _defineProperty(_assertThisInitialized(_this), "updateState", function (e, prop) {
+      var obj = {};
+      obj[prop] = e.currentTarget.value;
+
+      _this.setState(obj);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "login", function (e) {
+      e.preventDefault();
+      console.log("login");
     });
 
     _this.state = {
-      loggingIn: false
+      email: "",
+      password: ""
     };
     return _this;
   }
 
-  _createClass(SignupOrLoginComponent, [{
+  _createClass(LoginComponent, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_signuporlogin.SignupOrLoginWrap, null, this.state.loggingIn ? /*#__PURE__*/_react["default"].createElement(_.Login, {
-        switchDisplay: this.switchDisplay
-      }) : /*#__PURE__*/_react["default"].createElement(_.Signup, {
-        switchDisplay: this.switchDisplay
-      }));
+      var _this2 = this;
+
+      var switchDisplay = this.props.switchDisplay;
+      var _this$state = this.state,
+          email = _this$state.email,
+          password = _this$state.password;
+      return /*#__PURE__*/_react["default"].createElement(_login.LoginWrap, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Sign In"), /*#__PURE__*/_react["default"].createElement("form", {
+        onSubmit: this.login
+      }, /*#__PURE__*/_react["default"].createElement("input", {
+        placeholder: "Email Address",
+        type: "email",
+        value: email,
+        onChange: function onChange(e) {
+          _this2.updateState(e, "email");
+        }
+      }), /*#__PURE__*/_react["default"].createElement("input", {
+        placeholder: "Password",
+        type: "password",
+        value: password,
+        onChange: function onChange(e) {
+          _this2.updateState(e, "password");
+        }
+      }), /*#__PURE__*/_react["default"].createElement("button", {
+        type: "submit"
+      }, "Sign In")), /*#__PURE__*/_react["default"].createElement("a", {
+        onClick: switchDisplay
+      }, "No login? Create an account"));
     }
   }]);
 
-  return SignupOrLoginComponent;
+  return LoginComponent;
 }(_react.Component);
 
-var _default = SignupOrLoginComponent;
+var _default = LoginComponent;
 exports["default"] = _default;
