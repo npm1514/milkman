@@ -9,13 +9,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _Header = _interopRequireDefault(require("../components/Header"));
+var _signuporlogin = require("../styled-components/components/signuporlogin");
 
-var _Footer = _interopRequireDefault(require("../components/Footer"));
-
-var _login = require("../styled-components/pages/login");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _colors = require("../styled-components/colors");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -41,26 +37,32 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Login = /*#__PURE__*/function (_Component) {
-  _inherits(Login, _Component);
+var SignupOrLoginComponent = /*#__PURE__*/function (_Component) {
+  _inherits(SignupOrLoginComponent, _Component);
 
-  var _super = _createSuper(Login);
+  var _super = _createSuper(SignupOrLoginComponent);
 
-  function Login() {
-    _classCallCheck(this, Login);
+  function SignupOrLoginComponent(props) {
+    var _this;
 
-    return _super.apply(this, arguments);
+    _classCallCheck(this, SignupOrLoginComponent);
+
+    _this = _super.call(this, props);
+    _this.state = {
+      loggingIn: false
+    };
+    return _this;
   }
 
-  _createClass(Login, [{
+  _createClass(SignupOrLoginComponent, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_login.LoginWrapper, null, /*#__PURE__*/_react["default"].createElement(_Header["default"], null), /*#__PURE__*/_react["default"].createElement(_login.LoginContent, null, "login page"), /*#__PURE__*/_react["default"].createElement(_Footer["default"], null));
+      return /*#__PURE__*/_react["default"].createElement(_signuporlogin.SignupOrLoginWrap, null, this.state.loggingIn ? "Login" : "Signup");
     }
   }]);
 
-  return Login;
+  return SignupOrLoginComponent;
 }(_react.Component);
 
-var _default = Login;
+var _default = SignupOrLoginComponent;
 exports["default"] = _default;

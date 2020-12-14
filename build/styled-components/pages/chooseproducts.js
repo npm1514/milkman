@@ -22,7 +22,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  var data = _taggedTemplateLiteral(["\n  top: 0;\n  right: 0;\n  left: 0;\n  margin: auto;\n  position: absolute;\n  width: 150px;\n  height: 100px;\n"]);
+  var data = _taggedTemplateLiteral(["\n  top: 0;\n  right: 0;\n  left: 0;\n  margin: auto;\n  position: absolute;\n  width: 250px;\n  height: 130px;\n"]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -32,7 +32,7 @@ function _templateObject6() {
 }
 
 function _templateObject5() {
-  var data = _taggedTemplateLiteral(["\n  top: -105px;\n  right: 0;\n  left: 0;\n  margin: auto;\n  width: 150px;\n  height: 100px;\n  position: fixed;\n  display: flex;\n  justify-content: flex-start;\n  flex-direction: column;\n  align-items: center;\n  z-index: 10000;\n  transition: top 1s;\n  h2 {\n    font-size: 24px;\n    margin: 8px 0 0 0;\n  }\n  &.showReel {\n    top: -2px;\n  }\n  &.hideReel {\n    top: -85px;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  top: -105px;\n  right: 0;\n  left: 0;\n  margin: auto;\n  width: 250px;\n  height: 130px;\n  position: fixed;\n  display: flex;\n  justify-content: flex-start;\n  flex-direction: column;\n  align-items: center;\n  z-index: 10000;\n  transition: top 1s;\n  h2 {\n    font-size: 24px;\n    margin: 8px 0 0 0;\n  }\n  &.showReel {\n    top: -2px;\n  }\n  &.hideReel {\n    top: -85px;\n  }\n"]);
 
   _templateObject5 = function _templateObject5() {
     return data;

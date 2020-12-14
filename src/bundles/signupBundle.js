@@ -1,9 +1,9 @@
 import React from 'react';
 import { hydrate, render } from 'react-dom';
-import Login from '../pages/LoginPage';
+import Signup from '../pages/SignupPage';
 
 if (window)
   render(
-    <Login data={window.__DATA__} />,
+    <Signup data={window.__DATA__} />,
     document.getElementById('app')
   );

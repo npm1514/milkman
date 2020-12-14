@@ -4,11 +4,11 @@ require('@babel/polyfill');
 const pages = [
   // 'subscribe',
   'chooseproducts',
-  // 'login',
+  'signup',
   // 'cart',
   // 'checkout',
   // 'confirmation',
-  // 'myaccount',
+  'myaccount',
   // 'cafetools'
 ];
 

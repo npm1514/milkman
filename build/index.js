@@ -1,32 +1,16 @@
 "use strict";
 
-var _express = _interopRequireDefault(require("express"));
-
-var _nodeFetch = _interopRequireDefault(require("node-fetch"));
-
 var _react = _interopRequireDefault(require("react"));
 
 var _server = require("react-dom/server");
 
+var _styledComponents = require("styled-components");
+
 var _path = _interopRequireDefault(require("path"));
 
-var _SubscribeRoot = _interopRequireDefault(require("./roots/SubscribeRoot"));
+var _express = _interopRequireDefault(require("express"));
 
-var _ChooseproductsRoot = _interopRequireDefault(require("./roots/ChooseproductsRoot"));
-
-var _LoginRoot = _interopRequireDefault(require("./roots/LoginRoot"));
-
-var _CartRoot = _interopRequireDefault(require("./roots/CartRoot"));
-
-var _CheckoutRoot = _interopRequireDefault(require("./roots/CheckoutRoot"));
-
-var _ConfirmationRoot = _interopRequireDefault(require("./roots/ConfirmationRoot"));
-
-var _MyaccountRoot = _interopRequireDefault(require("./roots/MyaccountRoot"));
-
-var _CafetoolsRoot = _interopRequireDefault(require("./roots/CafetoolsRoot"));
-
-var _styledComponents = require("styled-components");
+var _nodeFetch = _interopRequireDefault(require("node-fetch"));
 
 var _fs = _interopRequireDefault(require("fs"));
 
@@ -36,18 +20,47 @@ var _cors = _interopRequireDefault(require("cors"));
 
 var _bodyParser = _interopRequireDefault(require("body-parser"));
 
+var _roots = require("./roots");
+
+var _passport = _interopRequireDefault(require("./config/passport"));
+
+var _config = _interopRequireDefault(require("./config"));
+
+var _userCtrl = _interopRequireDefault(require("./controllers/userCtrl"));
+
+var _subscriptionCtrl = _interopRequireDefault(require("./controllers/subscriptionCtrl"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+var mongoose = require('mongoose');
+
+var passport = require('passport');
+
+var session = require('express-session');
+
+var Cryptr = require('cryptr');
+
+var cryptr = new Cryptr(_config["default"].key);
 var PORT = process.env.PORT || 3003;
+var absUrl = process.env.PORT ? 'https://milkmancoffee.herokuapp.com/' : 'http://localhost:' + PORT;
+(0, _passport["default"])(passport); //self invokes passport
+
 var app = (0, _express["default"])();
-app.use((0, _compression["default"])());
+app.use(session({
+  secret: 'banana',
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use((0, _cors["default"])());
+app.use((0, _compression["default"])());
 app.use(_bodyParser["default"].json());
 app.use(_bodyParser["default"].urlencoded());
 var dataObj = {},
     subscribeBundle = "",
     chooseproductsBundle = "",
-    loginBundle = "",
+    signupBundle = "",
     cartBundle = "",
     checkoutBundle = "",
     confirmationBundle = "",
@@ -60,11 +73,12 @@ var dataObj = {},
 _fs["default"].readFile('./dist/js/chooseproducts.bundle.min.js', "utf8", function (err, data) {
   if (err) console.log("ERR", err);
   chooseproductsBundle = data || "";
-}); // fs.readFile('./dist/js/login.bundle.min.js', "utf8", (err, data) => {
-//   if (err) console.log("ERR" ,err);
-//   loginBundle = data || "";
-// })
-// fs.readFile('./dist/js/cart.bundle.min.js', "utf8", (err, data) => {
+});
+
+_fs["default"].readFile('./dist/js/signup.bundle.min.js', "utf8", function (err, data) {
+  if (err) console.log("ERR", err);
+  signupBundle = data || "";
+}); // fs.readFile('./dist/js/cart.bundle.min.js', "utf8", (err, data) => {
 //   if (err) console.log("ERR" ,err);
 //   cartBundle = data || "";
 // })
@@ -76,62 +90,106 @@ _fs["default"].readFile('./dist/js/chooseproducts.bundle.min.js', "utf8", functi
 //   if (err) console.log("ERR" ,err);
 //   confirmationBundle = data || "";
 // })
-// fs.readFile('./dist/js/myaccount.bundle.min.js', "utf8", (err, data) => {
-//   if (err) console.log("ERR" ,err);
-//   myaccountBundle = data || "";
-// })
-// fs.readFile('./dist/js/cafetools.bundle.min.js', "utf8", (err, data) => {
+
+
+_fs["default"].readFile('./dist/js/myaccount.bundle.min.js', "utf8", function (err, data) {
+  if (err) console.log("ERR", err);
+  myaccountBundle = data || "";
+}); // fs.readFile('./dist/js/cafetools.bundle.min.js', "utf8", (err, data) => {
 //   if (err) console.log("ERR" ,err);
 //   cafetoolsBundle = data || "";
 // })
 
 
 app.get('/subscribe', function (req, res) {
+  //page
   var data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, subscribeBundle, _SubscribeRoot["default"], "subscribe"));
+  res.send(returnHTML(data, subscribeBundle, _roots.SubscribeRoot, "subscribe"));
 });
 app.get('/chooseproducts', function (req, res) {
+  //page
   var data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, chooseproductsBundle, _ChooseproductsRoot["default"], "chooseproducts"));
+  res.send(returnHTML(data, chooseproductsBundle, _roots.ChooseproductsRoot, "chooseproducts"));
 });
-app.get('/login', function (req, res) {
+app.get('/signup/:id', function (req, res) {
+  //page
+  var data = {};
+  console.log(absUrl + '/subscriptions/' + req.params.id);
+  fetcher(absUrl + '/subscriptions/' + req.params.id).then(function (response) {
+    console.log(response);
+    data = {
+      subscriptionID: req.params.id,
+      subscription: response
+    };
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, signupBundle, _roots.SignupRoot, "signup"));
+  });
+});
+app.get('/signup', function (req, res) {
+  //page
   var data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, loginBundle, _LoginRoot["default"], "login"));
+  res.send(returnHTML(data, signupBundle, _roots.SignupRoot, "signup"));
 });
 app.get('/cart', function (req, res) {
+  //page
   var data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, cartBundle, _CartRoot["default"], "cart"));
+  res.send(returnHTML(data, cartBundle, _roots.CartRoot, "cart"));
 });
 app.get('/checkout', function (req, res) {
+  //page
   var data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, checkoutBundle, _CheckoutRoot["default"], "checkout"));
+  res.send(returnHTML(data, checkoutBundle, _roots.CheckoutRoot, "checkout"));
 });
 app.get('/confirmation', function (req, res) {
+  //page
   var data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, confirmationBundle, _ConfirmationRoot["default"], "confirmation"));
+  res.send(returnHTML(data, confirmationBundle, _roots.ConfirmationRoot, "confirmation"));
 });
 app.get('/myaccount', function (req, res) {
+  //page
   var data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, myaccountBundle, _MyaccountRoot["default"], "myaccount"));
+  res.send(returnHTML(data, myaccountBundle, _roots.MyaccountRoot, "myaccount"));
 });
 app.get('/cafetools', function (req, res) {
+  //page
   var data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, cafetoolsBundle, _CafetoolsRoot["default"], "cafetools"));
+  res.send(returnHTML(data, cafetoolsBundle, _roots.CafetoolsRoot, "cafetools"));
 });
 app.get('/images/:id', function (req, res) {
+  //service
   res.set('Cache-Control', 'public, max-age=31557600');
   res.sendFile(_path["default"].join(__dirname, '../images/' + req.params.id));
 });
+app.post('/auth', passport.authenticate('local-signup'), _userCtrl["default"].login);
+app.get('/getMe', _userCtrl["default"].getMe);
+app.get('/logout', _userCtrl["default"].logout);
+app.get('/users', _userCtrl["default"].read);
+app.put('/users/:id', _userCtrl["default"].update);
+app["delete"]('/users/:id', _userCtrl["default"].destroy);
+app.get('/subscriptions', _subscriptionCtrl["default"].read);
+app.get('/subscriptions/:id', _subscriptionCtrl["default"].readOne);
+app.post('/subscriptions', _subscriptionCtrl["default"].create);
+app.put('/subscriptions/:id', _subscriptionCtrl["default"].update);
+app["delete"]('/subscriptions/:id', _subscriptionCtrl["default"].destroy);
 app.get('/health', function (req, res) {
   return res.send('OK');
+});
+var mongoUri = 'mongodb+srv://' + cryptr.decrypt(_config["default"].dbuser) + ':' + cryptr.decrypt(_config["default"].dbpass) + '@milkman.bjixf.mongodb.net/milkman?retryWrites=true&w=majority';
+mongoose.connect(mongoUri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+mongoose.connection.on('error', console.error.bind(console, 'connection error'));
+mongoose.connection.once('open', function () {
+  console.log("Connected to mongoDB");
 });
 app.listen(PORT, function () {
   console.log('Running on http://localhost:' + PORT);

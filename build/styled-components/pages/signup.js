@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LoginContent = exports.LoginWrapper = void 0;
+exports.SignupContent = exports.SignupWrapper = void 0;
 
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
@@ -31,10 +31,10 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var LoginWrapper = _styledComponents["default"].div(_templateObject());
+var SignupWrapper = _styledComponents["default"].div(_templateObject());
 
-exports.LoginWrapper = LoginWrapper;
+exports.SignupWrapper = SignupWrapper;
 
-var LoginContent = _styledComponents["default"].div(_templateObject2());
+var SignupContent = _styledComponents["default"].div(_templateObject2());
 
-exports.LoginContent = LoginContent;
+exports.SignupContent = SignupContent;

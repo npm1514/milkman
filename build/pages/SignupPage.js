@@ -9,9 +9,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _LoginPage = _interopRequireDefault(require("../pages/LoginPage"));
+var _components = require("../components");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _signup = require("../styled-components/pages/signup");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -37,28 +37,31 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Root = /*#__PURE__*/function (_Component) {
-  _inherits(Root, _Component);
+var Signup = /*#__PURE__*/function (_Component) {
+  _inherits(Signup, _Component);
 
-  var _super = _createSuper(Root);
+  var _super = _createSuper(Signup);
 
-  function Root() {
-    _classCallCheck(this, Root);
+  function Signup() {
+    _classCallCheck(this, Signup);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(Root, [{
+  _createClass(Signup, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_LoginPage["default"], {
-        data: this.props.data ? this.props.data : {}
-      });
+      var _this$props$data = this.props.data,
+          subscription = _this$props$data.subscription,
+          subscriptionID = _this$props$data.subscriptionID;
+      return /*#__PURE__*/_react["default"].createElement(_signup.SignupWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_signup.SignupContent, null, subscriptionID ? /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
+        subscription: subscription
+      }) : /*#__PURE__*/_react["default"].createElement(_components.SignupOrLogin, null)), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 
-  return Root;
+  return Signup;
 }(_react.Component);
 
-var _default = Root;
+var _default = Signup;
 exports["default"] = _default;

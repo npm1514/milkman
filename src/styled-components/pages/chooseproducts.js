@@ -53,8 +53,8 @@ export const FlagWrapper = styled.div`
   right: 0;
   left: 0;
   margin: auto;
-  width: 150px;
-  height: 100px;
+  width: 250px;
+  height: 130px;
   position: fixed;
   display: flex;
   justify-content: flex-start;
@@ -79,8 +79,8 @@ export const Flag = styled.svg`
   left: 0;
   margin: auto;
   position: absolute;
-  width: 150px;
-  height: 100px;
+  width: 250px;
+  height: 130px;
 `;
 export const Button = styled.div`
   background: ${pink};

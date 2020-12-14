@@ -1,37 +1,51 @@
-import express from "express";
-import fetch from "node-fetch";
 import React from "react";
 import { renderToString } from "react-dom/server";
-import path from 'path'
-
-import SubscribeRoot from "./roots/SubscribeRoot";
-import ChooseproductsRoot from "./roots/ChooseproductsRoot";
-import LoginRoot from "./roots/LoginRoot";
-import CartRoot from "./roots/CartRoot";
-import CheckoutRoot from "./roots/CheckoutRoot";
-import ConfirmationRoot from "./roots/ConfirmationRoot";
-import MyaccountRoot from "./roots/MyaccountRoot";
-import CafetoolsRoot from "./roots/CafetoolsRoot";
-
 import { ServerStyleSheet } from 'styled-components';
 
+import path from 'path'
+import express from "express";
+import fetch from "node-fetch";
 import fs from 'fs';
 import compression from 'compression';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+const mongoose = require('mongoose');
+const passport = require('passport');
+const session = require('express-session');
+const Cryptr = require('cryptr');
+const cryptr = new Cryptr(config.key);
+
+import { SubscribeRoot, ChooseproductsRoot, SignupRoot, CartRoot, CheckoutRoot, ConfirmationRoot, MyaccountRoot, CafetoolsRoot } from './roots';
+
+import passportConfig from './config/passport';
+import config from './config';
+import userCtrl from './controllers/userCtrl';
+import subscriptionCtrl from './controllers/subscriptionCtrl';
 
 var PORT = process.env.PORT || 3003;
+var absUrl = process.env.PORT ? 'https://milkmancoffee.herokuapp.com/' : 'http://localhost:' + PORT
+
+passportConfig(passport);//self invokes passport
 
 const app = express();
-app.use(compression());
+
+
+app.use(session({
+    secret: 'banana',
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cors());
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded())
+app.use(compression());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 
 var dataObj = {},
 subscribeBundle = "",
 chooseproductsBundle = "",
-loginBundle = "",
+signupBundle = "",
 cartBundle = "",
 checkoutBundle = "",
 confirmationBundle = "",
@@ -46,10 +60,10 @@ fs.readFile('./dist/js/chooseproducts.bundle.min.js', "utf8", (err, data) => {
   if (err) console.log("ERR" ,err);
   chooseproductsBundle = data || "";
 })
-// fs.readFile('./dist/js/login.bundle.min.js', "utf8", (err, data) => {
-//   if (err) console.log("ERR" ,err);
-//   loginBundle = data || "";
-// })
+fs.readFile('./dist/js/signup.bundle.min.js', "utf8", (err, data) => {
+  if (err) console.log("ERR" ,err);
+  signupBundle = data || "";
+})
 // fs.readFile('./dist/js/cart.bundle.min.js', "utf8", (err, data) => {
 //   if (err) console.log("ERR" ,err);
 //   cartBundle = data || "";
@@ -62,62 +76,110 @@ fs.readFile('./dist/js/chooseproducts.bundle.min.js', "utf8", (err, data) => {
 //   if (err) console.log("ERR" ,err);
 //   confirmationBundle = data || "";
 // })
-// fs.readFile('./dist/js/myaccount.bundle.min.js', "utf8", (err, data) => {
-//   if (err) console.log("ERR" ,err);
-//   myaccountBundle = data || "";
-// })
+fs.readFile('./dist/js/myaccount.bundle.min.js', "utf8", (err, data) => {
+  if (err) console.log("ERR" ,err);
+  myaccountBundle = data || "";
+})
 // fs.readFile('./dist/js/cafetools.bundle.min.js', "utf8", (err, data) => {
 //   if (err) console.log("ERR" ,err);
 //   cafetoolsBundle = data || "";
 // })
 
 app.get('/subscribe', (req, res) => {
+  //page
   let data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
   res.send(returnHTML(data, subscribeBundle, SubscribeRoot, "subscribe"));
 });
 app.get('/chooseproducts', (req, res) => {
+  //page
   let data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
   res.send(returnHTML(data, chooseproductsBundle, ChooseproductsRoot, "chooseproducts"));
 });
-app.get('/login', (req, res) => {
+app.get('/signup/:id', (req, res) => {
+  //page
+  let data = {}
+  console.log(absUrl +'/subscriptions/' + req.params.id);
+  fetcher(absUrl +'/subscriptions/' + req.params.id)
+  .then(response => {
+    console.log(response);
+    data = {
+      subscriptionID: req.params.id,
+      subscription: response
+    };
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, signupBundle, SignupRoot, "signup"));
+  })
+
+});
+app.get('/signup', (req, res) => {
+  //page
   let data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, loginBundle, LoginRoot, "login"));
+  res.send(returnHTML(data, signupBundle, SignupRoot, "signup"));
 });
 app.get('/cart', (req, res) => {
+  //page
   let data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
   res.send(returnHTML(data, cartBundle, CartRoot, "cart"));
 });
 app.get('/checkout', (req, res) => {
+  //page
   let data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
   res.send(returnHTML(data, checkoutBundle, CheckoutRoot, "checkout"));
 });
 app.get('/confirmation', (req, res) => {
+  //page
   let data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
   res.send(returnHTML(data, confirmationBundle, ConfirmationRoot, "confirmation"));
 });
 app.get('/myaccount', (req, res) => {
+  //page
   let data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
   res.send(returnHTML(data, myaccountBundle, MyaccountRoot, "myaccount"));
 });
 app.get('/cafetools', (req, res) => {
+  //page
   let data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
   res.send(returnHTML(data, cafetoolsBundle, CafetoolsRoot, "cafetools"));
 });
 
 app.get('/images/:id', (req, res) => {
+  //service
   res.set('Cache-Control', 'public, max-age=31557600');
   res.sendFile(path.join(__dirname, '../images/' + req.params.id));
 });
 
+app.post('/auth', passport.authenticate('local-signup'), userCtrl.login);
+app.get('/getMe', userCtrl.getMe);
+app.get('/logout', userCtrl.logout);
+
+app.get('/users', userCtrl.read);
+app.put('/users/:id', userCtrl.update);
+app.delete('/users/:id', userCtrl.destroy);
+
+app.get('/subscriptions', subscriptionCtrl.read);
+app.get('/subscriptions/:id', subscriptionCtrl.readOne);
+app.post('/subscriptions', subscriptionCtrl.create);
+app.put('/subscriptions/:id', subscriptionCtrl.update);
+app.delete('/subscriptions/:id', subscriptionCtrl.destroy);
+
+
+
 app.get('/health', (req, res) => res.send('OK'));
+
+var mongoUri = 'mongodb+srv://'+cryptr.decrypt(config.dbuser)+':'+cryptr.decrypt(config.dbpass)+'@milkman.bjixf.mongodb.net/milkman?retryWrites=true&w=majority';
+mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connection.on('error', console.error.bind(console, 'connection error'));
+mongoose.connection.once('open', function(){
+  console.log("Connected to mongoDB");
+});
 
 app.listen( PORT, () => {
   console.log('Running on http://localhost:' + PORT)

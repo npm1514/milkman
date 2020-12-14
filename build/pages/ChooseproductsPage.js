@@ -9,9 +9,7 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _Header = _interopRequireDefault(require("../components/Header"));
-
-var _Footer = _interopRequireDefault(require("../components/Footer"));
+var _components = require("../components");
 
 var _chooseproducts = require("../styled-components/pages/chooseproducts");
 
@@ -66,144 +64,99 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
     _this = _super.call(this, props);
 
     _defineProperty(_assertThisInitialized(_this), "selectProduct", function (product) {
-      var flavor = product.name == "Cold Brew" ? ["House", 1] : "";
-      var size = product.name == "Amour Jam" ? ["9 oz", 1] : "";
+      var flavor = product.name == "Cold Brew" ? ["House", [1, 1]] : "";
+      var size = product.name == "Amour Jam" ? ["9 oz", [1, 1]] : "";
 
       _this.setState({
         productSelected: product,
         flavorSelected: flavor,
         sizeSelected: size,
-        selectedPrice: product.basePrice,
-        reelPosition: "showReel"
-      });
+        reelPosition: "showReel",
+        quantitySelected: 1,
+        frequencySelected: ""
+      }, function () {
+        _this.slider("step2");
 
-      setTimeout(function () {
-        var element = document.getElementById("step2");
-        element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }, 200);
+        _this.checkPrice();
+      });
     });
 
     _defineProperty(_assertThisInitialized(_this), "selectFlavor", function (flavor) {
       var _this$state = _this.state,
-          _this$state$productSe = _this$state.productSelected,
-          name = _this$state$productSe.name,
-          basePrice = _this$state$productSe.basePrice,
+          name = _this$state.productSelected.name,
           sizeSelected = _this$state.sizeSelected;
-      var size = name == "Amour Jam" ? ["9 oz", 1] : sizeSelected;
-      var sizePrice = sizeSelected ? sizeSelected[1] : 1;
-      var price = Math.round(basePrice * flavor[1] * sizePrice * 100) / 100;
+      var size = name == "Amour Jam" ? ["9 oz", [1, 1]] : sizeSelected;
 
-      _this.setState({
-        flavorSelected: flavor,
-        sizeSelected: size,
-        selectedPrice: price
-      });
-
-      setTimeout(function () {
-        var element = document.getElementById("step3");
-        element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
+      if (sizeSelected && name == "Prebrewed Drip Coffee") {
+        var option = flavor[0] == "rotating single origin" ? "singleoriginsizes" : "coffeeteasizes";
+        size = _sizes["default"][option].find(function (a) {
+          return a[0] == sizeSelected[0];
         });
-      }, 200);
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "selectSize", function (size) {
-      var _this$state2 = _this.state,
-          basePrice = _this$state2.productSelected.basePrice,
-          flavorSelected = _this$state2.flavorSelected;
-      var price = Math.round(basePrice * flavorSelected[1] * size[1] * 100) / 100;
-
-      _this.setState({
-        sizeSelected: size,
-        selectedPrice: price
-      });
-
-      setTimeout(function () {
-        var element = document.getElementById("step4");
-        element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }, 200);
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "selectFrequency", function (frequency) {
-      var _this$state3 = _this.state,
-          basePrice = _this$state3.productSelected.basePrice,
-          flavorSelected = _this$state3.flavorSelected,
-          sizeSelected = _this$state3.sizeSelected,
-          quantitySelected = _this$state3.quantitySelected;
-      var price = Math.round(quantitySelected * basePrice * flavorSelected[1] * sizeSelected[1] * 100) / 100;
-      var ppm = price;
-
-      switch (frequency.name) {
-        case "Daily":
-          ppm *= 30;
-          break;
-
-        case "Work Days":
-          ppm *= 20;
-          break;
-
-        case "Weekend":
-          ppm *= 8;
-          break;
-
-        case "Weekly":
-          ppm *= 4;
-          break;
-
-        case "Bi-Weekly":
-          ppm *= 2;
-          break;
       }
 
       _this.setState({
-        frequencySelected: frequency,
-        selectedPrice: price,
-        pricePerMonth: ppm
-      });
+        flavorSelected: flavor,
+        sizeSelected: size
+      }, function () {
+        _this.slider("step3");
 
-      setTimeout(function () {
-        var element = document.getElementById("step5");
-        element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }, 200);
+        _this.checkPrice();
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "selectSize", function (size) {
+      _this.setState({
+        sizeSelected: size
+      }, function () {
+        _this.slider("step4");
+
+        _this.checkPrice();
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "selectFrequency", function (frequency) {
+      _this.setState({
+        frequencySelected: frequency
+      }, function () {
+        _this.slider("step5");
+
+        _this.checkPrice();
+      });
     });
 
     _defineProperty(_assertThisInitialized(_this), "selectQuantity", function (event) {
-      var val = event.currentTarget.value < 1 ? 1 : event.currentTarget.value;
-      var _this$state4 = _this.state,
-          basePrice = _this$state4.productSelected.basePrice,
-          flavorSelected = _this$state4.flavorSelected,
-          sizeSelected = _this$state4.sizeSelected;
-      var price = Math.round(val * basePrice * flavorSelected[1] * sizeSelected[1] * 100) / 100;
+      var value = event.currentTarget.value;
+      var val = value < 1 ? 1 : value;
 
       _this.setState({
-        quantitySelected: val,
-        selectedPrice: price
+        quantitySelected: val
+      }, function () {
+        _this.checkPrice();
       });
     });
 
     _defineProperty(_assertThisInitialized(_this), "selectStartDate", function (event) {
-      console.log(event.currentTarget.value);
-
       _this.setState({
         startDateSelected: event.currentTarget.value
       });
     });
 
     _defineProperty(_assertThisInitialized(_this), "selectTime", function (event) {
-      console.log(event.currentTarget.value);
+      var value = event.currentTarget.value;
+      var time_select = document.getElementById('time_select');
+      var hour = parseInt(value.split(":")[0]);
+      var isValid = false;
+
+      if (hour > 6 && hour < 13) {
+        time_select.style.backgroundColor = '#bfa';
+        isValid = true;
+      } else {
+        time_select.style.backgroundColor = '#fba';
+      }
 
       _this.setState({
-        timeSelected: event.currentTarget.value
+        timeSelected: value,
+        validTime: isValid
       });
     });
 
@@ -215,45 +168,173 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "slider", function (id) {
+      setTimeout(function () {
+        var element = document.getElementById(id);
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 200);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "checkPrice", function () {
+      var _this$state2 = _this.state,
+          basePrice = _this$state2.productSelected.basePrice,
+          flavorSelected = _this$state2.flavorSelected,
+          sizeSelected = _this$state2.sizeSelected,
+          quantitySelected = _this$state2.quantitySelected,
+          frequencySelected = _this$state2.frequencySelected;
+      var flavor = flavorSelected.length ? flavorSelected[1] : [1, 1];
+      var size = sizeSelected.length ? sizeSelected[1] : [1, 1];
+      var price = Math.round(quantitySelected * basePrice * flavor[0] * (1 / flavor[1]) * size[0] * (1 / size[1]) * 100) / 100;
+      var pppp = "";
+      var payFreq = "Month";
+
+      if (frequencySelected) {
+        pppp = price;
+
+        switch (frequencySelected.name) {
+          case "Daily":
+            pppp *= 7;
+            payFreq = "Week";
+            break;
+
+          case "Work Days":
+            pppp *= 5;
+            payFreq = "Week";
+            break;
+
+          case "Weekend":
+            pppp *= 2;
+            payFreq = "Week";
+            break;
+
+          case "Weekly":
+            payFreq = "Week";
+            break;
+
+          case "Bi-Weekly":
+            payFreq = "Bi-Weekly";
+            break;
+        }
+      }
+
+      _this.setState({
+        selectedPrice: price,
+        pricePerPayPeriod: pppp,
+        paymentFrequency: payFreq
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "submitProduct", function (e) {
+      if (_this.state.validTime) {
+        var _this$state3 = _this.state,
+            productSelected = _this$state3.productSelected,
+            flavorSelected = _this$state3.flavorSelected,
+            sizeSelected = _this$state3.sizeSelected,
+            quantitySelected = _this$state3.quantitySelected,
+            frequencySelected = _this$state3.frequencySelected,
+            startDateSelected = _this$state3.startDateSelected,
+            timeSelected = _this$state3.timeSelected,
+            selectedPrice = _this$state3.selectedPrice,
+            paymentFrequency = _this$state3.paymentFrequency,
+            pricePerPayPeriod = _this$state3.pricePerPayPeriod,
+            user = _this$state3.user;
+        fetch('/subscriptions', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            product: productSelected.name,
+            flavor: flavorSelected[0],
+            size: sizeSelected[0],
+            quantity: quantitySelected,
+            deliveryFrequency: frequencySelected.name,
+            startDate: startDateSelected,
+            timeOfDelivery: timeSelected,
+            pricePerDelivery: selectedPrice,
+            pricePerPayPeriod: pricePerPayPeriod,
+            payPeriodFrequency: paymentFrequency,
+            recurringPayment: true,
+            user: user && user._id || ""
+          })
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          if (user && user._id) {
+            //add subscription to user
+            window.location.href = "/myaccount/".concat(user._id);
+          } else {
+            window.location.href = "/signup/".concat(data._id);
+          }
+        });
+      } else {
+        alert("Please select a valid delivery time.");
+      }
+    });
+
     _this.state = {
+      user: {},
       productSelected: "",
       flavorSelected: "",
       sizeSelected: "",
       quantitySelected: 1,
       frequencySelected: "",
-      startDateSelected: "",
-      timeSelected: "",
+      startDateSelected: setMinDate(),
+      timeSelected: "09:00",
       selectedPrice: "",
-      priceMessage: "",
-      pricePerMonth: "",
-      reelPosition: ""
+      paymentFrequency: "Month",
+      pricePerPayPeriod: "",
+      reelPosition: "",
+      validTime: true
     };
     return _this;
   }
 
   _createClass(Chooseproducts, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      var time_select = document.getElementById('time_select');
+
+      if (time_select && this.state.validTime) {
+        time_select.style.backgroundColor = '#bfa';
+      }
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      fetch('/getMe').then(function (res) {
+        return res.text();
+      }).then(function (data) {
+        window.href = "/";
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
 
-      var _this$state5 = this.state,
-          productSelected = _this$state5.productSelected,
-          flavorSelected = _this$state5.flavorSelected,
-          sizeSelected = _this$state5.sizeSelected,
-          selectedPrice = _this$state5.selectedPrice,
-          frequencySelected = _this$state5.frequencySelected,
-          quantitySelected = _this$state5.quantitySelected,
-          pricePerMonth = _this$state5.pricePerMonth,
-          startDateSelected = _this$state5.startDateSelected,
-          timeSelected = _this$state5.timeSelected,
-          reelPosition = _this$state5.reelPosition;
+      var _this$state4 = this.state,
+          productSelected = _this$state4.productSelected,
+          flavorSelected = _this$state4.flavorSelected,
+          sizeSelected = _this$state4.sizeSelected,
+          selectedPrice = _this$state4.selectedPrice,
+          frequencySelected = _this$state4.frequencySelected,
+          quantitySelected = _this$state4.quantitySelected,
+          pricePerPayPeriod = _this$state4.pricePerPayPeriod,
+          startDateSelected = _this$state4.startDateSelected,
+          timeSelected = _this$state4.timeSelected,
+          reelPosition = _this$state4.reelPosition,
+          paymentFrequency = _this$state4.paymentFrequency;
       var sizeoptions = "";
 
       if (productSelected) {
         sizeoptions = flavorSelected[0] == "rotating single origin" ? "singleoriginsizes" : productSelected.sizeOptions;
       }
 
-      return /*#__PURE__*/_react["default"].createElement(_chooseproducts.ChooseproductsWrapper, null, /*#__PURE__*/_react["default"].createElement(_Header["default"], null), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ChooseproductsContent, null, /*#__PURE__*/_react["default"].createElement(_chooseproducts.FlagWrapper, {
+      return /*#__PURE__*/_react["default"].createElement(_chooseproducts.ChooseproductsWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ChooseproductsContent, null, /*#__PURE__*/_react["default"].createElement(_chooseproducts.FlagWrapper, {
         className: reelPosition,
         onClick: this.manageReel
       }, selectedPrice && /*#__PURE__*/_react["default"].createElement("h2", {
@@ -261,14 +342,20 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
           color: "#fff",
           zIndex: 100
         }
-      }, "$", selectedPrice, "/Day"), frequencySelected && /*#__PURE__*/_react["default"].createElement("h2", {
+      }, new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      }).format(selectedPrice), "/Delivery"), pricePerPayPeriod && /*#__PURE__*/_react["default"].createElement("h2", {
         style: {
           color: "#fff",
           zIndex: 100
         }
-      }, "$", pricePerMonth, "/Month"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.Flag, null, /*#__PURE__*/_react["default"].createElement("path", {
+      }, new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      }).format(pricePerPayPeriod), "/", paymentFrequency), /*#__PURE__*/_react["default"].createElement(_chooseproducts.Flag, null, /*#__PURE__*/_react["default"].createElement("path", {
         fill: _colors.lightblue,
-        d: "M 1 1 L 149 1 L 149 99 L 139 93 L 129 99 L 119 93 L 109 99 L 99 93 L 89 99 L 79 93 L 69 99 L 59 93 L 49 99 L 39 93 L 29 99 L 19 93 L 9 99 L 1 93 L 1 1 ",
+        d: "\n                    M 1 1\n                    L 249 1\n                    L 249 129\n                    L 239 123\n                    L 229 129\n                    L 219 123\n                    L 209 129\n                    L 199 123\n                    L 189 129\n                    L 179 123\n                    L 169 129\n                    L 159 123\n                    L 149 129\n                    L 139 123\n                    L 129 129\n                    L 119 123\n                    L 109 129\n                    L 99 123\n                    L 89 129\n                    L 79 123\n                    L 69 129\n                    L 59 123\n                    L 49 129\n                    L 39 123\n                    L 29 129\n                    L 19 123\n                    L 9 129\n                    L 1 123\n                    L 1 1",
         stroke: _colors.darkblue,
         strokeWidth: "2"
       }))), /*#__PURE__*/_react["default"].createElement("h2", {
@@ -317,6 +404,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         },
         placeholder: "Quantity",
         type: "number",
+        required: true,
         value: quantitySelected,
         onChange: this.selectQuantity
       })), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductWrapper, null, _frequencies["default"].map(function (frequency, i) {
@@ -331,7 +419,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         }, frequency.name));
       }))), productSelected && flavorSelected && sizeSelected && frequencySelected && /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("h2", {
         id: "step5"
-      }, "Step 5: Select Start Date and Preferred Time of Delivery"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
+      }, "Step 5: Select Start Date and Preferred Time of Delivery"), /*#__PURE__*/_react["default"].createElement("p", null, "We deliver between the hours of 7AM and 12PM. If you have a deliver requirement outside of this range, please call us."), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
         style: {
           margin: "auto"
         },
@@ -339,8 +427,11 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/_react["default"].createElement("input", {
         placeholder: "Select Start Date",
         type: "date",
+        required: true,
         value: startDateSelected,
-        onChange: this.selectStartDate
+        onChange: this.selectStartDate,
+        min: setMinDate(),
+        max: setMaxDate()
       })), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
         style: {
           margin: "auto"
@@ -349,9 +440,15 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/_react["default"].createElement("input", {
         placeholder: "Select Preferred Delivery Time",
         type: "time",
+        id: "time_select",
+        required: true,
         value: timeSelected,
-        onChange: this.selectTime
-      }))), productSelected && flavorSelected && sizeSelected && frequencySelected && startDateSelected && timeSelected && /*#__PURE__*/_react["default"].createElement(_chooseproducts.Button, null, "Add To Cart")), /*#__PURE__*/_react["default"].createElement(_Footer["default"], null));
+        onChange: this.selectTime,
+        min: "07:00",
+        max: "12:00"
+      }))), productSelected && flavorSelected && sizeSelected && frequencySelected && startDateSelected && timeSelected && /*#__PURE__*/_react["default"].createElement(_chooseproducts.Button, {
+        onClick: this.submitProduct
+      }, "Add To Cart")), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 
@@ -360,3 +457,15 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
 
 var _default = Chooseproducts;
 exports["default"] = _default;
+
+function setMinDate() {
+  var minDate = new Date();
+  minDate.setDate(minDate.getDate() + 1);
+  return minDate.toISOString().split('T')[0];
+}
+
+function setMaxDate() {
+  var maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + 31);
+  return maxDate.toISOString().split('T')[0];
+}
