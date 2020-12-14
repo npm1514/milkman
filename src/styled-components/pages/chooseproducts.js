@@ -49,7 +49,7 @@ export const ProductBox = styled.div`
   }
 `;
 export const FlagWrapper = styled.div`
-  top: -105px;
+  top: -120px;
   right: 0;
   left: 0;
   margin: auto;
