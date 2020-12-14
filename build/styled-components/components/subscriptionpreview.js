@@ -12,7 +12,7 @@ var _colors = require("../colors");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n  width: 100vw;\n  background-color: ", ";\n  position: ", ";\n  top: 0;\n  left: 0;\n  z-index: 10;\n"]);
+  var data = _taggedTemplateLiteral(["\n  width: 100vw;\n  max-width: 900px;\n  margin: auto;\n  margin-top: 20px;\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -23,8 +23,6 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var SubscriptionPreviewWrap = _styledComponents["default"].div(_templateObject(), _colors.darkblue, function (props) {
-  return props.menuStuck ? 'fixed' : 'static';
-});
+var SubscriptionPreviewWrap = _styledComponents["default"].div(_templateObject());
 
 exports.SubscriptionPreviewWrap = SubscriptionPreviewWrap;

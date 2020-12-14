@@ -42,7 +42,6 @@ var Cryptr = require('cryptr');
 
 var cryptr = new Cryptr(_config["default"].key);
 var PORT = process.env.PORT || 3003;
-var absUrl = process.env.PORT ? 'https://milkmancoffee.herokuapp.com/' : 'http://localhost:' + PORT;
 (0, _passport["default"])(passport); //self invokes passport
 
 var app = (0, _express["default"])();
@@ -116,9 +115,7 @@ app.get('/chooseproducts', function (req, res) {
 app.get('/signup/:id', function (req, res) {
   //page
   var data = {};
-  console.log(absUrl + '/subscriptions/' + req.params.id);
-  fetcher(absUrl + '/subscriptions/' + req.params.id).then(function (response) {
-    console.log(response);
+  fetcher('http://localhost:3003/subscriptions/' + req.params.id).then(function (response) {
     data = {
       subscriptionID: req.params.id,
       subscription: response

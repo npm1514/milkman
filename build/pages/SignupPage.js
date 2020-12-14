@@ -54,6 +54,7 @@ var Signup = /*#__PURE__*/function (_Component) {
       var _this$props$data = this.props.data,
           subscription = _this$props$data.subscription,
           subscriptionID = _this$props$data.subscriptionID;
+      console.log(subscription, subscriptionID);
       return /*#__PURE__*/_react["default"].createElement(_signup.SignupWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_signup.SignupContent, null, subscriptionID ? /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
         subscription: subscription
       }) : /*#__PURE__*/_react["default"].createElement(_components.SignupOrLogin, null)), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));

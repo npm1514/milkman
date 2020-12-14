@@ -23,7 +23,6 @@ import userCtrl from './controllers/userCtrl';
 import subscriptionCtrl from './controllers/subscriptionCtrl';
 
 var PORT = process.env.PORT || 3003;
-var absUrl = process.env.PORT ? 'https://milkmancoffee.herokuapp.com/' : 'http://localhost:' + PORT
 
 passportConfig(passport);//self invokes passport
 
@@ -97,21 +96,17 @@ app.get('/chooseproducts', (req, res) => {
   res.set('Cache-Control', 'public, max-age=31557600');
   res.send(returnHTML(data, chooseproductsBundle, ChooseproductsRoot, "chooseproducts"));
 });
-app.get('/signup/:id', (req, res) => {
+app.get('/signup/:id', function (req, res) {
   //page
-  let data = {}
-  console.log(absUrl +'/subscriptions/' + req.params.id);
-  fetcher(absUrl +'/subscriptions/' + req.params.id)
-  .then(response => {
-    console.log(response);
+  var data = {};
+  fetcher('http://localhost:3003/subscriptions/' + req.params.id).then((response) => {
     data = {
       subscriptionID: req.params.id,
       subscription: response
     };
     res.set('Cache-Control', 'public, max-age=31557600');
     res.send(returnHTML(data, signupBundle, SignupRoot, "signup"));
-  })
-
+  });
 });
 app.get('/signup', (req, res) => {
   //page
