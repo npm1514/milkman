@@ -11,7 +11,9 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _components = require("../components");
 
-var _signup = require("../styled-components/pages/signup");
+var _landing = require("../styled-components/pages/landing");
+
+var _global = require("../styled-components/global");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -37,31 +39,32 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Signup = /*#__PURE__*/function (_Component) {
-  _inherits(Signup, _Component);
+var Landing = /*#__PURE__*/function (_Component) {
+  _inherits(Landing, _Component);
 
-  var _super = _createSuper(Signup);
+  var _super = _createSuper(Landing);
 
-  function Signup() {
-    _classCallCheck(this, Signup);
+  function Landing() {
+    _classCallCheck(this, Landing);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(Signup, [{
+  _createClass(Landing, [{
     key: "render",
     value: function render() {
-      var _this$props$data = this.props.data,
-          subscription = _this$props$data.subscription,
-          subscriptionID = _this$props$data.subscriptionID;
-      return /*#__PURE__*/_react["default"].createElement(_signup.SignupWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_signup.SignupContent, null, subscriptionID && /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
-        subscription: subscription
-      }), /*#__PURE__*/_react["default"].createElement(_components.SignupOrLogin, null)), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_landing.LandingContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Delivery Subscriptions"), /*#__PURE__*/_react["default"].createElement("p", null, "This is where I talk about subscriptions."), /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/chooseproducts"
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Get Started")), /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/login"
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Login")), /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/signup"
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Sign Up")))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 
-  return Signup;
+  return Landing;
 }(_react.Component);
 
-var _default = Signup;
+var _default = Landing;
 exports["default"] = _default;

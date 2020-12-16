@@ -51,6 +51,16 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
 
     _this = _super.call(this, props);
 
+    _defineProperty(_assertThisInitialized(_this), "badPassword", function (passwordMessage) {
+      var p1Border = document.getElementById('password1').style.border;
+      var p2border = document.getElementById('password2').style.border;
+      var bad = '1px solid red';
+
+      _this.setState({
+        passwordMessage: passwordMessage
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_this), "signup", function (e) {
       e.preventDefault();
       var _this$state = _this.state,
@@ -63,39 +73,40 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
           address = _this$state.address,
           city = _this$state.city,
           state = _this$state.state,
-          zip = _this$state.zip;
+          zip = _this$state.zip,
+          subscriptions = _this$state.subscriptions;
 
       if (password1 != password2) {
-        document.getElementById('password1').style.border = '1px solid red';
-        document.getElementById('password2').style.border = '1px solid red';
-
-        _this.setState({
-          passwordMessage: "Passwords do not match!"
-        });
+        _this.badPassword("Passwords do not match!");
       } else if (password1.length < 8) {
-        document.getElementById('password1').style.border = '1px solid #8d8d8d';
-        document.getElementById('password2').style.border = '1px solid #8d8d8d';
-
-        _this.setState({
-          passwordMessage: "Password must be at least 8 characters long"
-        });
+        _this.badPassword("Password must be at least 8 characters long");
       } else if (!/\d+/.test(password1)) {
-        document.getElementById('password1').style.border = '1px solid #8d8d8d';
-        document.getElementById('password2').style.border = '1px solid #8d8d8d';
-
-        _this.setState({
-          passwordMessage: "Password must contain at least 1 number"
-        });
+        _this.badPassword("Password must contain at least 1 number");
       } else if (!/[a-zA-Z]/.test(password1)) {
-        document.getElementById('password1').style.border = '1px solid #8d8d8d';
-        document.getElementById('password2').style.border = '1px solid #8d8d8d';
-
-        _this.setState({
-          passwordMessage: "Password must contain at least one letter"
-        });
+        _this.badPassword("Password must contain at least one letter");
       } else {
-        console.log("sign up");
-        console.log(_this.state);
+        fetch('/api/auth', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password1,
+            phone: phone,
+            address: address,
+            city: city,
+            state: state,
+            zip: zip,
+            subscriptions: subscriptions
+          })
+        }).then(function (res) {
+          return res.text();
+        }).then(function (data) {
+          console.log(data);
+        });
       }
     });
 
@@ -134,7 +145,8 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
       zip: "",
       password1: "",
       password2: "",
-      passwordMessage: ""
+      passwordMessage: "",
+      subscriptions: [_this.props.subscriptionID || ""]
     };
     return _this;
   }
@@ -223,7 +235,7 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
         onChange: function onChange(e) {
           _this2.updateState(e, "zip");
         }
-      }), /*#__PURE__*/_react["default"].createElement("p", null, "Password must..."), /*#__PURE__*/_react["default"].createElement("p", null, "-contain at least 8 characters long"), /*#__PURE__*/_react["default"].createElement("p", null, "-contain at least 1 letter"), /*#__PURE__*/_react["default"].createElement("p", null, "-contain at least 1 letter"), /*#__PURE__*/_react["default"].createElement("input", {
+      }), /*#__PURE__*/_react["default"].createElement("p", null, "Password must..."), /*#__PURE__*/_react["default"].createElement("p", null, "-contain at least 8 characters"), /*#__PURE__*/_react["default"].createElement("p", null, "-contain at least 1 letter"), /*#__PURE__*/_react["default"].createElement("p", null, "-contain at least 1 letter"), /*#__PURE__*/_react["default"].createElement("input", {
         id: "password1",
         placeholder: "Password",
         type: "password",

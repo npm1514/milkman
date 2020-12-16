@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { SubscriptionPreviewWrap } from '../styled-components/components/subscriptionpreview';
+import { OrderPreviewWrap } from '../styled-components/components/orderpreview';
 import { green, darkblue, pink, brown, lightblue } from '../styled-components/colors';
 
-class SubscriptionPreviewComponent extends Component {
+class OrderPreviewComponent extends Component {
   render(){
-    const { deliveryFrequency, flavor, payPeriodFrequency, pricePerDelivery, pricePerPayPeriod, product, quantity, recurringPayment, size, startDate, timeOfDelivery, _id } = this.props.subscription;
+    const { deliveryFrequency, flavor, payPeriodFrequency, pricePerDelivery, pricePerPayPeriod, product, quantity, recurringPayment, size, startDate, timeOfDelivery, _id } = this.props.order;
     return (
-      <SubscriptionPreviewWrap>
+      <OrderPreviewWrap>
+
         <p>{_id}</p>
-        <h2>Your Subscription Cart</h2>
+        <h2>Your Cart</h2>
         <div>({quantity}) {size} {flavor} {product}</div>
         <br/>
         <hr/>
@@ -19,9 +20,9 @@ class SubscriptionPreviewComponent extends Component {
         <div>Payment Frequency: {payPeriodFrequency}</div>
         <div>Price Per Payment Period: { new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(pricePerPayPeriod) }</div>
         <div>Recurring Payment: {recurringPayment.toString()}</div>
-      </SubscriptionPreviewWrap>
+      </OrderPreviewWrap>
     );
   }
 }
 
-export default SubscriptionPreviewComponent;
+export default OrderPreviewComponent;

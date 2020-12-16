@@ -9,13 +9,7 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _Header = _interopRequireDefault(require("../components/Header"));
-
-var _Footer = _interopRequireDefault(require("../components/Footer"));
-
-var _subscribe = require("../styled-components/pages/subscribe");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _pages = require("../pages");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -41,28 +35,29 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Subscribe = /*#__PURE__*/function (_Component) {
-  _inherits(Subscribe, _Component);
+var Root = /*#__PURE__*/function (_Component) {
+  _inherits(Root, _Component);
 
-  var _super = _createSuper(Subscribe);
+  var _super = _createSuper(Root);
 
-  function Subscribe() {
-    _classCallCheck(this, Subscribe);
+  function Root() {
+    _classCallCheck(this, Root);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(Subscribe, [{
+  _createClass(Root, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_subscribe.SubscribeWrapper, null, /*#__PURE__*/_react["default"].createElement(_Header["default"], null), /*#__PURE__*/_react["default"].createElement(_subscribe.SubscribeContent, null, "subscribe page", /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/chooseproducts"
-      }, /*#__PURE__*/_react["default"].createElement("button", null, "Get Started"))), /*#__PURE__*/_react["default"].createElement(_Footer["default"], null));
+      var data = this.props.data;
+      return /*#__PURE__*/_react["default"].createElement(_pages.SignupLoginPage, {
+        data: data ? data : {}
+      });
     }
   }]);
 
-  return Subscribe;
+  return Root;
 }(_react.Component);
 
-var _default = Subscribe;
+var _default = Root;
 exports["default"] = _default;

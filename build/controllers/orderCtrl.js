@@ -22,6 +22,15 @@ module.exports = {
       }
     });
   },
+  readOne: function readOne(req, res) {
+    OrderModel.findById(req.params.id).exec(function (err, result) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    });
+  },
   update: function update(req, res) {
     OrderModel.findByIdAndUpdate(req.params.id, req.body, function (err, result) {
       if (err) {

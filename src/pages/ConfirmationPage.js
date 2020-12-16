@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { ConfirmationWrapper, ConfirmationContent } from '../styled-components/pages/confirmation';
+import { Header, Footer } from '../components';
+import { ConfirmationContent } from '../styled-components/pages/confirmation';
+import { PageWrapper, ContentWrapper } from '../styled-components/global';
 
 class Confirmation extends Component {
     render(){
       return (
-          <ConfirmationWrapper>
+          <PageWrapper>
               <Header/>
-              <ConfirmationContent>
-                confirmation page
-              </ConfirmationContent>
+              <ContentWrapper>
+                <ConfirmationContent>
+                  confirmation page
+                </ConfirmationContent>
+              </ContentWrapper>
               <Footer/>
-          </ConfirmationWrapper>
+          </PageWrapper>
       );
     }
 }

@@ -9,18 +9,19 @@ import fs from 'fs';
 import compression from 'compression';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-const mongoose = require('mongoose');
-const passport = require('passport');
-const session = require('express-session');
-const Cryptr = require('cryptr');
+import mongoose from 'mongoose';
+import passport from 'passport';
+import session from 'express-session';
+import Cryptr from 'cryptr';
 const cryptr = new Cryptr(config.key);
 
-import { SubscribeRoot, ChooseproductsRoot, SignupRoot, CartRoot, CheckoutRoot, ConfirmationRoot, MyaccountRoot, CafetoolsRoot } from './roots';
+import { LandingRoot, ChooseproductsRoot, SignupLoginRoot, CartRoot, CheckoutRoot, ConfirmationRoot, MyaccountRoot, CafetoolsRoot } from './roots';
 
 import passportConfig from './config/passport';
 import config from './config';
 import userCtrl from './controllers/userCtrl';
 import subscriptionCtrl from './controllers/subscriptionCtrl';
+import orderCtrl from './controllers/orderCtrl';
 
 var PORT = process.env.PORT || 3003;
 
@@ -42,26 +43,26 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 
 var dataObj = {},
-subscribeBundle = "",
+landingBundle = "",
 chooseproductsBundle = "",
-signupBundle = "",
+signuploginBundle = "",
 cartBundle = "",
 checkoutBundle = "",
 confirmationBundle = "",
 myaccountBundle = "",
 cafetoolsBundle = "";
 
-// fs.readFile('./dist/js/subscribe.bundle.min.js', "utf8", (err, data) => {
-//   if (err) console.log("ERR" ,err);
-//   subscribeBundle = data || "";
-// })
+fs.readFile('./dist/js/landing.bundle.min.js', "utf8", (err, data) => {
+  if (err) console.log("ERR" ,err);
+  landingBundle = data || "";
+})
 fs.readFile('./dist/js/chooseproducts.bundle.min.js', "utf8", (err, data) => {
   if (err) console.log("ERR" ,err);
   chooseproductsBundle = data || "";
 })
-fs.readFile('./dist/js/signup.bundle.min.js', "utf8", (err, data) => {
+fs.readFile('./dist/js/signuplogin.bundle.min.js', "utf8", (err, data) => {
   if (err) console.log("ERR" ,err);
-  signupBundle = data || "";
+  signuploginBundle = data || "";
 })
 // fs.readFile('./dist/js/cart.bundle.min.js', "utf8", (err, data) => {
 //   if (err) console.log("ERR" ,err);
@@ -84,11 +85,17 @@ fs.readFile('./dist/js/myaccount.bundle.min.js', "utf8", (err, data) => {
 //   cafetoolsBundle = data || "";
 // })
 
-app.get('/subscribe', (req, res) => {
+app.get('/', (req, res) => {
   //page
   let data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, subscribeBundle, SubscribeRoot, "subscribe"));
+  res.send(returnHTML(data, landingBundle, LandingRoot, "subscriptions"));
+});
+app.get('/subscriptions', (req, res) => {
+  //page
+  let data = "";
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, landingBundle, LandingRoot, "subscriptions"));
 });
 app.get('/chooseproducts', (req, res) => {
   //page
@@ -99,20 +106,48 @@ app.get('/chooseproducts', (req, res) => {
 app.get('/signup/:id', function (req, res) {
   //page
   var data = {};
-  fetcher('http://localhost:3003/subscriptions/' + req.params.id).then((response) => {
+  fetcher('https://milkmancoffee.herokuapp.com/api/orders/' + req.params.id).then((response) => {
     data = {
-      subscriptionID: req.params.id,
-      subscription: response
+      orderID: req.params.id,
+      order: response,
+      loggingIn: false
     };
     res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, signupBundle, SignupRoot, "signup"));
+    res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "signup"));
   });
 });
 app.get('/signup', (req, res) => {
   //page
-  let data = "";
+  let data = {
+    orderID: "",
+    order: {},
+    loggingIn: false
+  };
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, signupBundle, SignupRoot, "signup"));
+  res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "signup"));
+});
+app.get('/login/:id', function (req, res) {
+  //page
+  var data = {};
+  fetcher('https://milkmancoffee.herokuapp.com/api/orders/' + req.params.id).then((response) => {
+    data = {
+      orderID: req.params.id,
+      order: response,
+      loggingIn: true
+    };
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "login"));
+  });
+});
+app.get('/login', (req, res) => {
+  //page
+  let data = {
+    orderID: "",
+    order: {},
+    loggingIn: true
+  };
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "login"));
 });
 app.get('/cart', (req, res) => {
   //page
@@ -151,21 +186,23 @@ app.get('/images/:id', (req, res) => {
   res.sendFile(path.join(__dirname, '../images/' + req.params.id));
 });
 
-app.post('/auth', passport.authenticate('local-signup'), userCtrl.login);
-app.get('/getMe', userCtrl.getMe);
-app.get('/logout', userCtrl.logout);
+app.post('/api/auth', passport.authenticate('local-signup'), userCtrl.login);
+app.get('/api/getMe', userCtrl.getMe);
+app.get('/api/logout', userCtrl.logout);
+app.get('/api/users', userCtrl.read);
+app.put('/api/users/:id', userCtrl.update);
 
-app.get('/users', userCtrl.read);
-app.put('/users/:id', userCtrl.update);
-app.delete('/users/:id', userCtrl.destroy);
+app.get('/api/subscriptions', subscriptionCtrl.read);
+app.get('/api/subscriptions/:id', subscriptionCtrl.readOne);
+app.post('/api/subscriptions', subscriptionCtrl.create);
+app.put('/api/subscriptions/:id', subscriptionCtrl.update);
+app.delete('/api/subscriptions/:id', subscriptionCtrl.destroy);
 
-app.get('/subscriptions', subscriptionCtrl.read);
-app.get('/subscriptions/:id', subscriptionCtrl.readOne);
-app.post('/subscriptions', subscriptionCtrl.create);
-app.put('/subscriptions/:id', subscriptionCtrl.update);
-app.delete('/subscriptions/:id', subscriptionCtrl.destroy);
-
-
+app.get('/api/orders', orderCtrl.read);
+app.get('/api/orders/:id', orderCtrl.readOne);
+app.post('/api/orders', orderCtrl.create);
+app.put('/api/orders/:id', orderCtrl.update);
+app.delete('/api/orders/:id', orderCtrl.destroy);
 
 app.get('/health', (req, res) => res.send('OK'));
 

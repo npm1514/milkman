@@ -1,5 +1,19 @@
 import styled from 'styled-components';
-import {darkblue, white, lightblue, pink, green} from '../colors';
+import { pink, green, darkblue } from '../colors';
+
+export const SignupLoginContent = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  @media(min-width: 700px){
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 60px auto;
+  }
+`;
 
 export const SignupOrLoginWrap = styled.div`
   border: 1px solid #8d8d8d;

@@ -13,6 +13,8 @@ var _components = require("../components");
 
 var _chooseproducts = require("../styled-components/pages/chooseproducts");
 
+var _global = require("../styled-components/global");
+
 var _sizes = _interopRequireDefault(require("../data/sizes"));
 
 var _flavors = _interopRequireDefault(require("../data/flavors"));
@@ -170,8 +172,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "slider", function (id) {
       setTimeout(function () {
-        var element = document.getElementById(id);
-        element.scrollIntoView({
+        document.getElementById(id).scrollIntoView({
           behavior: 'smooth',
           block: 'start'
         });
@@ -241,7 +242,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
             paymentFrequency = _this$state3.paymentFrequency,
             pricePerPayPeriod = _this$state3.pricePerPayPeriod,
             user = _this$state3.user;
-        fetch('/subscriptions', {
+        fetch('/api/subscriptions', {
           method: "POST",
           headers: {
             'Content-Type': 'application/json'
@@ -263,15 +264,42 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         }).then(function (res) {
           return res.json();
         }).then(function (data) {
-          if (user && user._id) {
-            //add subscription to user
-            window.location.href = "/myaccount/".concat(user._id);
-          } else {
-            window.location.href = "/signup/".concat(data._id);
-          }
+          _this.submitOrder(data);
         });
       } else {
         alert("Please select a valid delivery time.");
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "submitOrder", function (data) {
+      console.log(data); // fetch('/api/subscriptions', {
+      //   method: "POST",
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     user: {type: mongoose.Schema.Types.ObjectId, ref: "users"},
+      //     subscriptions: [{type: mongoose.Schema.Types.ObjectId, ref: "subscriptions"}],
+      //     quantity: {type: Number, required: true},
+      //     date: {type: String, required: true},
+      //     invoiceNum: {type: Number, required: true}
+      //   })
+      // })
+      // .then((res) => res.json())
+      // .then((data) => {
+      //   if(user && user._id){
+      //     //add subscription to user
+      //     window.location.href = `/myaccount/${user._id}`;
+      //   } else {
+      //     window.location.href = `/signup/${data._id}`;
+      //   }
+      // })
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "switchPage", function (user) {
+      if (user && user._id) {
+        //add subscription to user
+        window.location.href = "/myaccount/".concat(user._id);
+      } else {
+        window.location.href = "/signup/".concat(data._id);
       }
     });
 
@@ -308,7 +336,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
       fetch('/getMe').then(function (res) {
         return res.text();
       }).then(function (data) {
-        window.href = "/";
+        console.log(data);
       });
     }
   }, {
@@ -334,7 +362,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         sizeoptions = flavorSelected[0] == "rotating single origin" ? "singleoriginsizes" : productSelected.sizeOptions;
       }
 
-      return /*#__PURE__*/_react["default"].createElement(_chooseproducts.ChooseproductsWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ChooseproductsContent, null, /*#__PURE__*/_react["default"].createElement(_chooseproducts.FlagWrapper, {
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_chooseproducts.ChooseproductsContent, null, /*#__PURE__*/_react["default"].createElement(_chooseproducts.FlagWrapper, {
         className: reelPosition,
         onClick: this.manageReel
       }, selectedPrice && /*#__PURE__*/_react["default"].createElement("h2", {
@@ -355,7 +383,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         currency: 'USD'
       }).format(pricePerPayPeriod), "/", paymentFrequency), /*#__PURE__*/_react["default"].createElement(_chooseproducts.Flag, null, /*#__PURE__*/_react["default"].createElement("path", {
         fill: _colors.lightblue,
-        d: "\n                    M 1 1\n                    L 249 1\n                    L 249 129\n                    L 239 123\n                    L 229 129\n                    L 219 123\n                    L 209 129\n                    L 199 123\n                    L 189 129\n                    L 179 123\n                    L 169 129\n                    L 159 123\n                    L 149 129\n                    L 139 123\n                    L 129 129\n                    L 119 123\n                    L 109 129\n                    L 99 123\n                    L 89 129\n                    L 79 123\n                    L 69 129\n                    L 59 123\n                    L 49 129\n                    L 39 123\n                    L 29 129\n                    L 19 123\n                    L 9 129\n                    L 1 123\n                    L 1 1",
+        d: "\n                      M 1 1\n                      L 249 1\n                      L 249 129\n                      L 239 123\n                      L 229 129\n                      L 219 123\n                      L 209 129\n                      L 199 123\n                      L 189 129\n                      L 179 123\n                      L 169 129\n                      L 159 123\n                      L 149 129\n                      L 139 123\n                      L 129 129\n                      L 119 123\n                      L 109 129\n                      L 99 123\n                      L 89 129\n                      L 79 123\n                      L 69 129\n                      L 59 123\n                      L 49 129\n                      L 39 123\n                      L 29 129\n                      L 19 123\n                      L 9 129\n                      L 1 123\n                      L 1 1",
         stroke: _colors.darkblue,
         strokeWidth: "2"
       }))), /*#__PURE__*/_react["default"].createElement("h2", {
@@ -446,9 +474,9 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         onChange: this.selectTime,
         min: "07:00",
         max: "12:00"
-      }))), productSelected && flavorSelected && sizeSelected && frequencySelected && startDateSelected && timeSelected && /*#__PURE__*/_react["default"].createElement(_chooseproducts.Button, {
+      }))), productSelected && flavorSelected && sizeSelected && frequencySelected && startDateSelected && timeSelected && /*#__PURE__*/_react["default"].createElement(_global.Button, {
         onClick: this.submitProduct
-      }, "Add To Cart")), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      }, "Add To Cart"))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 

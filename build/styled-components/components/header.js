@@ -32,7 +32,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  var data = _taggedTemplateLiteral(["\n  height: 132px;\n  width: 100%;\n  background-color: ", ";\n  @media(min-width: 700px){\n    height: ", ";\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  height: 145px;\n  width: 100%;\n  background-color: ", ";\n  @media(min-width: 700px){\n    height: ", ";\n  }\n"]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -116,7 +116,7 @@ var HexLock = _styledComponents["default"].div(_templateObject5());
 exports.HexLock = HexLock;
 
 var Spacer = _styledComponents["default"].div(_templateObject6(), _colors.white, function (props) {
-  return props.menuStuck ? '80px' : '0';
+  return props.menuStuck ? '115px' : '0';
 });
 
 exports.Spacer = Spacer;

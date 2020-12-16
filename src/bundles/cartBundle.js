@@ -1,9 +1,9 @@
 import React from 'react';
-import { hydrate, render } from 'react-dom';
-import Cart from '../pages/CartPage';
+import { render } from 'react-dom';
+import { CartPage } from '../pages';
 
 if (window)
   render(
-    <Cart data={window.__DATA__} />,
+    <CartPage data={window.__DATA__} />,
     document.getElementById('app')
   );

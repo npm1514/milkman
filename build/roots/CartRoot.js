@@ -9,9 +9,7 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _CartPage = _interopRequireDefault(require("../pages/CartPage"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _pages = require("../pages");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -51,8 +49,9 @@ var Root = /*#__PURE__*/function (_Component) {
   _createClass(Root, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_CartPage["default"], {
-        data: this.props.data ? this.props.data : {}
+      var data = this.props.data;
+      return /*#__PURE__*/_react["default"].createElement(_pages.CartPage, {
+        data: data ? data : {}
       });
     }
   }]);

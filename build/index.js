@@ -20,9 +20,17 @@ var _cors = _interopRequireDefault(require("cors"));
 
 var _bodyParser = _interopRequireDefault(require("body-parser"));
 
+var _mongoose = _interopRequireDefault(require("mongoose"));
+
+var _passport = _interopRequireDefault(require("passport"));
+
+var _expressSession = _interopRequireDefault(require("express-session"));
+
+var _cryptr = _interopRequireDefault(require("cryptr"));
+
 var _roots = require("./roots");
 
-var _passport = _interopRequireDefault(require("./config/passport"));
+var _passport2 = _interopRequireDefault(require("./config/passport"));
 
 var _config = _interopRequireDefault(require("./config"));
 
@@ -30,53 +38,49 @@ var _userCtrl = _interopRequireDefault(require("./controllers/userCtrl"));
 
 var _subscriptionCtrl = _interopRequireDefault(require("./controllers/subscriptionCtrl"));
 
+var _orderCtrl = _interopRequireDefault(require("./controllers/orderCtrl"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var mongoose = require('mongoose');
-
-var passport = require('passport');
-
-var session = require('express-session');
-
-var Cryptr = require('cryptr');
-
-var cryptr = new Cryptr(_config["default"].key);
+var cryptr = new _cryptr["default"](_config["default"].key);
 var PORT = process.env.PORT || 3003;
-(0, _passport["default"])(passport); //self invokes passport
+(0, _passport2["default"])(_passport["default"]); //self invokes passport
 
 var app = (0, _express["default"])();
-app.use(session({
+app.use((0, _expressSession["default"])({
   secret: 'banana',
   resave: true,
   saveUninitialized: true
 }));
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(_passport["default"].initialize());
+app.use(_passport["default"].session());
 app.use((0, _cors["default"])());
 app.use((0, _compression["default"])());
 app.use(_bodyParser["default"].json());
 app.use(_bodyParser["default"].urlencoded());
 var dataObj = {},
-    subscribeBundle = "",
+    landingBundle = "",
     chooseproductsBundle = "",
-    signupBundle = "",
+    signuploginBundle = "",
     cartBundle = "",
     checkoutBundle = "",
     confirmationBundle = "",
     myaccountBundle = "",
-    cafetoolsBundle = ""; // fs.readFile('./dist/js/subscribe.bundle.min.js', "utf8", (err, data) => {
-//   if (err) console.log("ERR" ,err);
-//   subscribeBundle = data || "";
-// })
+    cafetoolsBundle = "";
+
+_fs["default"].readFile('./dist/js/landing.bundle.min.js', "utf8", function (err, data) {
+  if (err) console.log("ERR", err);
+  landingBundle = data || "";
+});
 
 _fs["default"].readFile('./dist/js/chooseproducts.bundle.min.js', "utf8", function (err, data) {
   if (err) console.log("ERR", err);
   chooseproductsBundle = data || "";
 });
 
-_fs["default"].readFile('./dist/js/signup.bundle.min.js', "utf8", function (err, data) {
+_fs["default"].readFile('./dist/js/signuplogin.bundle.min.js', "utf8", function (err, data) {
   if (err) console.log("ERR", err);
-  signupBundle = data || "";
+  signuploginBundle = data || "";
 }); // fs.readFile('./dist/js/cart.bundle.min.js', "utf8", (err, data) => {
 //   if (err) console.log("ERR" ,err);
 //   cartBundle = data || "";
@@ -100,11 +104,17 @@ _fs["default"].readFile('./dist/js/myaccount.bundle.min.js', "utf8", function (e
 // })
 
 
-app.get('/subscribe', function (req, res) {
+app.get('/', function (req, res) {
   //page
   var data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, subscribeBundle, _roots.SubscribeRoot, "subscribe"));
+  res.send(returnHTML(data, landingBundle, _roots.LandingRoot, "subscriptions"));
+});
+app.get('/subscriptions', function (req, res) {
+  //page
+  var data = "";
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, landingBundle, _roots.LandingRoot, "subscriptions"));
 });
 app.get('/chooseproducts', function (req, res) {
   //page
@@ -115,20 +125,48 @@ app.get('/chooseproducts', function (req, res) {
 app.get('/signup/:id', function (req, res) {
   //page
   var data = {};
-  fetcher('http://localhost:3003/subscriptions/' + req.params.id).then(function (response) {
+  fetcher('https://milkmancoffee.herokuapp.com/api/orders/' + req.params.id).then(function (response) {
     data = {
-      subscriptionID: req.params.id,
-      subscription: response
+      orderID: req.params.id,
+      order: response,
+      loggingIn: false
     };
     res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, signupBundle, _roots.SignupRoot, "signup"));
+    res.send(returnHTML(data, signuploginBundle, _roots.SignupLoginRoot, "signup"));
   });
 });
 app.get('/signup', function (req, res) {
   //page
-  var data = "";
+  var data = {
+    orderID: "",
+    order: {},
+    loggingIn: false
+  };
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, signupBundle, _roots.SignupRoot, "signup"));
+  res.send(returnHTML(data, signuploginBundle, _roots.SignupLoginRoot, "signup"));
+});
+app.get('/login/:id', function (req, res) {
+  //page
+  var data = {};
+  fetcher('https://milkmancoffee.herokuapp.com/api/orders/' + req.params.id).then(function (response) {
+    data = {
+      orderID: req.params.id,
+      order: response,
+      loggingIn: true
+    };
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, signuploginBundle, _roots.SignupLoginRoot, "login"));
+  });
+});
+app.get('/login', function (req, res) {
+  //page
+  var data = {
+    orderID: "",
+    order: {},
+    loggingIn: true
+  };
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, signuploginBundle, _roots.SignupLoginRoot, "login"));
 });
 app.get('/cart', function (req, res) {
   //page
@@ -165,29 +203,37 @@ app.get('/images/:id', function (req, res) {
   res.set('Cache-Control', 'public, max-age=31557600');
   res.sendFile(_path["default"].join(__dirname, '../images/' + req.params.id));
 });
-app.post('/auth', passport.authenticate('local-signup'), _userCtrl["default"].login);
-app.get('/getMe', _userCtrl["default"].getMe);
-app.get('/logout', _userCtrl["default"].logout);
-app.get('/users', _userCtrl["default"].read);
-app.put('/users/:id', _userCtrl["default"].update);
-app["delete"]('/users/:id', _userCtrl["default"].destroy);
-app.get('/subscriptions', _subscriptionCtrl["default"].read);
-app.get('/subscriptions/:id', _subscriptionCtrl["default"].readOne);
-app.post('/subscriptions', _subscriptionCtrl["default"].create);
-app.put('/subscriptions/:id', _subscriptionCtrl["default"].update);
-app["delete"]('/subscriptions/:id', _subscriptionCtrl["default"].destroy);
+app.post('/api/auth', _passport["default"].authenticate('local-signup'), _userCtrl["default"].login);
+app.get('/api/getMe', _userCtrl["default"].getMe);
+app.get('/api/logout', _userCtrl["default"].logout);
+app.get('/api/users', _userCtrl["default"].read);
+app.put('/api/users/:id', _userCtrl["default"].update);
+app.get('/api/subscriptions', _subscriptionCtrl["default"].read);
+app.get('/api/subscriptions/:id', _subscriptionCtrl["default"].readOne);
+app.post('/api/subscriptions', _subscriptionCtrl["default"].create);
+app.put('/api/subscriptions/:id', _subscriptionCtrl["default"].update);
+app["delete"]('/api/subscriptions/:id', _subscriptionCtrl["default"].destroy);
+app.get('/api/orders', _orderCtrl["default"].read);
+app.get('/api/orders/:id', _orderCtrl["default"].readOne);
+app.post('/api/orders', _orderCtrl["default"].create);
+app.put('/api/orders/:id', _orderCtrl["default"].update);
+app["delete"]('/api/orders/:id', _orderCtrl["default"].destroy);
 app.get('/health', function (req, res) {
   return res.send('OK');
 });
 var mongoUri = 'mongodb+srv://' + cryptr.decrypt(_config["default"].dbuser) + ':' + cryptr.decrypt(_config["default"].dbpass) + '@milkman.bjixf.mongodb.net/milkman?retryWrites=true&w=majority';
-mongoose.connect(mongoUri, {
+
+_mongoose["default"].connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
-mongoose.connection.on('error', console.error.bind(console, 'connection error'));
-mongoose.connection.once('open', function () {
+
+_mongoose["default"].connection.on('error', console.error.bind(console, 'connection error'));
+
+_mongoose["default"].connection.once('open', function () {
   console.log("Connected to mongoDB");
 });
+
 app.listen(PORT, function () {
   console.log('Running on http://localhost:' + PORT);
 }); // functions!!!!!!!!!!!!!

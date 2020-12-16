@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { CafetoolsWrapper, CafetoolsContent } from '../styled-components/pages/cafetools';
+import { Header, Footer } from '../components';
+import { CafetoolsContent } from '../styled-components/pages/cafetools';
+import { PageWrapper, ContentWrapper } from '../styled-components/global';
 
 class Cafetools extends Component {
     render(){
       return (
-          <CafetoolsWrapper>
+          <PageWrapper>
               <Header/>
-              <CafetoolsContent>
-                cafetools page
-              </CafetoolsContent>
+              <ContentWrapper>
+                <CafetoolsContent>
+                  cafetools page
+                </CafetoolsContent>
+              </ContentWrapper>
               <Footer/>
-          </CafetoolsWrapper>
+          </PageWrapper>
       );
     }
 }

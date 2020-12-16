@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ConfirmationContent = styled.div`
+export const LandingContent = styled.div`
   width: 100%;
   text-align: center;
 `;

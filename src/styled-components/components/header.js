@@ -119,11 +119,11 @@ export const HexLock = styled.div`
 `;
 
 export const Spacer = styled.div`
-  height: 132px;
+  height: 145px;
   width: 100%;
   background-color: ${white};
   @media(min-width: 700px){
-    height: ${props => props.menuStuck ? '80px' : '0'};
+    height: ${props => props.menuStuck ? '115px' : '0'};
   }
 `;
 export const OnlineOrder = styled.div`

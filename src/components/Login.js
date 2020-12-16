@@ -16,8 +16,17 @@ class LoginComponent extends Component {
     this.setState(obj);
   }
   login = (e) => {
+    const { email, password } = this.state;
     e.preventDefault()
-    console.log("login");
+    fetch('/api/auth', {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    })
+    .then((res) => res.text())
+    .then((data) => {
+      window.location.href = "/myaccount"
+    })
   }
   render(){
     const { switchDisplay } = this.props;

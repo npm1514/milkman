@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Cafetools from '../pages/CafetoolsPage';
+import { CafetoolsPage } from '../pages';
 
 class Root extends Component {
     render() {
-        return <Cafetools data={this.props.data ? this.props.data : {}}/>
+        const { data } = this.props;
+        return <CafetoolsPage data={data ? data : {}}/>
     }
 }
 

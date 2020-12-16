@@ -1,9 +1,9 @@
 import React from 'react';
-import { hydrate, render } from 'react-dom';
-import Cafetools from '../pages/CafetoolsPage';
+import { render } from 'react-dom';
+import { CafetoolsPage } from '../pages';
 
 if (window)
   render(
-    <Cafetools data={window.__DATA__} />,
+    <CafetoolsPage data={window.__DATA__} />,
     document.getElementById('app')
   );

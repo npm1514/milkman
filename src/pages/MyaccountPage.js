@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { MyaccountWrapper, MyaccountContent } from '../styled-components/pages/myaccount';
+import { Header, Footer } from '../components';
+import { MyaccountContent } from '../styled-components/pages/myaccount';
+import { PageWrapper, ContentWrapper } from '../styled-components/global';
 
 class Myaccount extends Component {
     render(){
       return (
-          <MyaccountWrapper>
+          <PageWrapper>
               <Header/>
-              <MyaccountContent>
-                myaccount page
-              </MyaccountContent>
+              <ContentWrapper>
+                <MyaccountContent>
+                  myaccount page
+                </MyaccountContent>
+              </ContentWrapper>
               <Footer/>
-          </MyaccountWrapper>
+          </PageWrapper>
       );
     }
 }

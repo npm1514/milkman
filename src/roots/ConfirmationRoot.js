@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Confirmation from '../pages/ConfirmationPage';
+import { ConfirmationPage } from '../pages';
 
 class Root extends Component {
     render() {
-        return <Confirmation data={this.props.data ? this.props.data : {}}/>
+        const { data } = this.props;
+        return <ConfirmationPage data={data ? data : {}}/>
     }
 }
 

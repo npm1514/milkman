@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Checkout from '../pages/CheckoutPage';
+import { CheckoutPage } from '../pages';
 
 class Root extends Component {
     render() {
-        return <Checkout data={this.props.data ? this.props.data : {}}/>
+        const { data } = this.props;
+        return <CheckoutPage data={data ? data : {}}/>
     }
 }
 

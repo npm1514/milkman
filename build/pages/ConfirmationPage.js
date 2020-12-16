@@ -9,13 +9,11 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _Header = _interopRequireDefault(require("../components/Header"));
-
-var _Footer = _interopRequireDefault(require("../components/Footer"));
+var _components = require("../components");
 
 var _confirmation = require("../styled-components/pages/confirmation");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _global = require("../styled-components/global");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -55,7 +53,7 @@ var Confirmation = /*#__PURE__*/function (_Component) {
   _createClass(Confirmation, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_confirmation.ConfirmationWrapper, null, /*#__PURE__*/_react["default"].createElement(_Header["default"], null), /*#__PURE__*/_react["default"].createElement(_confirmation.ConfirmationContent, null, "confirmation page"), /*#__PURE__*/_react["default"].createElement(_Footer["default"], null));
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_confirmation.ConfirmationContent, null, "confirmation page")), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 

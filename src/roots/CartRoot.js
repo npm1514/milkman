@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Cart from '../pages/CartPage';
+import { CartPage } from '../pages';
 
 class Root extends Component {
     render() {
-        return <Cart data={this.props.data ? this.props.data : {}}/>
+        const { data } = this.props;
+        return <CartPage data={data ? data : {}}/>
     }
 }
 

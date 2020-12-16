@@ -59,8 +59,24 @@ var LoginComponent = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "login", function (e) {
+      var _this$state = _this.state,
+          email = _this$state.email,
+          password = _this$state.password;
       e.preventDefault();
-      console.log("login");
+      fetch('/api/auth', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      }).then(function (res) {
+        return res.text();
+      }).then(function (data) {
+        window.location.href = "/myaccount";
+      });
     });
 
     _this.state = {
@@ -76,9 +92,9 @@ var LoginComponent = /*#__PURE__*/function (_Component) {
       var _this2 = this;
 
       var switchDisplay = this.props.switchDisplay;
-      var _this$state = this.state,
-          email = _this$state.email,
-          password = _this$state.password;
+      var _this$state2 = this.state,
+          email = _this$state2.email,
+          password = _this$state2.password;
       return /*#__PURE__*/_react["default"].createElement(_login.LoginWrap, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Sign In"), /*#__PURE__*/_react["default"].createElement("form", {
         onSubmit: this.login
       }, /*#__PURE__*/_react["default"].createElement("input", {

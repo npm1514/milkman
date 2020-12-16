@@ -1,9 +1,9 @@
 import React from 'react';
-import { hydrate, render } from 'react-dom';
-import Myaccount from '../pages/MyaccountPage';
+import { render } from 'react-dom';
+import { MyaccountPage } from '../pages';
 
 if (window)
   render(
-    <Myaccount data={window.__DATA__} />,
+    <MyaccountPage data={window.__DATA__} />,
     document.getElementById('app')
   );

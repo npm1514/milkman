@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { MyaccountPage } from '../pages';
+import { LandingPage } from '../pages';
 
 class Root extends Component {
     render() {
         const { data } = this.props;
-        return <MyaccountPage data={data ? data : {}}/>
+        return <LandingPage data={data ? data : {}}/>
     }
 }
 

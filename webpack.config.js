@@ -2,9 +2,9 @@ const path = require('path');
 const webpack = require('webpack');
 require('@babel/polyfill');
 const pages = [
-  // 'subscribe',
+  'landing',
   'chooseproducts',
-  'signup',
+  'signuplogin',
   // 'cart',
   // 'checkout',
   // 'confirmation',

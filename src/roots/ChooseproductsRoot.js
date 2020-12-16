@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Chooseproducts from '../pages/ChooseproductsPage';
+import { ChooseproductsPage } from '../pages';
 
 class Root extends Component {
     render() {
-        return <Chooseproducts data={this.props.data ? this.props.data : {}}/>
+        const { data } = this.props;
+        return <ChooseproductsPage data={data ? data : {}}/>
     }
 }
 

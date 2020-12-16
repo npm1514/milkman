@@ -1,9 +1,9 @@
 import React from 'react';
-import { hydrate, render } from 'react-dom';
-import Checkout from '../pages/CheckoutPage';
+import { render } from 'react-dom';
+import { CheckoutPage } from '../pages';
 
 if (window)
   render(
-    <Checkout data={window.__DATA__} />,
+    <CheckoutPage data={window.__DATA__} />,
     document.getElementById('app')
   );

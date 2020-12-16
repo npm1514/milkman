@@ -9,11 +9,11 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _ = require("./");
+var _components = require("../components");
 
-var _signuporlogin = require("../styled-components/components/signuporlogin");
+var _signuplogin = require("../styled-components/pages/signuplogin");
 
-var _colors = require("../styled-components/colors");
+var _global = require("../styled-components/global");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -41,15 +41,15 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var SignupOrLoginComponent = /*#__PURE__*/function (_Component) {
-  _inherits(SignupOrLoginComponent, _Component);
+var SignupLogin = /*#__PURE__*/function (_Component) {
+  _inherits(SignupLogin, _Component);
 
-  var _super = _createSuper(SignupOrLoginComponent);
+  var _super = _createSuper(SignupLogin);
 
-  function SignupOrLoginComponent(props) {
+  function SignupLogin(props) {
     var _this;
 
-    _classCallCheck(this, SignupOrLoginComponent);
+    _classCallCheck(this, SignupLogin);
 
     _this = _super.call(this, props);
 
@@ -60,24 +60,32 @@ var SignupOrLoginComponent = /*#__PURE__*/function (_Component) {
     });
 
     _this.state = {
-      loggingIn: false
+      loggingIn: props.data.loggingIn
     };
     return _this;
   }
 
-  _createClass(SignupOrLoginComponent, [{
+  _createClass(SignupLogin, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_signuporlogin.SignupOrLoginWrap, null, this.state.loggingIn ? /*#__PURE__*/_react["default"].createElement(_.Login, {
-        switchDisplay: this.switchDisplay
-      }) : /*#__PURE__*/_react["default"].createElement(_.Signup, {
-        switchDisplay: this.switchDisplay
-      }));
+      var _this$props$data = this.props.data,
+          order = _this$props$data.order,
+          orderID = _this$props$data.orderID;
+      console.log(this.state.loggingIn);
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_signuplogin.SignupLoginContent, null, orderID && /*#__PURE__*/_react["default"].createElement(_components.OrderPreview, {
+        order: order
+      }), /*#__PURE__*/_react["default"].createElement(_signuplogin.SignupOrLoginWrap, null, this.state.loggingIn ? /*#__PURE__*/_react["default"].createElement(_components.Login, {
+        switchDisplay: this.switchDisplay,
+        orderID: orderID
+      }) : /*#__PURE__*/_react["default"].createElement(_components.Signup, {
+        switchDisplay: this.switchDisplay,
+        orderID: orderID
+      })))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 
-  return SignupOrLoginComponent;
+  return SignupLogin;
 }(_react.Component);
 
-var _default = SignupOrLoginComponent;
+var _default = SignupLogin;
 exports["default"] = _default;

@@ -1,9 +1,9 @@
 import React from 'react';
-import { hydrate, render } from 'react-dom';
-import Confirmation from '../pages/ConfirmationPage';
+import { render } from 'react-dom';
+import { ConfirmationPage } from '../pages';
 
 if (window)
   render(
-    <Confirmation data={window.__DATA__} />,
+    <ConfirmationPage data={window.__DATA__} />,
     document.getElementById('app')
   );

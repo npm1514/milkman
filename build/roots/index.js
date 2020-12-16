@@ -33,10 +33,10 @@ Object.defineProperty(exports, "ConfirmationRoot", {
     return _ConfirmationRoot["default"];
   }
 });
-Object.defineProperty(exports, "SignupRoot", {
+Object.defineProperty(exports, "SignupLoginRoot", {
   enumerable: true,
   get: function get() {
-    return _SignupRoot["default"];
+    return _SignupLoginRoot["default"];
   }
 });
 Object.defineProperty(exports, "MyaccountRoot", {
@@ -45,10 +45,10 @@ Object.defineProperty(exports, "MyaccountRoot", {
     return _MyaccountRoot["default"];
   }
 });
-Object.defineProperty(exports, "SubscribeRoot", {
+Object.defineProperty(exports, "LandingRoot", {
   enumerable: true,
   get: function get() {
-    return _SubscribeRoot["default"];
+    return _LandingRoot["default"];
   }
 });
 
@@ -62,10 +62,10 @@ var _ChooseproductsRoot = _interopRequireDefault(require("./ChooseproductsRoot")
 
 var _ConfirmationRoot = _interopRequireDefault(require("./ConfirmationRoot"));
 
-var _SignupRoot = _interopRequireDefault(require("./SignupRoot"));
+var _SignupLoginRoot = _interopRequireDefault(require("./SignupLoginRoot"));
 
 var _MyaccountRoot = _interopRequireDefault(require("./MyaccountRoot"));
 
-var _SubscribeRoot = _interopRequireDefault(require("./SubscribeRoot"));
+var _LandingRoot = _interopRequireDefault(require("./LandingRoot"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { CartWrapper, CartContent } from '../styled-components/pages/cart';
+import { Header, Footer } from '../components';
+import { CartContent } from '../styled-components/pages/cart';
+import { PageWrapper, ContentWrapper } from '../styled-components/global';
 
 class Cart extends Component {
     render(){
       return (
-          <CartWrapper>
+          <PageWrapper>
               <Header/>
-              <CartContent>
-                cart page
-              </CartContent>
+              <ContentWrapper>
+                <CartContent>
+                  cart page
+                </CartContent>
+              </ContentWrapper>
               <Footer/>
-          </CartWrapper>
+          </PageWrapper>
       );
     }
 }

@@ -16,33 +16,40 @@ class SignupComponent extends Component {
       zip: "",
       password1: "",
       password2: "",
-      passwordMessage: ""
+      passwordMessage: "",
+      subscriptions: [this.props.subscriptionID || ""]
     }
+  }
+  badPassword = (passwordMessage) => {
+    let p1Border = document.getElementById('password1').style.border;
+    let p2border = document.getElementById('password2').style.border;
+    let bad = '1px solid red';
+    this.setState({ passwordMessage })
   }
   signup = (e) => {
     e.preventDefault()
-    const { firstName, lastName, email, password1, password2, phone, address, city, state, zip } = this.state;
+    const { firstName, lastName, email, password1, password2, phone, address, city, state, zip, subscriptions } = this.state;
     if(password1 != password2){
-      document.getElementById('password1').style.border = '1px solid red';
-      document.getElementById('password2').style.border = '1px solid red';
-      this.setState({
-        passwordMessage: "Passwords do not match!"
-      })
+      this.badPassword("Passwords do not match!");
     } else if(password1.length < 8){
-      document.getElementById('password1').style.border = '1px solid #8d8d8d';
-      document.getElementById('password2').style.border = '1px solid #8d8d8d';
-      this.setState({ passwordMessage: "Password must be at least 8 characters long" })
+      this.badPassword("Password must be at least 8 characters long");
     } else if(!/\d+/.test(password1)){
-      document.getElementById('password1').style.border = '1px solid #8d8d8d';
-      document.getElementById('password2').style.border = '1px solid #8d8d8d';
-      this.setState({ passwordMessage: "Password must contain at least 1 number" })
+      this.badPassword("Password must contain at least 1 number");
     } else if(!/[a-zA-Z]/.test(password1)){
-      document.getElementById('password1').style.border = '1px solid #8d8d8d';
-      document.getElementById('password2').style.border = '1px solid #8d8d8d';
-      this.setState({ passwordMessage: "Password must contain at least one letter" })
+      this.badPassword("Password must contain at least one letter");
     } else {
-      console.log("sign up");
-      console.log(this.state);
+      fetch('/api/auth', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName, lastName, email, password: password1,
+          phone, address, city, state, zip, subscriptions
+        })
+      })
+      .then((res) => res.text())
+      .then((data) => {
+        console.log(data);
+      })
     }
   }
   updateState = (e, prop) => {
@@ -123,7 +130,7 @@ class SignupComponent extends Component {
             onChange={(e) => {this.updateState(e, "zip")}}
           />
           <p>Password must...</p>
-          <p>-contain at least 8 characters long</p>
+          <p>-contain at least 8 characters</p>
           <p>-contain at least 1 letter</p>
           <p>-contain at least 1 letter</p>
           <input

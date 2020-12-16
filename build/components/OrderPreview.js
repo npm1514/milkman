@@ -9,9 +9,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _SignupPage = _interopRequireDefault(require("../pages/SignupPage"));
+var _orderpreview = require("../styled-components/components/orderpreview");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _colors = require("../styled-components/colors");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -37,28 +37,42 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Root = /*#__PURE__*/function (_Component) {
-  _inherits(Root, _Component);
+var OrderPreviewComponent = /*#__PURE__*/function (_Component) {
+  _inherits(OrderPreviewComponent, _Component);
 
-  var _super = _createSuper(Root);
+  var _super = _createSuper(OrderPreviewComponent);
 
-  function Root() {
-    _classCallCheck(this, Root);
+  function OrderPreviewComponent() {
+    _classCallCheck(this, OrderPreviewComponent);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(Root, [{
+  _createClass(OrderPreviewComponent, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_SignupPage["default"], {
-        data: this.props.data ? this.props.data : {}
-      });
+      var _this$props$order = this.props.order,
+          deliveryFrequency = _this$props$order.deliveryFrequency,
+          flavor = _this$props$order.flavor,
+          payPeriodFrequency = _this$props$order.payPeriodFrequency,
+          pricePerDelivery = _this$props$order.pricePerDelivery,
+          pricePerPayPeriod = _this$props$order.pricePerPayPeriod,
+          product = _this$props$order.product,
+          quantity = _this$props$order.quantity,
+          recurringPayment = _this$props$order.recurringPayment,
+          size = _this$props$order.size,
+          startDate = _this$props$order.startDate,
+          timeOfDelivery = _this$props$order.timeOfDelivery,
+          _id = _this$props$order._id;
+      return /*#__PURE__*/_react["default"].createElement(_orderpreview.OrderPreviewWrap, null, /*#__PURE__*/_react["default"].createElement("p", null, _id), /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), /*#__PURE__*/_react["default"].createElement("div", null, "(", quantity, ") ", size, " ", flavor, " ", product), /*#__PURE__*/_react["default"].createElement("br", null), /*#__PURE__*/_react["default"].createElement("hr", null), /*#__PURE__*/_react["default"].createElement("br", null), /*#__PURE__*/_react["default"].createElement("div", null, "Delivery Frequency: ", deliveryFrequency), /*#__PURE__*/_react["default"].createElement("div", null, "Start Date: ", startDate), /*#__PURE__*/_react["default"].createElement("div", null, "Time Of Delivery: ", timeOfDelivery), /*#__PURE__*/_react["default"].createElement("div", null, "Payment Frequency: ", payPeriodFrequency), /*#__PURE__*/_react["default"].createElement("div", null, "Price Per Payment Period: ", new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      }).format(pricePerPayPeriod)), /*#__PURE__*/_react["default"].createElement("div", null, "Recurring Payment: ", recurringPayment.toString()));
     }
   }]);
 
-  return Root;
+  return OrderPreviewComponent;
 }(_react.Component);
 
-var _default = Root;
+var _default = OrderPreviewComponent;
 exports["default"] = _default;

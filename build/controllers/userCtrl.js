@@ -4,6 +4,7 @@ var UserModel = require('./../models/userModel');
 
 module.exports = {
   login: function login(req, res, next) {
+    console.log(req.user);
     res.send(req.user);
   },
   getMe: function getMe(req, res) {
@@ -36,15 +37,6 @@ module.exports = {
   },
   update: function update(req, res) {
     UserModel.findByIdAndUpdate(req.params.id, req.body, function (err, result) {
-      if (err) {
-        res.send(err);
-      } else {
-        res.send(result);
-      }
-    });
-  },
-  destroy: function destroy(req, res) {
-    UserModel.findByIdAndRemove(req.params.id, req.body, function (err, result) {
       if (err) {
         res.send(err);
       } else {
