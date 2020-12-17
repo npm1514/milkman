@@ -158,7 +158,9 @@ var HeaderComponent = /*#__PURE__*/function (_Component) {
         href: "/catering"
       }, "Catering"))), /*#__PURE__*/_react["default"].createElement(_header.HeaderWrap, {
         menuStuck: menuStuck
-      }, /*#__PURE__*/_react["default"].createElement(_header.DesktopOrder, null, "Cafe Juniper Subscriptions"), /*#__PURE__*/_react["default"].createElement(_header.DesktopHeader, {
+      }, /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/subscriptions"
+      }, /*#__PURE__*/_react["default"].createElement(_header.DesktopOrder, null, "Cafe Juniper Subscriptions")), /*#__PURE__*/_react["default"].createElement(_header.DesktopHeader, {
         menuStuck: menuStuck
       }, /*#__PURE__*/_react["default"].createElement("a", {
         name: "link to home",

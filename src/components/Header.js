@@ -68,7 +68,7 @@ class HeaderComponent extends Component {
           </MobileMenu>
         }
         <HeaderWrap menuStuck={menuStuck}>
-          <DesktopOrder>Cafe Juniper Subscriptions</DesktopOrder>
+          <a href="/subscriptions"><DesktopOrder>Cafe Juniper Subscriptions</DesktopOrder></a>
           <DesktopHeader menuStuck={menuStuck}>
             <a name="link to home" href="/">
               <img style={{width: "120px"}} alt="secondary logo" src="/images/Cafe-Juniper_Secondary_02.png"/>
