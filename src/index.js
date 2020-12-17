@@ -12,6 +12,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import passport from 'passport';
 import session from 'express-session';
+var cron = require('node-cron');
 import Cryptr from 'cryptr';
 const cryptr = new Cryptr(config.key);
 
@@ -41,6 +42,11 @@ app.use(cors());
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+
+cron.schedule('* * 1 * *', () => {
+  fetch('https://drcastillo.herokuapp.com/')
+  .then(res => console.log("requested at " + new Date()));
+});
 
 var dataObj = {},
 landingBundle = "",
