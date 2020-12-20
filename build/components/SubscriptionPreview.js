@@ -9,7 +9,7 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _orderpreview = require("../styled-components/components/orderpreview");
+var _subscriptionpreview = require("../styled-components/components/subscriptionpreview");
 
 var _colors = require("../styled-components/colors");
 
@@ -37,42 +37,42 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var OrderPreviewComponent = /*#__PURE__*/function (_Component) {
-  _inherits(OrderPreviewComponent, _Component);
+var SubscriptionPreviewComponent = /*#__PURE__*/function (_Component) {
+  _inherits(SubscriptionPreviewComponent, _Component);
 
-  var _super = _createSuper(OrderPreviewComponent);
+  var _super = _createSuper(SubscriptionPreviewComponent);
 
-  function OrderPreviewComponent() {
-    _classCallCheck(this, OrderPreviewComponent);
+  function SubscriptionPreviewComponent() {
+    _classCallCheck(this, SubscriptionPreviewComponent);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(OrderPreviewComponent, [{
+  _createClass(SubscriptionPreviewComponent, [{
     key: "render",
     value: function render() {
-      var _this$props$order = this.props.order,
-          deliveryFrequency = _this$props$order.deliveryFrequency,
-          flavor = _this$props$order.flavor,
-          payPeriodFrequency = _this$props$order.payPeriodFrequency,
-          pricePerDelivery = _this$props$order.pricePerDelivery,
-          pricePerPayPeriod = _this$props$order.pricePerPayPeriod,
-          product = _this$props$order.product,
-          quantity = _this$props$order.quantity,
-          recurringPayment = _this$props$order.recurringPayment,
-          size = _this$props$order.size,
-          startDate = _this$props$order.startDate,
-          timeOfDelivery = _this$props$order.timeOfDelivery,
-          _id = _this$props$order._id;
-      return /*#__PURE__*/_react["default"].createElement(_orderpreview.OrderPreviewWrap, null, /*#__PURE__*/_react["default"].createElement("p", null, _id), /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), /*#__PURE__*/_react["default"].createElement("div", null, "(", quantity, ") ", size, " ", flavor, " ", product), /*#__PURE__*/_react["default"].createElement("br", null), /*#__PURE__*/_react["default"].createElement("hr", null), /*#__PURE__*/_react["default"].createElement("br", null), /*#__PURE__*/_react["default"].createElement("div", null, "Delivery Frequency: ", deliveryFrequency), /*#__PURE__*/_react["default"].createElement("div", null, "Start Date: ", startDate), /*#__PURE__*/_react["default"].createElement("div", null, "Time Of Delivery: ", timeOfDelivery), /*#__PURE__*/_react["default"].createElement("div", null, "Payment Frequency: ", payPeriodFrequency), /*#__PURE__*/_react["default"].createElement("div", null, "Price Per Payment Period: ", new Intl.NumberFormat('en-US', {
+      var _this$props$subscript = this.props.subscription,
+          deliveryFrequency = _this$props$subscript.deliveryFrequency,
+          flavor = _this$props$subscript.flavor,
+          payPeriodFrequency = _this$props$subscript.payPeriodFrequency,
+          pricePerDelivery = _this$props$subscript.pricePerDelivery,
+          pricePerPayPeriod = _this$props$subscript.pricePerPayPeriod,
+          product = _this$props$subscript.product,
+          quantity = _this$props$subscript.quantity,
+          recurringPayment = _this$props$subscript.recurringPayment,
+          size = _this$props$subscript.size,
+          startDate = _this$props$subscript.startDate,
+          timeOfDelivery = _this$props$subscript.timeOfDelivery,
+          _id = _this$props$subscript._id;
+      return /*#__PURE__*/_react["default"].createElement(_subscriptionpreview.SubscriptionPreviewWrap, null, /*#__PURE__*/_react["default"].createElement("p", null, _id), /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), /*#__PURE__*/_react["default"].createElement("div", null, "(", quantity, ") ", size, " ", flavor, " ", product), /*#__PURE__*/_react["default"].createElement("br", null), /*#__PURE__*/_react["default"].createElement("hr", null), /*#__PURE__*/_react["default"].createElement("br", null), /*#__PURE__*/_react["default"].createElement("div", null, "Delivery Frequency: ", deliveryFrequency), /*#__PURE__*/_react["default"].createElement("div", null, "Start Date: ", startDate), /*#__PURE__*/_react["default"].createElement("div", null, "Time Of Delivery: ", timeOfDelivery), /*#__PURE__*/_react["default"].createElement("div", null, "Payment Frequency: ", payPeriodFrequency), /*#__PURE__*/_react["default"].createElement("div", null, "Price Per Payment Period: ", new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD'
       }).format(pricePerPayPeriod)), /*#__PURE__*/_react["default"].createElement("div", null, "Recurring Payment: ", recurringPayment.toString()));
     }
   }]);
 
-  return OrderPreviewComponent;
+  return SubscriptionPreviewComponent;
 }(_react.Component);
 
-var _default = OrderPreviewComponent;
+var _default = SubscriptionPreviewComponent;
 exports["default"] = _default;

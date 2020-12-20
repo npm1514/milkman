@@ -31,6 +31,18 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -240,10 +252,9 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
             timeSelected = _this$state3.timeSelected,
             selectedPrice = _this$state3.selectedPrice,
             paymentFrequency = _this$state3.paymentFrequency,
-            pricePerPayPeriod = _this$state3.pricePerPayPeriod;
-        var user = _this.props.data.user;
+            pricePerPayPeriod = _this$state3.pricePerPayPeriod,
+            user = _this$state3.user;
         var subscriptionID = _this.props.data.subscriptionID;
-        console.log(user);
         fetch('/api/subscriptions', {
           method: "POST",
           headers: {
@@ -261,7 +272,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
             pricePerPayPeriod: pricePerPayPeriod,
             payPeriodFrequency: paymentFrequency,
             recurringPayment: true,
-            user: user && user._id || {}
+            user: user
           })
         }).then(function (res) {
           if (res.status !== 200) throw Error(res.statusText);
@@ -279,23 +290,26 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "addSubscriptionToUser", function (subscriptionID) {
-      var _this$props$data$user = _this.props.data.user,
-          currentCart = _this$props$data$user.currentCart,
-          _id = _this$props$data$user._id;
+      var _this$state4 = _this.state,
+          user = _this$state4.user,
+          _this$state4$user = _this$state4.user,
+          currentCart = _this$state4$user.currentCart,
+          _id = _this$state4$user._id;
       currentCart.push(subscriptionID);
+      currentCart = _toConsumableArray(new Set(currentCart));
       fetch('/api/users/' + _id, {
         method: "PUT",
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          currentCart: currentCart
+          user: user
         })
       }).then(function (res) {
-        if (response.status !== 200) throw Error(response.statusText);
+        if (res.status !== 200) throw Error(res.statusText);
         return res.json();
       }).then(function (response) {
-        window.location.href = "/cart/" + subscriptionID;
+        window.location.href = "/cart";
       });
     });
 
@@ -311,7 +325,9 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
       paymentFrequency: "Month",
       pricePerPayPeriod: "",
       reelPosition: "",
-      validTime: true
+      validTime: true,
+      user: {},
+      subscription: {}
     };
     return _this;
   }
@@ -330,12 +346,24 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
+      fetch("/api/getMe").then(function (response) {
+        if (response.status !== 200) throw Error(response.statusText);
+        return response.json();
+      }).then(function (user) {
+        console.log(user);
+
+        _this2.setState({
+          user: user
+        });
+      })["catch"](function (err) {
+        return console.log(err);
+      });
       var subscriptionID = this.props.subscriptionID;
 
       if (subscriptionID) {
-        fetch('/api/orders/' + subscriptionID).then(function (res) {
+        fetch('/api/subscriptions/' + subscriptionID).then(function (res) {
           return res.json();
-        }).then(function (order) {
+        }).then(function (subscription) {
           _this2.setState({
             subscription: subscription
           });
@@ -347,18 +375,18 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this3 = this;
 
-      var _this$state4 = this.state,
-          productSelected = _this$state4.productSelected,
-          flavorSelected = _this$state4.flavorSelected,
-          sizeSelected = _this$state4.sizeSelected,
-          selectedPrice = _this$state4.selectedPrice,
-          frequencySelected = _this$state4.frequencySelected,
-          quantitySelected = _this$state4.quantitySelected,
-          pricePerPayPeriod = _this$state4.pricePerPayPeriod,
-          startDateSelected = _this$state4.startDateSelected,
-          timeSelected = _this$state4.timeSelected,
-          reelPosition = _this$state4.reelPosition,
-          paymentFrequency = _this$state4.paymentFrequency;
+      var _this$state5 = this.state,
+          productSelected = _this$state5.productSelected,
+          flavorSelected = _this$state5.flavorSelected,
+          sizeSelected = _this$state5.sizeSelected,
+          selectedPrice = _this$state5.selectedPrice,
+          frequencySelected = _this$state5.frequencySelected,
+          quantitySelected = _this$state5.quantitySelected,
+          pricePerPayPeriod = _this$state5.pricePerPayPeriod,
+          startDateSelected = _this$state5.startDateSelected,
+          timeSelected = _this$state5.timeSelected,
+          reelPosition = _this$state5.reelPosition,
+          paymentFrequency = _this$state5.paymentFrequency;
       var sizeoptions = "";
 
       if (productSelected) {

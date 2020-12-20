@@ -28,7 +28,7 @@ class SignupComponent extends Component {
   }
   signup = (e) => {
     e.preventDefault()
-    const { orderID } = this.props;
+    const { subscriptionID } = this.props;
     const { firstName, lastName, email, password1, password2, phone, address, city, state, zip, currentCart } = this.state;
     if(password1 != password2){
       this.badPassword("Passwords do not match!");
@@ -46,8 +46,8 @@ class SignupComponent extends Component {
       })
       .then((res) => res.json())
       .then((data) => {
-        if(orderID){
-          window.location.href = "/cart/" + orderID;
+        if(subscriptionID){
+          window.location.href = "/cart";
         } else {
           window.location.href = "/myaccount"
         }

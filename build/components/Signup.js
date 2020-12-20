@@ -63,7 +63,7 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "signup", function (e) {
       e.preventDefault();
-      var orderID = _this.props.orderID;
+      var subscriptionID = _this.props.subscriptionID;
       var _this$state = _this.state,
           firstName = _this$state.firstName,
           lastName = _this$state.lastName,
@@ -106,8 +106,8 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
         }).then(function (res) {
           return res.json();
         }).then(function (data) {
-          if (orderID) {
-            window.location.href = "/cart/" + orderID;
+          if (subscriptionID) {
+            window.location.href = "/cart";
           } else {
             window.location.href = "/myaccount";
           }

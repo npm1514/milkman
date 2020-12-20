@@ -4,8 +4,24 @@ import { LandingContent } from '../styled-components/pages/landing';
 import { PageWrapper, ContentWrapper, Button } from '../styled-components/global';
 
 class Landing extends Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        user: {}
+      }
+    }
+    componentDidMount(){
+      fetch("/api/getMe")
+        .then((response) => {
+            if(response.status !== 200) throw Error(response.statusText);
+            return response.json();
+        }).then((user) => {
+            this.setState({ user })
+        }).catch(err => console.log(err))
+    }
     render(){
-      const { user } = this.props.data;
+      const { user } = this.state;
+      console.log(user);
       return (
           <PageWrapper>
               <Header/>

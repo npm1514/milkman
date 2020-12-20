@@ -92,124 +92,74 @@ fs.readFile('./dist/js/cafetools.bundle.min.js', "utf8", (err, data) => {
 
 app.get('/', (req, res) => {
   let data = {};
-  getMe()
-  .then(user => {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, landingBundle, LandingRoot, "subscriptions"));
-  });
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, landingBundle, LandingRoot, "subscriptions"));
 });
 app.get('/subscriptions', (req, res) => {
   let data = {};
-  getMe()
-  .then(user => {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, landingBundle, LandingRoot, "subscriptions"));
-  });
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, landingBundle, LandingRoot, "subscriptions"));
 });
-app.get('/chooseproducts', (req, res) => {
-  let data = {};
-  getMe()
-  .then(user => {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, chooseproductsBundle, ChooseproductsRoot, "chooseproducts"));
-  });
+app.get('/login', (req, res) => {
+  let data = {
+    loggingIn: true
+  };
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "login"));
+});
+app.get('/signup', (req, res) => {
+  let data = {
+    loggingIn: false
+  };
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "signup"));
 });
 app.get('/signup/:subscriptionID', (req, res) => {
   let data = {
     subscriptionID: req.params.subscriptionID,
     loggingIn: false
   };
-  const promise1 = getMe()
-  .then(user => {
-    data.user = user || {};
-  });
-  const promise2 = fetcher('https://milkmancoffee.herokuapp.com/api/subscriptions/' + req.params.subscriptionID).then((response) => {
+  fetcher('https://milkmancoffee.herokuapp.com/api/subscriptions/' + req.params.subscriptionID).then((response) => {
     data.subscription = response;
-  });
-  Promise.all([promise1, promise2]).then((values) => {
     res.set('Cache-Control', 'public, max-age=31557600');
     res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "signup"));
-  });
-});
-app.get('/signup', (req, res) => {
-  let data = {
-    loggingIn: false
-  };
-  getMe()
-  .then((user) => {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "signup"));
-  });
-});
-app.get('/login', (req, res) => {
-  let data = {
-    loggingIn: true
-  };
-  getMe()
-  .then((user) => {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "login"));
-  })
-});
-app.get('/cart', (req, res) => {
-  let data = {};
-  getMe()
-  .then(user => {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, cartBundle, CartRoot, "cart"));
-  })
-});
-app.get('/checkout', (req, res) => {
-  let data = {};
-  getMe()
-  .then(user => {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, checkoutBundle, CheckoutRoot, "checkout"));
-  });
-});
-app.get('/confirmation', (req, res) => {
-  let data = {};
-  getMe()
-  .then(user => {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, confirmationBundle, ConfirmationRoot, "confirmation"));
   });
 });
 app.get('/myaccount', (req, res) => {
   let data = {};
-  getMe()
-  .then(user => {
-    data.user = user || {};
-    console.log(data);
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, myaccountBundle, MyaccountRoot, "myaccount"));
+});
+app.get('/chooseproducts', (req, res) => {
+  let data = {};
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, chooseproductsBundle, ChooseproductsRoot, "chooseproducts"));
+});
+app.get('/cart', (req, res) => {
+  let data = {};
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, cartBundle, CartRoot, "cart"));
+});
+app.get('/checkout', (req, res) => {
+  let data = {};
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, checkoutBundle, CheckoutRoot, "checkout"));
+});
+app.get('/confirmation/:orderID', (req, res) => {
+  let data = {
+    orderID: req.params.orderID,
+  };
+  fetcher('https://milkmancoffee.herokuapp.com/api/orders/' + req.params.orderID).then((response) => {
+    data.order = response;
     res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, myaccountBundle, MyaccountRoot, "myaccount"));
+    res.send(returnHTML(data, confirmationBundle, ConfirmationRoot, "confirmation"));
   });
 });
+
 app.get('/cafetools', (req, res) => {
   let data = {};
-  getMe()
-  .then(user => {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, cafetoolsBundle, CafetoolsRoot, "cafetools"));
-  });
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, cafetoolsBundle, CafetoolsRoot, "cafetools"));
 });
 
 app.get('/images/:id', (req, res) => {
@@ -270,11 +220,6 @@ function fetcher(url){
     }).then((json) => {
         return json;
     }).catch(errHandle)
-}
-function getMe(){
-  return fetcher('https://milkmancoffee.herokuapp.com/api/users/getMe')
-  .then((response) => response)
-  .catch((err) => ({}));
 }
 
 function returnHTML(data, bundle, Page, title){

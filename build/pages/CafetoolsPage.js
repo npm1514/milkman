@@ -44,13 +44,41 @@ var Cafetools = /*#__PURE__*/function (_Component) {
 
   var _super = _createSuper(Cafetools);
 
-  function Cafetools() {
+  function Cafetools(props) {
+    var _this;
+
     _classCallCheck(this, Cafetools);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+    _this.state = {
+      user: {}
+    };
+    return _this;
   }
 
   _createClass(Cafetools, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      fetch("/api/getMe").then(function (response) {
+        if (response.status !== 200) throw Error(response.statusText);
+        return response.json();
+      }).then(function (user) {
+        if (user.admin) {
+          _this2.setState({
+            user: user
+          });
+        } else if (user._id) {
+          window.location.href = "/myaccount";
+        } else {
+          window.location.href = "/login";
+        }
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_cafetools.CafetoolsContent, null, "cafetools page")), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));

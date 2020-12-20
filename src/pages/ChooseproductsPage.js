@@ -23,7 +23,9 @@ class Chooseproducts extends Component {
       paymentFrequency: "Month",
       pricePerPayPeriod: "",
       reelPosition: "",
-      validTime: true
+      validTime: true,
+      user: {},
+      subscription: {}
     };
   }
   selectProduct = (product) => {
@@ -144,11 +146,8 @@ class Chooseproducts extends Component {
   }
   createSubscription = (e) => {
     if(this.state.validTime){
-      const { productSelected, flavorSelected, sizeSelected, quantitySelected, frequencySelected, startDateSelected, timeSelected, selectedPrice, paymentFrequency, pricePerPayPeriod
-      } = this.state;
-      const { user } = this.props.data;
+      const { productSelected, flavorSelected, sizeSelected, quantitySelected, frequencySelected, startDateSelected, timeSelected, selectedPrice, paymentFrequency, pricePerPayPeriod, user } = this.state;
       const { subscriptionID } = this.props.data;
-      console.log(user);
       fetch('/api/subscriptions', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
@@ -164,7 +163,7 @@ class Chooseproducts extends Component {
           pricePerPayPeriod: pricePerPayPeriod,
           payPeriodFrequency: paymentFrequency,
           recurringPayment: true,
-          user: user && user._id || {}
+          user
         })
       })
       .then((res) => {
@@ -184,19 +183,20 @@ class Chooseproducts extends Component {
 
   }
   addSubscriptionToUser = (subscriptionID) => {
-    let { currentCart, _id } = this.props.data.user;
+    let { user, user: { currentCart, _id }} = this.state;
     currentCart.push(subscriptionID);
+    currentCart = [...new Set(currentCart)]
     fetch('/api/users/' + _id, {
       method: "PUT",
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ currentCart })
+      body: JSON.stringify({ user })
     })
     .then((res) => {
-      if(response.status !== 200) throw Error(response.statusText);
+      if(res.status !== 200) throw Error(res.statusText);
       return res.json();
     })
     .then((response) => {
-      window.location.href = `/cart/` + subscriptionID;
+      window.location.href = `/cart`;
     })
   }
   componentDidUpdate() {
@@ -206,15 +206,24 @@ class Chooseproducts extends Component {
     }
   }
   componentDidMount(){
+    fetch("/api/getMe")
+      .then((response) => {
+          if(response.status !== 200) throw Error(response.statusText);
+          return response.json();
+      }).then((user) => {
+        console.log(user);
+          this.setState({ user })
+      }).catch(err => console.log(err))
     const { subscriptionID } = this.props;
     if(subscriptionID){
-      fetch('/api/orders/' + subscriptionID)
+      fetch('/api/subscriptions/' + subscriptionID)
       .then((res) => res.json())
-      .then((order) => {
+      .then((subscription) => {
         this.setState({subscription})
       })
     }
   }
+
   render(){
     const { productSelected, flavorSelected, sizeSelected, selectedPrice, frequencySelected, quantitySelected, pricePerPayPeriod, startDateSelected, timeSelected, reelPosition, paymentFrequency } = this.state;
     let sizeoptions = ""

@@ -117,113 +117,73 @@ _fs["default"].readFile('./dist/js/cafetools.bundle.min.js', "utf8", function (e
 
 app.get('/', function (req, res) {
   var data = {};
-  getMe().then(function (user) {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, landingBundle, _roots.LandingRoot, "subscriptions"));
-  });
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, landingBundle, _roots.LandingRoot, "subscriptions"));
 });
 app.get('/subscriptions', function (req, res) {
   var data = {};
-  getMe().then(function (user) {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, landingBundle, _roots.LandingRoot, "subscriptions"));
-  });
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, landingBundle, _roots.LandingRoot, "subscriptions"));
 });
-app.get('/chooseproducts', function (req, res) {
-  var data = {};
-  getMe().then(function (user) {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, chooseproductsBundle, _roots.ChooseproductsRoot, "chooseproducts"));
-  });
+app.get('/login', function (req, res) {
+  var data = {
+    loggingIn: true
+  };
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, signuploginBundle, _roots.SignupLoginRoot, "login"));
+});
+app.get('/signup', function (req, res) {
+  var data = {
+    loggingIn: false
+  };
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, signuploginBundle, _roots.SignupLoginRoot, "signup"));
 });
 app.get('/signup/:subscriptionID', function (req, res) {
   var data = {
     subscriptionID: req.params.subscriptionID,
     loggingIn: false
   };
-  var promise1 = getMe().then(function (user) {
-    data.user = user || {};
-  });
-  var promise2 = fetcher('https://milkmancoffee.herokuapp.com/api/subscriptions/' + req.params.subscriptionID).then(function (response) {
+  fetcher('https://milkmancoffee.herokuapp.com/api/subscriptions/' + req.params.subscriptionID).then(function (response) {
     data.subscription = response;
-  });
-  Promise.all([promise1, promise2]).then(function (values) {
     res.set('Cache-Control', 'public, max-age=31557600');
     res.send(returnHTML(data, signuploginBundle, _roots.SignupLoginRoot, "signup"));
-  });
-});
-app.get('/signup', function (req, res) {
-  var data = {
-    loggingIn: false
-  };
-  getMe().then(function (user) {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, signuploginBundle, _roots.SignupLoginRoot, "signup"));
-  });
-});
-app.get('/login', function (req, res) {
-  var data = {
-    loggingIn: true
-  };
-  getMe().then(function (user) {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, signuploginBundle, _roots.SignupLoginRoot, "login"));
-  });
-});
-app.get('/cart', function (req, res) {
-  var data = {};
-  getMe().then(function (user) {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, cartBundle, _roots.CartRoot, "cart"));
-  });
-});
-app.get('/checkout', function (req, res) {
-  var data = {};
-  getMe().then(function (user) {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, checkoutBundle, _roots.CheckoutRoot, "checkout"));
-  });
-});
-app.get('/confirmation', function (req, res) {
-  var data = {};
-  getMe().then(function (user) {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, confirmationBundle, _roots.ConfirmationRoot, "confirmation"));
   });
 });
 app.get('/myaccount', function (req, res) {
   var data = {};
-  getMe().then(function (user) {
-    data.user = user || {};
-    console.log(data);
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, myaccountBundle, _roots.MyaccountRoot, "myaccount"));
+});
+app.get('/chooseproducts', function (req, res) {
+  var data = {};
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, chooseproductsBundle, _roots.ChooseproductsRoot, "chooseproducts"));
+});
+app.get('/cart', function (req, res) {
+  var data = {};
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, cartBundle, _roots.CartRoot, "cart"));
+});
+app.get('/checkout', function (req, res) {
+  var data = {};
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, checkoutBundle, _roots.CheckoutRoot, "checkout"));
+});
+app.get('/confirmation/:orderID', function (req, res) {
+  var data = {
+    orderID: req.params.orderID
+  };
+  fetcher('https://milkmancoffee.herokuapp.com/api/orders/' + req.params.orderID).then(function (response) {
+    data.order = response;
     res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, myaccountBundle, _roots.MyaccountRoot, "myaccount"));
+    res.send(returnHTML(data, confirmationBundle, _roots.ConfirmationRoot, "confirmation"));
   });
 });
 app.get('/cafetools', function (req, res) {
   var data = {};
-  getMe().then(function (user) {
-    data.user = user || {};
-    console.log(data);
-    res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, cafetoolsBundle, _roots.CafetoolsRoot, "cafetools"));
-  });
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, cafetoolsBundle, _roots.CafetoolsRoot, "cafetools"));
 });
 app.get('/images/:id', function (req, res) {
   res.set('Cache-Control', 'public, max-age=31557600');
@@ -285,14 +245,6 @@ function fetcher(url) {
   }).then(function (json) {
     return json;
   })["catch"](errHandle);
-}
-
-function getMe() {
-  return fetcher('/api/users/getMe').then(function (response) {
-    return response;
-  })["catch"](function (err) {
-    return {};
-  });
 }
 
 function returnHTML(data, bundle, Page, title) {

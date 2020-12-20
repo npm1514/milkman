@@ -44,16 +44,39 @@ var Landing = /*#__PURE__*/function (_Component) {
 
   var _super = _createSuper(Landing);
 
-  function Landing() {
+  function Landing(props) {
+    var _this;
+
     _classCallCheck(this, Landing);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+    _this.state = {
+      user: {}
+    };
+    return _this;
   }
 
   _createClass(Landing, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      fetch("/api/getMe").then(function (response) {
+        if (response.status !== 200) throw Error(response.statusText);
+        return response.json();
+      }).then(function (user) {
+        _this2.setState({
+          user: user
+        });
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      var user = this.props.data.user;
+      var user = this.state.user;
+      console.log(user);
       return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_landing.LandingContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Delivery Subscriptions"), /*#__PURE__*/_react["default"].createElement("p", null, "This is where I talk about subscriptions."), /*#__PURE__*/_react["default"].createElement("a", {
         href: "/chooseproducts"
       }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Get Started")), user ? /*#__PURE__*/_react["default"].createElement("a", {

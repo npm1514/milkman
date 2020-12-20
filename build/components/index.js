@@ -27,10 +27,10 @@ Object.defineProperty(exports, "Login", {
     return _Login["default"];
   }
 });
-Object.defineProperty(exports, "OrderPreview", {
+Object.defineProperty(exports, "SubscriptionPreview", {
   enumerable: true,
   get: function get() {
-    return _OrderPreview["default"];
+    return _SubscriptionPreview["default"];
   }
 });
 
@@ -42,6 +42,6 @@ var _Signup = _interopRequireDefault(require("./Signup"));
 
 var _Login = _interopRequireDefault(require("./Login"));
 
-var _OrderPreview = _interopRequireDefault(require("./OrderPreview"));
+var _SubscriptionPreview = _interopRequireDefault(require("./SubscriptionPreview"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

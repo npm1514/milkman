@@ -8,6 +8,7 @@ class Myaccount extends Component {
       super(props)
       this.state = {
         user: {
+          _id: "",
           firstName: "",
           lastName: "",
           email: "",
@@ -22,27 +23,31 @@ class Myaccount extends Component {
       };
     }
     componentDidMount(){
-      if(!this.props.data.user._id){
-        window.location.href = "/login";
-      }
+      fetch("/api/getMe")
+        .then((response) => {
+            if(response.status !== 200) throw Error(response.statusText);
+            return response.json();
+        }).then((user) => {
+          console.log(user);
+          if(!user._id){
+            window.location.href = "/login";
+          } else {
+            this.setState({ user })
+          }
+        }).catch(err => console.log(err))
     }
-
-
     render(){
-      const { user, user: { firstName, lastName, email, password, phone, address, city, state, zip, subscriptions } } = this.state;
+      const { user: { _id, firstName, lastName, email, password, phone, address, city, state, zip, subscriptions } } = this.state;
       return (
           <PageWrapper>
               <Header/>
               <ContentWrapper>
                 <MyaccountContent>
-                  {
-                    user &&
-                    <span>{firstName} {lastName}</span>
-                  }
+                  <span>{firstName} {lastName}</span>
                   <a href="/chooseproducts"><Button>Add New Subscription</Button></a>
                   <div>calendar here</div>
                   <div>list of subscriptions</div>
-                  <div>cart button (number)</div>
+                  <a href="/cart"><Button>Go To Cart</Button></a>
                 </MyaccountContent>
               </ContentWrapper>
               <Footer/>

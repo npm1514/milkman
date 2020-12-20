@@ -44,16 +44,46 @@ var Confirmation = /*#__PURE__*/function (_Component) {
 
   var _super = _createSuper(Confirmation);
 
-  function Confirmation() {
+  function Confirmation(props) {
+    var _this;
+
     _classCallCheck(this, Confirmation);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+    _this.state = {
+      user: {}
+    };
+    return _this;
   }
 
   _createClass(Confirmation, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      fetch("/api/getMe").then(function (response) {
+        if (response.status !== 200) throw Error(response.statusText);
+        return response.json();
+      }).then(function (user) {
+        if (user._id) {
+          _this2.setState({
+            user: user
+          });
+        } else {
+          window.location.href = "/login";
+        }
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_confirmation.ConfirmationContent, null, "confirmation page")), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      var _this$props = this.props,
+          orderID = _this$props.orderID,
+          order = _this$props.order;
+      console.log(order);
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_confirmation.ConfirmationContent, null, "confirmation page ", orderID)), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 

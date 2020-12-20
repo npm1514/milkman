@@ -25,7 +25,7 @@ class LoginComponent extends Component {
     })
     .then((res) => res.text())
     .then((data) => {
-        window.location.href = "/myaccount"
+        window.location.href = "/myaccount";
     })
   }
   render(){

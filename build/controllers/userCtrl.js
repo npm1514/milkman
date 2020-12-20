@@ -8,16 +8,13 @@ module.exports = {
   },
   getMe: function getMe(req, res) {
     if (!req.user) {
-      console.log("crash1");
       return res.send({});
     }
 
-    UserModel.findById(req.user._id).populate('orders').populate('subscriptions').exec(function (err, result) {
+    UserModel.findById(req.user._id).populate('orders').populate('subscriptions').populate('currentCart').exec(function (err, result) {
       if (err) {
-        console.log("crash2");
         return res.send({});
       } else {
-        console.log("crash3");
         res.send(result);
       }
     });

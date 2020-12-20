@@ -44,16 +44,53 @@ var Cart = /*#__PURE__*/function (_Component) {
 
   var _super = _createSuper(Cart);
 
-  function Cart() {
+  function Cart(props) {
+    var _this;
+
     _classCallCheck(this, Cart);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+    _this.state = {
+      user: {
+        currentCart: []
+      },
+      currentCart: []
+    };
+    return _this;
   }
 
   _createClass(Cart, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      fetch("/api/getMe").then(function (response) {
+        if (response.status !== 200) throw Error(response.statusText);
+        return response.json();
+      }).then(function (user) {
+        if (!user._id) {
+          window.location.href = "/login";
+        } else {
+          _this2.setState({
+            user: user
+          });
+        }
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_cart.CartContent, null, "cart page")), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      var currentCart = this.state.user.currentCart;
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_cart.CartContent, null, currentCart.map(function (subscription, i) {
+        return /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
+          key: i,
+          subscription: subscription
+        });
+      }), /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/checkout"
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Proceed To Checkout")))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 

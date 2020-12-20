@@ -39,21 +39,66 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var Checkout = /*#__PURE__*/function (_Component) {
   _inherits(Checkout, _Component);
 
   var _super = _createSuper(Checkout);
 
-  function Checkout() {
+  function Checkout(props) {
+    var _this;
+
     _classCallCheck(this, Checkout);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "submitPayment", function (e) {
+      e.preventDefault(); //submit payment
+      // .then(res => {
+
+      window.location.href = "/confirmation/12345"; // })
+    });
+
+    _this.state = {
+      user: {
+        currentCart: []
+      }
+    };
+    return _this;
   }
 
   _createClass(Checkout, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      fetch("/api/getMe").then(function (response) {
+        if (response.status !== 200) throw Error(response.statusText);
+        return response.json();
+      }).then(function (user) {
+        console.log(user);
+
+        if (!user._id) {// window.location.href = "/login";
+        } else {
+          _this2.setState({
+            user: user
+          });
+        }
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_checkout.CheckoutContent, null, "checkout page")), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      var currentCart = this.state.user.currentCart;
+      var subtotal = currentCart.reduce(function (a, b) {
+        return a + b.pricePerDelivery;
+      }, 0);
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_checkout.CheckoutContent, null, subtotal && /*#__PURE__*/_react["default"].createElement("h2", null, "Subtotal: $", subtotal), /*#__PURE__*/_react["default"].createElement("div", null, "form with credit card info"), /*#__PURE__*/_react["default"].createElement(_global.Button, {
+        onClick: this.submitPayment
+      }, "Submit Payment"))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 
