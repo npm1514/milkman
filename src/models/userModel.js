@@ -15,7 +15,9 @@ var userSchema = new mongoose.Schema({
   encryptedCVV: {type: String},
   encryptedExp: {type: String},
   EncryptedZip: {type: String},
-  subscriptions: [{type: mongoose.Schema.Types.ObjectId, ref: "subscriptions"}]
+  currentCart: [{type: mongoose.Schema.Types.ObjectId, ref: "subscriptions"}],
+  subscriptions: [{type: mongoose.Schema.Types.ObjectId, ref: "subscriptions"}],
+  orders: [{type: mongoose.Schema.Types.ObjectId, ref: "orders"}]
 });
 
 userSchema.methods.generateHash = function(password) {

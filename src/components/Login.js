@@ -25,7 +25,7 @@ class LoginComponent extends Component {
     })
     .then((res) => res.text())
     .then((data) => {
-      window.location.href = "/myaccount"
+        window.location.href = "/myaccount"
     })
   }
   render(){
@@ -33,6 +33,7 @@ class LoginComponent extends Component {
     const { email, password } = this.state;
     return (
       <LoginWrap>
+        <a onClick={switchDisplay}><p>No login? Create an account</p></a>
         <h2>Sign In</h2>
         <form onSubmit={this.login}>
           <input
@@ -49,7 +50,6 @@ class LoginComponent extends Component {
           />
           <button type="submit">Sign In</button>
         </form>
-        <a onClick={switchDisplay}>No login? Create an account</a>
       </LoginWrap>
     );
   }

@@ -5,11 +5,11 @@ const pages = [
   'landing',
   'chooseproducts',
   'signuplogin',
-  // 'cart',
-  // 'checkout',
-  // 'confirmation',
+  'cart',
+  'checkout',
+  'confirmation',
   'myaccount',
-  // 'cafetools'
+  'cafetools'
 ];
 
 module.exports = pages.map((page) => {

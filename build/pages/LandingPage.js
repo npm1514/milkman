@@ -53,13 +53,16 @@ var Landing = /*#__PURE__*/function (_Component) {
   _createClass(Landing, [{
     key: "render",
     value: function render() {
+      var user = this.props.data.user;
       return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_landing.LandingContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Delivery Subscriptions"), /*#__PURE__*/_react["default"].createElement("p", null, "This is where I talk about subscriptions."), /*#__PURE__*/_react["default"].createElement("a", {
         href: "/chooseproducts"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Get Started")), /*#__PURE__*/_react["default"].createElement("a", {
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Get Started")), user ? /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/myaccount"
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Your Account")) : /*#__PURE__*/_react["default"].createElement(Fragment, null, /*#__PURE__*/_react["default"].createElement("a", {
         href: "/login"
       }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Login")), /*#__PURE__*/_react["default"].createElement("a", {
         href: "/signup"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Sign Up")))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Sign Up"))))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 

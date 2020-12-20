@@ -11,16 +11,12 @@ var orderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "subscriptions"
   }],
-  quantity: {
+  price: {
     type: Number,
     required: true
   },
   date: {
     type: String,
-    required: true
-  },
-  invoiceNum: {
-    type: Number,
     required: true
   }
 });

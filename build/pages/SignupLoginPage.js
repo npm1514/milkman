@@ -66,20 +66,26 @@ var SignupLogin = /*#__PURE__*/function (_Component) {
   }
 
   _createClass(SignupLogin, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      if (this.props.data.user._id) {
+        window.location.href = "/myaccount";
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this$props$data = this.props.data,
           order = _this$props$data.order,
-          orderID = _this$props$data.orderID;
-      console.log(this.state.loggingIn);
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_signuplogin.SignupLoginContent, null, orderID && /*#__PURE__*/_react["default"].createElement(_components.OrderPreview, {
+          subscriptionID = _this$props$data.subscriptionID;
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_signuplogin.SignupLoginContent, null, subscriptionID && /*#__PURE__*/_react["default"].createElement(_components.OrderPreview, {
         order: order
       }), /*#__PURE__*/_react["default"].createElement(_signuplogin.SignupOrLoginWrap, null, this.state.loggingIn ? /*#__PURE__*/_react["default"].createElement(_components.Login, {
         switchDisplay: this.switchDisplay,
-        orderID: orderID
+        subscriptionID: subscriptionID
       }) : /*#__PURE__*/_react["default"].createElement(_components.Signup, {
         switchDisplay: this.switchDisplay,
-        orderID: orderID
+        subscriptionID: subscriptionID
       })))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);

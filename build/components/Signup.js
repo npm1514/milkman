@@ -63,6 +63,7 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "signup", function (e) {
       e.preventDefault();
+      var orderID = _this.props.orderID;
       var _this$state = _this.state,
           firstName = _this$state.firstName,
           lastName = _this$state.lastName,
@@ -74,7 +75,7 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
           city = _this$state.city,
           state = _this$state.state,
           zip = _this$state.zip,
-          subscriptions = _this$state.subscriptions;
+          currentCart = _this$state.currentCart;
 
       if (password1 != password2) {
         _this.badPassword("Passwords do not match!");
@@ -100,12 +101,16 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
             city: city,
             state: state,
             zip: zip,
-            subscriptions: subscriptions
+            currentCart: currentCart
           })
         }).then(function (res) {
-          return res.text();
+          return res.json();
         }).then(function (data) {
-          console.log(data);
+          if (orderID) {
+            window.location.href = "/cart/" + orderID;
+          } else {
+            window.location.href = "/myaccount";
+          }
         });
       }
     });
@@ -146,7 +151,7 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
       password1: "",
       password2: "",
       passwordMessage: "",
-      subscriptions: [_this.props.subscriptionID || ""]
+      currentCart: [_this.props.subscriptionID || ""]
     };
     return _this;
   }
@@ -169,7 +174,9 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
           state = _this$state3.state,
           zip = _this$state3.zip,
           passwordMessage = _this$state3.passwordMessage;
-      return /*#__PURE__*/_react["default"].createElement(_signup.SignupWrap, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Create an Account"), /*#__PURE__*/_react["default"].createElement("form", {
+      return /*#__PURE__*/_react["default"].createElement(_signup.SignupWrap, null, /*#__PURE__*/_react["default"].createElement("a", {
+        onClick: switchDisplay
+      }, /*#__PURE__*/_react["default"].createElement("p", null, "Have an account? Sign In Here")), /*#__PURE__*/_react["default"].createElement("h2", null, "Create an Account"), /*#__PURE__*/_react["default"].createElement("form", {
         onSubmit: this.signup
       }, /*#__PURE__*/_react["default"].createElement("input", {
         placeholder: "First Name",
@@ -261,7 +268,7 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
         type: "submit"
       }, "Sign Up")), /*#__PURE__*/_react["default"].createElement("a", {
         onClick: switchDisplay
-      }, "Have an account? Sign In Here"));
+      }, /*#__PURE__*/_react["default"].createElement("p", null, "Have an account? Sign In Here")));
     }
   }]);
 

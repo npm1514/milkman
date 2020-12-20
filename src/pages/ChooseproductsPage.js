@@ -12,7 +12,6 @@ class Chooseproducts extends Component {
   constructor(props){
     super(props)
     this.state = {
-      user: {},
       productSelected: "",
       flavorSelected: "",
       sizeSelected: "",
@@ -143,10 +142,13 @@ class Chooseproducts extends Component {
       paymentFrequency: payFreq
     })
   }
-  submitProduct = (e) => {
+  createSubscription = (e) => {
     if(this.state.validTime){
-      const { productSelected, flavorSelected, sizeSelected, quantitySelected, frequencySelected, startDateSelected, timeSelected, selectedPrice, paymentFrequency, pricePerPayPeriod, user
+      const { productSelected, flavorSelected, sizeSelected, quantitySelected, frequencySelected, startDateSelected, timeSelected, selectedPrice, paymentFrequency, pricePerPayPeriod
       } = this.state;
+      const { user } = this.props.data;
+      const { subscriptionID } = this.props.data;
+      console.log(user);
       fetch('/api/subscriptions', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
@@ -162,46 +164,40 @@ class Chooseproducts extends Component {
           pricePerPayPeriod: pricePerPayPeriod,
           payPeriodFrequency: paymentFrequency,
           recurringPayment: true,
-          user: user && user._id || ""
+          user: user && user._id || {}
         })
       })
-      .then((res) => res.json())
-      .then((data) => {this.submitOrder(data)})
+      .then((res) => {
+        if(res.status !== 200) throw Error(res.statusText);
+        return res.json()
+      })
+      .then((data) => {
+        if(user._id){
+          this.addSubscriptionToUser(data._id)
+        } else {
+          window.location.href = "/signup/" + data._id
+        }
+      })
     } else {
       alert("Please select a valid delivery time.")
     }
 
   }
-  submitOrder = (data) => {
-    console.log(data);
-    // fetch('/api/subscriptions', {
-    //   method: "POST",
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     user: {type: mongoose.Schema.Types.ObjectId, ref: "users"},
-    //     subscriptions: [{type: mongoose.Schema.Types.ObjectId, ref: "subscriptions"}],
-    //     quantity: {type: Number, required: true},
-    //     date: {type: String, required: true},
-    //     invoiceNum: {type: Number, required: true}
-    //   })
-    // })
-    // .then((res) => res.json())
-    // .then((data) => {
-    //   if(user && user._id){
-    //     //add subscription to user
-    //     window.location.href = `/myaccount/${user._id}`;
-    //   } else {
-    //     window.location.href = `/signup/${data._id}`;
-    //   }
-    // })
-  }
-  switchPage = (user) => {
-    if(user && user._id){
-      //add subscription to user
-      window.location.href = `/myaccount/${user._id}`;
-    } else {
-      window.location.href = `/signup/${data._id}`;
-    }
+  addSubscriptionToUser = (subscriptionID) => {
+    let { currentCart, _id } = this.props.data.user;
+    currentCart.push(subscriptionID);
+    fetch('/api/users/' + _id, {
+      method: "PUT",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentCart })
+    })
+    .then((res) => {
+      if(response.status !== 200) throw Error(response.statusText);
+      return res.json();
+    })
+    .then((response) => {
+      window.location.href = `/cart/` + subscriptionID;
+    })
   }
   componentDidUpdate() {
     let time_select = document.getElementById('time_select')
@@ -210,11 +206,14 @@ class Chooseproducts extends Component {
     }
   }
   componentDidMount(){
-    fetch('/getMe')
-    .then((res) => res.text())
-    .then((data) => {
-      console.log(data);
-    })
+    const { subscriptionID } = this.props;
+    if(subscriptionID){
+      fetch('/api/orders/' + subscriptionID)
+      .then((res) => res.json())
+      .then((order) => {
+        this.setState({subscription})
+      })
+    }
   }
   render(){
     const { productSelected, flavorSelected, sizeSelected, selectedPrice, frequencySelected, quantitySelected, pricePerPayPeriod, startDateSelected, timeSelected, reelPosition, paymentFrequency } = this.state;
@@ -400,7 +399,7 @@ class Chooseproducts extends Component {
                 }
                 {
                   productSelected && flavorSelected && sizeSelected && frequencySelected && startDateSelected && timeSelected &&
-                  <Button onClick={this.submitProduct}>Add To Cart</Button>
+                  <Button onClick={this.createSubscription}>Add To Cart</Button>
                 }
               </ChooseproductsContent>
             </ContentWrapper>

@@ -95,7 +95,9 @@ var LoginComponent = /*#__PURE__*/function (_Component) {
       var _this$state2 = this.state,
           email = _this$state2.email,
           password = _this$state2.password;
-      return /*#__PURE__*/_react["default"].createElement(_login.LoginWrap, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Sign In"), /*#__PURE__*/_react["default"].createElement("form", {
+      return /*#__PURE__*/_react["default"].createElement(_login.LoginWrap, null, /*#__PURE__*/_react["default"].createElement("a", {
+        onClick: switchDisplay
+      }, /*#__PURE__*/_react["default"].createElement("p", null, "No login? Create an account")), /*#__PURE__*/_react["default"].createElement("h2", null, "Sign In"), /*#__PURE__*/_react["default"].createElement("form", {
         onSubmit: this.login
       }, /*#__PURE__*/_react["default"].createElement("input", {
         placeholder: "Email Address",
@@ -113,9 +115,7 @@ var LoginComponent = /*#__PURE__*/function (_Component) {
         }
       }), /*#__PURE__*/_react["default"].createElement("button", {
         type: "submit"
-      }, "Sign In")), /*#__PURE__*/_react["default"].createElement("a", {
-        onClick: switchDisplay
-      }, "No login? Create an account"));
+      }, "Sign In")));
     }
   }]);
 

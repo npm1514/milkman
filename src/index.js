@@ -30,7 +30,6 @@ passportConfig(passport);//self invokes passport
 
 const app = express();
 
-
 app.use(session({
     secret: 'banana',
     resave: true,
@@ -70,124 +69,150 @@ fs.readFile('./dist/js/signuplogin.bundle.min.js', "utf8", (err, data) => {
   if (err) console.log("ERR" ,err);
   signuploginBundle = data || "";
 })
-// fs.readFile('./dist/js/cart.bundle.min.js', "utf8", (err, data) => {
-//   if (err) console.log("ERR" ,err);
-//   cartBundle = data || "";
-// })
-// fs.readFile('./dist/js/checkout.bundle.min.js', "utf8", (err, data) => {
-//   if (err) console.log("ERR" ,err);
-//   checkoutBundle = data || "";
-// })
-// fs.readFile('./dist/js/confirmation.bundle.min.js', "utf8", (err, data) => {
-//   if (err) console.log("ERR" ,err);
-//   confirmationBundle = data || "";
-// })
+fs.readFile('./dist/js/cart.bundle.min.js', "utf8", (err, data) => {
+  if (err) console.log("ERR" ,err);
+  cartBundle = data || "";
+})
+fs.readFile('./dist/js/checkout.bundle.min.js', "utf8", (err, data) => {
+  if (err) console.log("ERR" ,err);
+  checkoutBundle = data || "";
+})
+fs.readFile('./dist/js/confirmation.bundle.min.js', "utf8", (err, data) => {
+  if (err) console.log("ERR" ,err);
+  confirmationBundle = data || "";
+})
 fs.readFile('./dist/js/myaccount.bundle.min.js', "utf8", (err, data) => {
   if (err) console.log("ERR" ,err);
   myaccountBundle = data || "";
 })
-// fs.readFile('./dist/js/cafetools.bundle.min.js', "utf8", (err, data) => {
-//   if (err) console.log("ERR" ,err);
-//   cafetoolsBundle = data || "";
-// })
+fs.readFile('./dist/js/cafetools.bundle.min.js', "utf8", (err, data) => {
+  if (err) console.log("ERR" ,err);
+  cafetoolsBundle = data || "";
+})
 
 app.get('/', (req, res) => {
-  //page
-  let data = "";
-  res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, landingBundle, LandingRoot, "subscriptions"));
+  let data = {};
+  getMe()
+  .then(user => {
+    data.user = user || {};
+    console.log(data);
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, landingBundle, LandingRoot, "subscriptions"));
+  });
 });
 app.get('/subscriptions', (req, res) => {
-  //page
-  let data = "";
-  res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, landingBundle, LandingRoot, "subscriptions"));
+  let data = {};
+  getMe()
+  .then(user => {
+    data.user = user || {};
+    console.log(data);
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, landingBundle, LandingRoot, "subscriptions"));
+  });
 });
 app.get('/chooseproducts', (req, res) => {
-  //page
-  let data = "";
-  res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, chooseproductsBundle, ChooseproductsRoot, "chooseproducts"));
+  let data = {};
+  getMe()
+  .then(user => {
+    data.user = user || {};
+    console.log(data);
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, chooseproductsBundle, ChooseproductsRoot, "chooseproducts"));
+  });
 });
-app.get('/signup/:id', function (req, res) {
-  //page
-  var data = {};
-  fetcher('https://milkmancoffee.herokuapp.com/api/orders/' + req.params.id).then((response) => {
-    data = {
-      orderID: req.params.id,
-      order: response,
-      loggingIn: false
-    };
+app.get('/signup/:subscriptionID', (req, res) => {
+  let data = {
+    subscriptionID: req.params.subscriptionID,
+    loggingIn: false
+  };
+  const promise1 = getMe()
+  .then(user => {
+    data.user = user || {};
+  });
+  const promise2 = fetcher('https://milkmancoffee.herokuapp.com/api/subscriptions/' + req.params.subscriptionID).then((response) => {
+    data.subscription = response;
+  });
+  Promise.all([promise1, promise2]).then((values) => {
     res.set('Cache-Control', 'public, max-age=31557600');
     res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "signup"));
   });
 });
 app.get('/signup', (req, res) => {
-  //page
   let data = {
-    orderID: "",
-    order: {},
     loggingIn: false
   };
-  res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "signup"));
-});
-app.get('/login/:id', function (req, res) {
-  //page
-  var data = {};
-  fetcher('https://milkmancoffee.herokuapp.com/api/orders/' + req.params.id).then((response) => {
-    data = {
-      orderID: req.params.id,
-      order: response,
-      loggingIn: true
-    };
+  getMe()
+  .then((user) => {
+    data.user = user || {};
+    console.log(data);
     res.set('Cache-Control', 'public, max-age=31557600');
-    res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "login"));
+    res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "signup"));
   });
 });
 app.get('/login', (req, res) => {
-  //page
   let data = {
-    orderID: "",
-    order: {},
     loggingIn: true
   };
-  res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "login"));
+  getMe()
+  .then((user) => {
+    data.user = user || {};
+    console.log(data);
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, signuploginBundle, SignupLoginRoot, "login"));
+  })
 });
 app.get('/cart', (req, res) => {
-  //page
-  let data = "";
-  res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, cartBundle, CartRoot, "cart"));
+  let data = {};
+  getMe()
+  .then(user => {
+    data.user = user || {};
+    console.log(data);
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, cartBundle, CartRoot, "cart"));
+  })
 });
 app.get('/checkout', (req, res) => {
-  //page
-  let data = "";
-  res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, checkoutBundle, CheckoutRoot, "checkout"));
+  let data = {};
+  getMe()
+  .then(user => {
+    data.user = user || {};
+    console.log(data);
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, checkoutBundle, CheckoutRoot, "checkout"));
+  });
 });
 app.get('/confirmation', (req, res) => {
-  //page
-  let data = "";
-  res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, confirmationBundle, ConfirmationRoot, "confirmation"));
+  let data = {};
+  getMe()
+  .then(user => {
+    data.user = user || {};
+    console.log(data);
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, confirmationBundle, ConfirmationRoot, "confirmation"));
+  });
 });
 app.get('/myaccount', (req, res) => {
-  //page
-  let data = "";
-  res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, myaccountBundle, MyaccountRoot, "myaccount"));
+  let data = {};
+  getMe()
+  .then(user => {
+    data.user = user || {};
+    console.log(data);
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, myaccountBundle, MyaccountRoot, "myaccount"));
+  });
 });
 app.get('/cafetools', (req, res) => {
-  //page
-  let data = "";
-  res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, cafetoolsBundle, CafetoolsRoot, "cafetools"));
+  let data = {};
+  getMe()
+  .then(user => {
+    data.user = user || {};
+    console.log(data);
+    res.set('Cache-Control', 'public, max-age=31557600');
+    res.send(returnHTML(data, cafetoolsBundle, CafetoolsRoot, "cafetools"));
+  });
 });
 
 app.get('/images/:id', (req, res) => {
-  //service
   res.set('Cache-Control', 'public, max-age=31557600');
   res.sendFile(path.join(__dirname, '../images/' + req.params.id));
 });
@@ -223,7 +248,6 @@ app.listen( PORT, () => {
   console.log('Running on http://localhost:' + PORT)
 });
 
-
 // functions!!!!!!!!!!!!!
 
 function getQueries(req, res){
@@ -246,6 +270,11 @@ function fetcher(url){
     }).then((json) => {
         return json;
     }).catch(errHandle)
+}
+function getMe(){
+  return fetcher('https://milkmancoffee.herokuapp.com/api/users/getMe')
+  .then((response) => response)
+  .catch((err) => ({}));
 }
 
 function returnHTML(data, bundle, Page, title){

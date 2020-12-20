@@ -17,7 +17,7 @@ class SignupComponent extends Component {
       password1: "",
       password2: "",
       passwordMessage: "",
-      subscriptions: [this.props.subscriptionID || ""]
+      currentCart: [this.props.subscriptionID || ""]
     }
   }
   badPassword = (passwordMessage) => {
@@ -28,7 +28,8 @@ class SignupComponent extends Component {
   }
   signup = (e) => {
     e.preventDefault()
-    const { firstName, lastName, email, password1, password2, phone, address, city, state, zip, subscriptions } = this.state;
+    const { orderID } = this.props;
+    const { firstName, lastName, email, password1, password2, phone, address, city, state, zip, currentCart } = this.state;
     if(password1 != password2){
       this.badPassword("Passwords do not match!");
     } else if(password1.length < 8){
@@ -41,14 +42,15 @@ class SignupComponent extends Component {
       fetch('/api/auth', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName, lastName, email, password: password1,
-          phone, address, city, state, zip, subscriptions
-        })
+        body: JSON.stringify({ firstName, lastName, email, password: password1, phone, address, city, state, zip, currentCart })
       })
-      .then((res) => res.text())
+      .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        if(orderID){
+          window.location.href = "/cart/" + orderID;
+        } else {
+          window.location.href = "/myaccount"
+        }
       })
     }
   }
@@ -71,6 +73,7 @@ class SignupComponent extends Component {
     const { firstName, lastName, email, password1, password2, phone, address, city, state, zip, passwordMessage } = this.state;
     return (
       <SignupWrap>
+        <a onClick={switchDisplay}><p>Have an account? Sign In Here</p></a>
         <h2>Create an Account</h2>
         <form onSubmit={this.signup}>
           <input
@@ -155,7 +158,7 @@ class SignupComponent extends Component {
           }
           <button type="submit">Sign Up</button>
         </form>
-        <a onClick={switchDisplay}>Have an account? Sign In Here</a>
+        <a onClick={switchDisplay}><p>Have an account? Sign In Here</p></a>
       </SignupWrap>
     );
   }

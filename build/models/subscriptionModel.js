@@ -45,6 +45,7 @@ var subscriptionSchema = new mongoose.Schema({
   recurringPayment: {
     type: Boolean,
     "default": true
-  }
+  },
+  scheduledDays: [Date]
 });
 module.exports = mongoose.model('subscriptions', subscriptionSchema);

@@ -15,23 +15,27 @@ class SignupLogin extends Component {
       loggingIn: !this.state.loggingIn
     })
   }
+  componentDidMount(){
+    if(this.props.data.user._id){
+      window.location.href = "/myaccount";
+    }
+  }
   render(){
-    let { order, orderID } = this.props.data
-    console.log(this.state.loggingIn);
+    let { order, subscriptionID } = this.props.data
     return (
         <PageWrapper>
             <Header/>
             <ContentWrapper>
               <SignupLoginContent>
                 {
-                  orderID &&
+                  subscriptionID &&
                   <OrderPreview order={order}/>
                 }
                 <SignupOrLoginWrap>
                 {
                   this.state.loggingIn ?
-                  <Login switchDisplay={this.switchDisplay} orderID={orderID}/> :
-                  <Signup switchDisplay={this.switchDisplay} orderID={orderID}/>
+                  <Login switchDisplay={this.switchDisplay} subscriptionID={subscriptionID}/> :
+                  <Signup switchDisplay={this.switchDisplay} subscriptionID={subscriptionID}/>
                 }
                 </SignupOrLoginWrap>
               </SignupLoginContent>

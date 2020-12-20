@@ -5,6 +5,7 @@ import { PageWrapper, ContentWrapper, Button } from '../styled-components/global
 
 class Landing extends Component {
     render(){
+      const { user } = this.props.data;
       return (
           <PageWrapper>
               <Header/>
@@ -15,12 +16,20 @@ class Landing extends Component {
                   <a href="/chooseproducts">
                     <Button>Get Started</Button>
                   </a>
-                  <a href="/login">
-                    <Button>Login</Button>
-                  </a>
-                  <a href="/signup">
-                    <Button>Sign Up</Button>
-                  </a>
+                  {
+                    user ?
+                    <a href="/myaccount">
+                      <Button>Your Account</Button>
+                    </a> :
+                    <Fragment>
+                      <a href="/login">
+                        <Button>Login</Button>
+                      </a>
+                      <a href="/signup">
+                        <Button>Sign Up</Button>
+                      </a>
+                    </Fragment>
+                  }
                 </LandingContent>
               </ContentWrapper>
               <Footer/>

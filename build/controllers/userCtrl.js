@@ -4,18 +4,20 @@ var UserModel = require('./../models/userModel');
 
 module.exports = {
   login: function login(req, res, next) {
-    console.log(req.user);
     res.send(req.user);
   },
   getMe: function getMe(req, res) {
     if (!req.user) {
-      return res.send();
+      console.log("crash1");
+      return res.send({});
     }
 
-    UserModel.findById(req.user._id).exec(function (err, result) {
+    UserModel.findById(req.user._id).populate('orders').populate('subscriptions').exec(function (err, result) {
       if (err) {
-        return res.send(err);
+        console.log("crash2");
+        return res.send({});
       } else {
+        console.log("crash3");
         res.send(result);
       }
     });
@@ -27,7 +29,7 @@ module.exports = {
     res.send(id + " logged out");
   },
   read: function read(req, res) {
-    UserModel.find(req.query).exec(function (err, result) {
+    UserModel.find(req.query).populate('orders').populate('subscriptions').exec(function (err, result) {
       if (err) {
         res.send(err);
       } else {

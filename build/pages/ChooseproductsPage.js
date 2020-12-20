@@ -228,7 +228,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "submitProduct", function (e) {
+    _defineProperty(_assertThisInitialized(_this), "createSubscription", function (e) {
       if (_this.state.validTime) {
         var _this$state3 = _this.state,
             productSelected = _this$state3.productSelected,
@@ -240,8 +240,10 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
             timeSelected = _this$state3.timeSelected,
             selectedPrice = _this$state3.selectedPrice,
             paymentFrequency = _this$state3.paymentFrequency,
-            pricePerPayPeriod = _this$state3.pricePerPayPeriod,
-            user = _this$state3.user;
+            pricePerPayPeriod = _this$state3.pricePerPayPeriod;
+        var user = _this.props.data.user;
+        var subscriptionID = _this.props.data.subscriptionID;
+        console.log(user);
         fetch('/api/subscriptions', {
           method: "POST",
           headers: {
@@ -259,52 +261,45 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
             pricePerPayPeriod: pricePerPayPeriod,
             payPeriodFrequency: paymentFrequency,
             recurringPayment: true,
-            user: user && user._id || ""
+            user: user && user._id || {}
           })
         }).then(function (res) {
+          if (res.status !== 200) throw Error(res.statusText);
           return res.json();
         }).then(function (data) {
-          _this.submitOrder(data);
+          if (user._id) {
+            _this.addSubscriptionToUser(data._id);
+          } else {
+            window.location.href = "/signup/" + data._id;
+          }
         });
       } else {
         alert("Please select a valid delivery time.");
       }
     });
 
-    _defineProperty(_assertThisInitialized(_this), "submitOrder", function (data) {
-      console.log(data); // fetch('/api/subscriptions', {
-      //   method: "POST",
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     user: {type: mongoose.Schema.Types.ObjectId, ref: "users"},
-      //     subscriptions: [{type: mongoose.Schema.Types.ObjectId, ref: "subscriptions"}],
-      //     quantity: {type: Number, required: true},
-      //     date: {type: String, required: true},
-      //     invoiceNum: {type: Number, required: true}
-      //   })
-      // })
-      // .then((res) => res.json())
-      // .then((data) => {
-      //   if(user && user._id){
-      //     //add subscription to user
-      //     window.location.href = `/myaccount/${user._id}`;
-      //   } else {
-      //     window.location.href = `/signup/${data._id}`;
-      //   }
-      // })
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "switchPage", function (user) {
-      if (user && user._id) {
-        //add subscription to user
-        window.location.href = "/myaccount/".concat(user._id);
-      } else {
-        window.location.href = "/signup/".concat(data._id);
-      }
+    _defineProperty(_assertThisInitialized(_this), "addSubscriptionToUser", function (subscriptionID) {
+      var _this$props$data$user = _this.props.data.user,
+          currentCart = _this$props$data$user.currentCart,
+          _id = _this$props$data$user._id;
+      currentCart.push(subscriptionID);
+      fetch('/api/users/' + _id, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          currentCart: currentCart
+        })
+      }).then(function (res) {
+        if (response.status !== 200) throw Error(response.statusText);
+        return res.json();
+      }).then(function (response) {
+        window.location.href = "/cart/" + subscriptionID;
+      });
     });
 
     _this.state = {
-      user: {},
       productSelected: "",
       flavorSelected: "",
       sizeSelected: "",
@@ -333,16 +328,24 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      fetch('/getMe').then(function (res) {
-        return res.text();
-      }).then(function (data) {
-        console.log(data);
-      });
+      var _this2 = this;
+
+      var subscriptionID = this.props.subscriptionID;
+
+      if (subscriptionID) {
+        fetch('/api/orders/' + subscriptionID).then(function (res) {
+          return res.json();
+        }).then(function (order) {
+          _this2.setState({
+            subscription: subscription
+          });
+        });
+      }
     }
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var _this$state4 = this.state,
           productSelected = _this$state4.productSelected,
@@ -392,7 +395,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         return /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
           key: i,
           onClick: function onClick() {
-            return _this2.selectProduct(product);
+            return _this3.selectProduct(product);
           },
           className: productSelected == product ? "productSelected" : ""
         }, /*#__PURE__*/_react["default"].createElement("img", {
@@ -404,7 +407,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         return /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
           key: i,
           onClick: function onClick() {
-            return _this2.selectFlavor(flavor);
+            return _this3.selectFlavor(flavor);
           },
           className: flavor[0] == flavorSelected[0] ? "productSelected" : ""
         }, /*#__PURE__*/_react["default"].createElement("p", null, flavor[0]));
@@ -414,7 +417,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         return /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
           key: i,
           onClick: function onClick() {
-            return _this2.selectSize(size);
+            return _this3.selectSize(size);
           },
           className: size[0] == sizeSelected[0] ? "productSelected" : ""
         }, /*#__PURE__*/_react["default"].createElement("p", null, size[0]));
@@ -439,7 +442,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         return /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
           key: i,
           onClick: function onClick() {
-            return _this2.selectFrequency(frequency);
+            return _this3.selectFrequency(frequency);
           },
           className: frequency == frequencySelected ? "productSelected" : ""
         }, /*#__PURE__*/_react["default"].createElement("p", {
@@ -475,7 +478,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         min: "07:00",
         max: "12:00"
       }))), productSelected && flavorSelected && sizeSelected && frequencySelected && startDateSelected && timeSelected && /*#__PURE__*/_react["default"].createElement(_global.Button, {
-        onClick: this.submitProduct
+        onClick: this.createSubscription
       }, "Add To Cart"))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);

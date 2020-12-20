@@ -14,7 +14,7 @@ module.exports = {
     });
   },
   read: function read(req, res) {
-    OrderModel.find(req.query).exec(function (err, result) {
+    OrderModel.find(req.query).populate("subscriptions").populate("users").exec(function (err, result) {
       if (err) {
         res.send(err);
       } else {
@@ -23,7 +23,7 @@ module.exports = {
     });
   },
   readOne: function readOne(req, res) {
-    OrderModel.findById(req.params.id).exec(function (err, result) {
+    OrderModel.findById(req.params.id).populate("subscriptions").populate("users").exec(function (err, result) {
       if (err) {
         res.send(err);
       } else {

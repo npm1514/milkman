@@ -44,16 +44,55 @@ var Myaccount = /*#__PURE__*/function (_Component) {
 
   var _super = _createSuper(Myaccount);
 
-  function Myaccount() {
+  function Myaccount(props) {
+    var _this;
+
     _classCallCheck(this, Myaccount);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+    _this.state = {
+      user: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        phone: "",
+        address: "",
+        city: "",
+        state: "",
+        zip: "",
+        subscriptions: []
+      }
+    };
+    return _this;
   }
 
   _createClass(Myaccount, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      if (!this.props.data.user._id) {
+        window.location.href = "/login";
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_myaccount.MyaccountContent, null, "myaccount page")), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      var _this$state = this.state,
+          user = _this$state.user,
+          _this$state$user = _this$state.user,
+          firstName = _this$state$user.firstName,
+          lastName = _this$state$user.lastName,
+          email = _this$state$user.email,
+          password = _this$state$user.password,
+          phone = _this$state$user.phone,
+          address = _this$state$user.address,
+          city = _this$state$user.city,
+          state = _this$state$user.state,
+          zip = _this$state$user.zip,
+          subscriptions = _this$state$user.subscriptions;
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_myaccount.MyaccountContent, null, user && /*#__PURE__*/_react["default"].createElement("span", null, firstName, " ", lastName), /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/chooseproducts"
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Add New Subscription")), /*#__PURE__*/_react["default"].createElement("div", null, "calendar here"), /*#__PURE__*/_react["default"].createElement("div", null, "list of subscriptions"), /*#__PURE__*/_react["default"].createElement("div", null, "cart button (number)"))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 
