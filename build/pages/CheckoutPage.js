@@ -54,16 +54,198 @@ var Checkout = /*#__PURE__*/function (_Component) {
     _this = _super.call(this, props);
 
     _defineProperty(_assertThisInitialized(_this), "submitPayment", function (e) {
-      e.preventDefault(); //submit payment
-      // .then(res => {
+      e.preventDefault();
+      var _this$state = _this.state,
+          ccNum = _this$state.ccNum,
+          ccExp = _this$state.ccExp,
+          ccCVV = _this$state.ccCVV,
+          ccZip = _this$state.ccZip,
+          saveCard = _this$state.saveCard;
+      fetch('/api/pay', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ccNum: ccNum,
+          ccExp: ccExp,
+          ccCVV: ccCVV,
+          ccZip: ccZip
+        })
+      }).then(function (res) {
+        if (res.status !== 200) throw Error(res.statusText);
+        return res.json();
+      }).then(function (res) {
+        console.log("res", res.message);
 
-      window.location.href = "/confirmation/12345"; // })
+        if (res.message == "success") {
+          if (saveCard) {
+            _this.encryptCardInfo();
+          } else {
+            _this.createOrder();
+          }
+        } else {
+          _this.setMessage(res.message);
+        }
+
+        console.log("payment success", res);
+      })["catch"](function (err) {
+        console.log("payment error", err);
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "encryptCardInfo", function () {
+      console.log("encryption");
+      var _this$state2 = _this.state,
+          ccNum = _this$state2.ccNum,
+          ccExp = _this$state2.ccExp,
+          ccCVV = _this$state2.ccCVV,
+          ccZip = _this$state2.ccZip;
+      fetch('/api/card', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ccNum: ccNum,
+          ccExp: ccExp,
+          ccCVV: ccCVV,
+          ccZip: ccZip
+        })
+      }).then(function (res) {
+        if (res.status !== 200) throw Error(res.statusText);
+        return res.json();
+      }).then(function (data) {
+        console.log("card info encrypted", data);
+
+        _this.setState({
+          ccNumEncrypted: data.ccNum,
+          ccExpEncrypted: data.ccExp,
+          ccCVVEncrypted: data.ccCVV,
+          ccZipEncrypted: data.ccZip
+        }, function () {
+          _this.createOrder();
+        });
+      })["catch"](function (err) {
+        console.log("card info not encrypted", err);
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "createOrder", function () {
+      var _this$state3 = _this.state,
+          _this$state3$user = _this$state3.user,
+          _id = _this$state3$user._id,
+          currentCart = _this$state3$user.currentCart,
+          subtotal = _this$state3.subtotal;
+      fetch('/api/orders', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user: _id,
+          subscriptions: currentCart.map(function (a) {
+            return a._id;
+          }),
+          price: subtotal,
+          date: new Date()
+        })
+      }).then(function (res) {
+        if (res.status !== 200) throw Error(res.statusText);
+        return res.json();
+      }).then(function (data) {
+        console.log("order created", data);
+
+        _this.updateUser(data._id);
+      })["catch"](function (err) {
+        console.log("order creation error", err);
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "updateUser", function (orderId) {
+      var _this$state4 = _this.state,
+          _this$state4$user = _this$state4.user,
+          _id = _this$state4$user._id,
+          currentCart = _this$state4$user.currentCart,
+          subscriptions = _this$state4$user.subscriptions,
+          orders = _this$state4$user.orders,
+          subtotal = _this$state4.subtotal,
+          ccNumEncrypted = _this$state4.ccNumEncrypted,
+          ccExpEncrypted = _this$state4.ccExpEncrypted,
+          ccCVVEncrypted = _this$state4.ccCVVEncrypted,
+          ccZipEncrypted = _this$state4.ccZipEncrypted;
+      var cartSubscriptions = currentCart.map(function (a) {
+        subscriptions.push(a._id);
+      });
+      console.log(subscriptions);
+      console.log(orderId);
+      orders.push(orderId);
+      fetch('/api/users/' + _id, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          encryptedCard: ccNumEncrypted,
+          encryptedCVV: ccExpEncrypted,
+          encryptedExp: ccCVVEncrypted,
+          encryptedZip: ccZipEncrypted,
+          currentCart: [],
+          subscriptions: subscriptions,
+          orders: orders
+        })
+      }).then(function (res) {
+        if (res.status !== 200) throw Error(res.statusText);
+        return res.json();
+      }).then(function (data) {
+        console.log("update user success", data);
+        window.location.href = "/confirmation/" + orderId;
+      })["catch"](function (err) {
+        console.log("update user error", err);
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "updateState", function (e, prop) {
+      var obj = {};
+      obj[prop] = e.currentTarget.value;
+
+      _this.setState(obj);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "updateCheckbox", function (e) {
+      _this.setState({
+        saveCard: e.target.checked
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "setMessage", function (message) {
+      _this.setState({
+        message: message
+      });
+
+      setTimeout(function () {
+        _this.setState({
+          message: ""
+        });
+      }, 3000);
     });
 
     _this.state = {
       user: {
         currentCart: []
-      }
+      },
+      ccNum: "",
+      ccExp: "",
+      ccCVV: "",
+      ccZip: "",
+      ccNumEncrypted: "",
+      ccExpEncrypted: "",
+      ccCVVEncrypted: "",
+      ccZipEncrypted: "",
+      saveCard: false,
+      verified: false,
+      payMessage: "",
+      subtotal: 0
     };
     return _this;
   }
@@ -79,10 +261,17 @@ var Checkout = /*#__PURE__*/function (_Component) {
       }).then(function (user) {
         console.log(user);
 
-        if (!user._id) {// window.location.href = "/login";
+        if (!user._id) {
+          window.location.href = "/login";
+        } else if (!user.currentCart.length) {
+          window.location.href = "/myaccount";
         } else {
           _this2.setState({
-            user: user
+            user: user,
+            verified: true,
+            subtotal: user.currentCart.reduce(function (a, b) {
+              return a + b.pricePerDelivery;
+            }, 0)
           });
         }
       })["catch"](function (err) {
@@ -92,13 +281,76 @@ var Checkout = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var currentCart = this.state.user.currentCart;
-      var subtotal = currentCart.reduce(function (a, b) {
-        return a + b.pricePerDelivery;
-      }, 0);
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_checkout.CheckoutContent, null, subtotal && /*#__PURE__*/_react["default"].createElement("h2", null, "Subtotal: $", subtotal), /*#__PURE__*/_react["default"].createElement("div", null, "form with credit card info"), /*#__PURE__*/_react["default"].createElement(_global.Button, {
-        onClick: this.submitPayment
-      }, "Submit Payment"))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      var _this3 = this;
+
+      var _this$state5 = this.state,
+          currentCart = _this$state5.user.currentCart,
+          ccNum = _this$state5.ccNum,
+          ccExp = _this$state5.ccExp,
+          ccCVV = _this$state5.ccCVV,
+          ccZip = _this$state5.ccZip,
+          saveCard = _this$state5.saveCard,
+          verified = _this$state5.verified,
+          payMessage = _this$state5.payMessage,
+          subtotal = _this$state5.subtotal;
+      console.log(this.state);
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_checkout.CheckoutContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), currentCart.map(function (subscription, index) {
+        return /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
+          key: index,
+          subscription: subscription
+        });
+      }), /*#__PURE__*/_react["default"].createElement("h2", null, "Subtotal: $", subtotal), payMessage && /*#__PURE__*/_react["default"].createElement("span", null, payMessage), /*#__PURE__*/_react["default"].createElement("form", {
+        onSubmit: this.submitPayment
+      }, /*#__PURE__*/_react["default"].createElement("input", {
+        placeholder: "CCN",
+        type: "text",
+        value: ccNum,
+        required: true,
+        onChange: function onChange(e) {
+          _this3.updateState(e, "ccNum");
+        }
+      }), /*#__PURE__*/_react["default"].createElement("input", {
+        placeholder: "EXP",
+        type: "text",
+        value: ccExp,
+        required: true,
+        onChange: function onChange(e) {
+          _this3.updateState(e, "ccExp");
+        }
+      }), /*#__PURE__*/_react["default"].createElement("input", {
+        placeholder: "CVV",
+        type: "text",
+        value: ccCVV,
+        required: true,
+        onChange: function onChange(e) {
+          _this3.updateState(e, "ccCVV");
+        }
+      }), /*#__PURE__*/_react["default"].createElement("input", {
+        placeholder: "Card Zip",
+        type: "text",
+        value: ccZip,
+        required: true,
+        onChange: function onChange(e) {
+          _this3.updateState(e, "ccZip");
+        }
+      }), /*#__PURE__*/_react["default"].createElement("div", {
+        className: "checkbox"
+      }, /*#__PURE__*/_react["default"].createElement("label", {
+        "for": "saveCard"
+      }, "Save Card Info?"), /*#__PURE__*/_react["default"].createElement("input", {
+        id: "saveCard",
+        style: {
+          marginTop: '8px',
+          marginLeft: '8px'
+        },
+        type: "checkbox",
+        name: "saveCard",
+        checked: saveCard,
+        required: true,
+        onChange: this.updateCheckbox
+      })), /*#__PURE__*/_react["default"].createElement(_global.Button, {
+        type: "submit"
+      }, "Submit Payment")))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 

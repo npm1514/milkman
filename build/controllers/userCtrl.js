@@ -3,7 +3,8 @@
 var UserModel = require('./../models/userModel');
 
 module.exports = {
-  login: function login(req, res, next) {
+  login: function login(req, res) {
+    console.log(req.user);
     res.send(req.user);
   },
   getMe: function getMe(req, res) {

@@ -51,6 +51,6 @@ var ContentWrapper = _styledComponents["default"].div(_templateObject2());
 
 exports.ContentWrapper = ContentWrapper;
 
-var Button = _styledComponents["default"].div(_templateObject3(), _colors.pink);
+var Button = _styledComponents["default"].button(_templateObject3(), _colors.pink);
 
 exports.Button = Button;

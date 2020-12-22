@@ -62,8 +62,10 @@ var Myaccount = /*#__PURE__*/function (_Component) {
         city: "",
         state: "",
         zip: "",
-        subscriptions: []
-      }
+        subscriptions: [],
+        currentCart: []
+      },
+      verified: false
     };
     return _this;
   }
@@ -83,7 +85,8 @@ var Myaccount = /*#__PURE__*/function (_Component) {
           window.location.href = "/login";
         } else {
           _this2.setState({
-            user: user
+            user: user,
+            verified: true
           });
         }
       })["catch"](function (err) {
@@ -93,7 +96,8 @@ var Myaccount = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$state$user = this.state.user,
+      var _this$state = this.state,
+          _this$state$user = _this$state.user,
           _id = _this$state$user._id,
           firstName = _this$state$user.firstName,
           lastName = _this$state$user.lastName,
@@ -104,12 +108,14 @@ var Myaccount = /*#__PURE__*/function (_Component) {
           city = _this$state$user.city,
           state = _this$state$user.state,
           zip = _this$state$user.zip,
-          subscriptions = _this$state$user.subscriptions;
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_myaccount.MyaccountContent, null, /*#__PURE__*/_react["default"].createElement("span", null, firstName, " ", lastName), /*#__PURE__*/_react["default"].createElement("a", {
+          subscriptions = _this$state$user.subscriptions,
+          currentCart = _this$state$user.currentCart,
+          verified = _this$state.verified;
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_myaccount.MyaccountContent, null, /*#__PURE__*/_react["default"].createElement("span", null, firstName, " ", lastName), /*#__PURE__*/_react["default"].createElement("a", {
         href: "/chooseproducts"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Add New Subscription")), /*#__PURE__*/_react["default"].createElement("div", null, "calendar here"), /*#__PURE__*/_react["default"].createElement("div", null, "list of subscriptions"), /*#__PURE__*/_react["default"].createElement("a", {
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Add New Subscription")), /*#__PURE__*/_react["default"].createElement("div", null, "calendar here"), /*#__PURE__*/_react["default"].createElement("div", null, "list of subscriptions"), currentCart.length && /*#__PURE__*/_react["default"].createElement("a", {
         href: "/cart"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Go To Cart")))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Go To Cart (", currentCart.length, ")")))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 

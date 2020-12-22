@@ -62,8 +62,6 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "signup", function (e) {
-      e.preventDefault();
-      var subscriptionID = _this.props.subscriptionID;
       var _this$state = _this.state,
           firstName = _this$state.firstName,
           lastName = _this$state.lastName,
@@ -86,31 +84,17 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
       } else if (!/[a-zA-Z]/.test(password1)) {
         _this.badPassword("Password must contain at least one letter");
       } else {
-        fetch('/api/auth', {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            password: password1,
-            phone: phone,
-            address: address,
-            city: city,
-            state: state,
-            zip: zip,
-            currentCart: currentCart
-          })
-        }).then(function (res) {
-          return res.json();
-        }).then(function (data) {
-          if (subscriptionID) {
-            window.location.href = "/cart";
-          } else {
-            window.location.href = "/myaccount";
-          }
+        _this.props.login(e, {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          password: password1,
+          phone: phone,
+          address: address,
+          city: city,
+          state: state,
+          zip: zip,
+          currentCart: currentCart
         });
       }
     });

@@ -59,15 +59,14 @@ var SubscriptionPreviewComponent = /*#__PURE__*/function (_Component) {
           pricePerPayPeriod = _this$props$subscript.pricePerPayPeriod,
           product = _this$props$subscript.product,
           quantity = _this$props$subscript.quantity,
-          recurringPayment = _this$props$subscript.recurringPayment,
           size = _this$props$subscript.size,
           startDate = _this$props$subscript.startDate,
           timeOfDelivery = _this$props$subscript.timeOfDelivery,
           _id = _this$props$subscript._id;
-      return /*#__PURE__*/_react["default"].createElement(_subscriptionpreview.SubscriptionPreviewWrap, null, /*#__PURE__*/_react["default"].createElement("p", null, _id), /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), /*#__PURE__*/_react["default"].createElement("div", null, "(", quantity, ") ", size, " ", flavor, " ", product), /*#__PURE__*/_react["default"].createElement("br", null), /*#__PURE__*/_react["default"].createElement("hr", null), /*#__PURE__*/_react["default"].createElement("br", null), /*#__PURE__*/_react["default"].createElement("div", null, "Delivery Frequency: ", deliveryFrequency), /*#__PURE__*/_react["default"].createElement("div", null, "Start Date: ", startDate), /*#__PURE__*/_react["default"].createElement("div", null, "Time Of Delivery: ", timeOfDelivery), /*#__PURE__*/_react["default"].createElement("div", null, "Payment Frequency: ", payPeriodFrequency), /*#__PURE__*/_react["default"].createElement("div", null, "Price Per Payment Period: ", new Intl.NumberFormat('en-US', {
+      return /*#__PURE__*/_react["default"].createElement(_subscriptionpreview.SubscriptionPreviewWrap, null, /*#__PURE__*/_react["default"].createElement("div", null, "(", quantity, ") ", size, " ", flavor, " ", product), /*#__PURE__*/_react["default"].createElement("hr", null), /*#__PURE__*/_react["default"].createElement("div", null, "Delivery Frequency: ", deliveryFrequency), /*#__PURE__*/_react["default"].createElement("div", null, "Start Date: ", startDate), /*#__PURE__*/_react["default"].createElement("div", null, "Time Of Delivery: ", timeOfDelivery), /*#__PURE__*/_react["default"].createElement("div", null, "Payment Frequency: ", payPeriodFrequency), /*#__PURE__*/_react["default"].createElement("div", null, "Price Per Payment Period: ", new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD'
-      }).format(pricePerPayPeriod)), /*#__PURE__*/_react["default"].createElement("div", null, "Recurring Payment: ", recurringPayment.toString()));
+      }).format(pricePerPayPeriod)));
     }
   }]);
 

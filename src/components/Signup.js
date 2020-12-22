@@ -27,8 +27,6 @@ class SignupComponent extends Component {
     this.setState({ passwordMessage })
   }
   signup = (e) => {
-    e.preventDefault()
-    const { subscriptionID } = this.props;
     const { firstName, lastName, email, password1, password2, phone, address, city, state, zip, currentCart } = this.state;
     if(password1 != password2){
       this.badPassword("Passwords do not match!");
@@ -39,19 +37,7 @@ class SignupComponent extends Component {
     } else if(!/[a-zA-Z]/.test(password1)){
       this.badPassword("Password must contain at least one letter");
     } else {
-      fetch('/api/auth', {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, lastName, email, password: password1, phone, address, city, state, zip, currentCart })
-      })
-      .then((res) => res.json())
-      .then((data) => {
-        if(subscriptionID){
-          window.location.href = "/cart";
-        } else {
-          window.location.href = "/myaccount"
-        }
-      })
+      this.props.login(e, { firstName, lastName, email, password: password1, phone, address, city, state, zip, currentCart })
     }
   }
   updateState = (e, prop) => {

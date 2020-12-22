@@ -1,10 +1,11 @@
 var UserModel = require('./../models/userModel');
 
 module.exports = {
-  login: function(req, res, next){
+  login: (req, res) => {
+    console.log(req.user);
       res.send(req.user);
   },
-  getMe: function(req,res) {
+  getMe: (req, res) =>  {
     if(!req.user){
       return res.send({});
     }
@@ -21,13 +22,13 @@ module.exports = {
       }
     });
   },
-  logout: function(req,res) {
+  logout: (req, res) =>  {
     var id = req.user.id
     req.logout();
     console.log(id + " logged out");
     res.send(id + " logged out");
   },
-  read: function(req, res){
+  read: (req, res) => {
     UserModel
     .find(req.query)
     .populate('orders')
@@ -40,7 +41,7 @@ module.exports = {
       }
     });
   },
-  update: function(req, res){
+  update: (req, res) => {
     UserModel.findByIdAndUpdate(req.params.id, req.body, function(err, result){
       if(err){
         res.send(err);

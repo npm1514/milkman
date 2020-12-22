@@ -51,7 +51,8 @@ var Confirmation = /*#__PURE__*/function (_Component) {
 
     _this = _super.call(this, props);
     _this.state = {
-      user: {}
+      user: {},
+      verified: false
     };
     return _this;
   }
@@ -67,7 +68,8 @@ var Confirmation = /*#__PURE__*/function (_Component) {
       }).then(function (user) {
         if (user._id) {
           _this2.setState({
-            user: user
+            user: user,
+            verified: true
           });
         } else {
           window.location.href = "/login";
@@ -82,8 +84,15 @@ var Confirmation = /*#__PURE__*/function (_Component) {
       var _this$props = this.props,
           orderID = _this$props.orderID,
           order = _this$props.order;
-      console.log(order);
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_confirmation.ConfirmationContent, null, "confirmation page ", orderID)), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      var verified = this.state.verified;
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, !verified && /*#__PURE__*/_react["default"].createElement(_confirmation.ConfirmationContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "confirmation page: ", orderID), /*#__PURE__*/_react["default"].createElement("p", null, "Date: ", order.date), order.subscriptions.map(function (subscription, index) {
+        return /*#__PURE__*/_react["default"].createElement(SubscriptionPreview, {
+          key: index,
+          subscription: subscription
+        });
+      }), /*#__PURE__*/_react["default"].createElement("p", null, "Price: ", order.price), /*#__PURE__*/_react["default"].createElement("p", null, user.firstName, " ", user.lastName), /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/myaccount"
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Go Back To Your Account")))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 

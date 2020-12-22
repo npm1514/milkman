@@ -32,7 +32,7 @@ export const ProductBox = styled.div`
   img {
     height: 150px;
   }
-  input {
+  input, textarea {
     padding: 4px;
   }
 `;
@@ -58,7 +58,7 @@ export const FlagWrapper = styled.div`
     top: -2px;
   }
   &.hideReel {
-    top: -85px;
+    top: -120px;
   }
 `;
 export const Flag = styled.svg`

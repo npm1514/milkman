@@ -34,11 +34,7 @@ var _passport2 = _interopRequireDefault(require("./config/passport"));
 
 var _config = _interopRequireDefault(require("./config"));
 
-var _userCtrl = _interopRequireDefault(require("./controllers/userCtrl"));
-
-var _subscriptionCtrl = _interopRequireDefault(require("./controllers/subscriptionCtrl"));
-
-var _orderCtrl = _interopRequireDefault(require("./controllers/orderCtrl"));
+var _controllers = require("./controllers");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -189,21 +185,30 @@ app.get('/images/:id', function (req, res) {
   res.set('Cache-Control', 'public, max-age=31557600');
   res.sendFile(_path["default"].join(__dirname, '../images/' + req.params.id));
 });
-app.post('/api/auth', _passport["default"].authenticate('local-signup'), _userCtrl["default"].login);
-app.get('/api/getMe', _userCtrl["default"].getMe);
-app.get('/api/logout', _userCtrl["default"].logout);
-app.get('/api/users', _userCtrl["default"].read);
-app.put('/api/users/:id', _userCtrl["default"].update);
-app.get('/api/subscriptions', _subscriptionCtrl["default"].read);
-app.get('/api/subscriptions/:id', _subscriptionCtrl["default"].readOne);
-app.post('/api/subscriptions', _subscriptionCtrl["default"].create);
-app.put('/api/subscriptions/:id', _subscriptionCtrl["default"].update);
-app["delete"]('/api/subscriptions/:id', _subscriptionCtrl["default"].destroy);
-app.get('/api/orders', _orderCtrl["default"].read);
-app.get('/api/orders/:id', _orderCtrl["default"].readOne);
-app.post('/api/orders', _orderCtrl["default"].create);
-app.put('/api/orders/:id', _orderCtrl["default"].update);
-app["delete"]('/api/orders/:id', _orderCtrl["default"].destroy);
+app.post('/api/auth', _passport["default"].authenticate('local-signup'), _controllers.userCtrl.login);
+app.get('/api/getMe', _controllers.userCtrl.getMe);
+app.get('/api/logout', _controllers.userCtrl.logout);
+app.get('/api/users', _controllers.userCtrl.read);
+app.put('/api/users/:id', _controllers.userCtrl.update);
+app.get('/api/subscriptions', _controllers.subscriptionCtrl.read);
+app.get('/api/subscriptions/:id', _controllers.subscriptionCtrl.readOne);
+app.post('/api/subscriptions', _controllers.subscriptionCtrl.create);
+app.put('/api/subscriptions/:id', _controllers.subscriptionCtrl.update);
+app["delete"]('/api/subscriptions/:id', _controllers.subscriptionCtrl.destroy);
+app.get('/api/orders', _controllers.orderCtrl.read);
+app.get('/api/orders/:id', _controllers.orderCtrl.readOne);
+app.post('/api/orders', _controllers.orderCtrl.create);
+app.put('/api/orders/:id', _controllers.orderCtrl.update);
+app["delete"]('/api/orders/:id', _controllers.orderCtrl.destroy);
+app.post('/api/pay', _controllers.payCtrl.pay);
+app.post('/api/card', function (req, res) {
+  var body = req.body;
+  var props = Object.keys(body);
+  props.map(function (a) {
+    body[a] = cryptr.encrypt(body[a]);
+  });
+  res.send(body);
+});
 app.get('/health', function (req, res) {
   return res.send('OK');
 });
@@ -254,7 +259,7 @@ function returnHTML(data, bundle, Page, title) {
     data: data
   })));
   var styles = sheet.getStyleTags();
-  return "\n      <html lang=\"en\">\n        <head>\n          <link data-default-icon=\"/images/cj_icon.ico\" data-badged-icon=\"/images/cj_icon.ico\" rel=\"shortcut icon\" href=\"/images/cj_icon.ico\">\n          <meta name=\"google-site-verification\" content=\"hzAIEHsN0e84-jcUhXzS7ahusAox1Ha14-sfJyMoq2w\" />\n          <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n          <title>Cafe Juniper Milkman Service | Salt Lake City Coffee Subscriptions</title>\n          <meta name=\"Description\" content=\"Subscribe to downtown Salt Lake's newest coffee shop catering service! Offering coffee to go. Order for your home or office today!\">\n          <link rel=\"stylesheet\" href=\"https://use.typekit.net/mno0keq.css\">\n          <script src=\"https://kit.fontawesome.com/7fa747235e.js\" crossorigin=\"anonymous\"></script>\n          <style>\n            body, button, input {\n              margin: 0;\n              font-family: diazo-mvb-ex-cond, sans-serif;\n              font-weight: 400; font-style: normal;\n              overflow-x: hidden; font-size: 14px;\n              width: 100%; max-width: 100%; height: auto;\n            }\n            h1, h2 { font-weight: 700; font-size: 16px; }\n            th { font-weight: 700; font-size: 14px; }\n            td, button, input { font-size: 12px; }\n            p { font-weight: 100; font-size: 12px; }\n            a { text-decoration: none;}\n            i { font-size: 30px;}\n            @media (min-width: 700px){\n              body, th, h1, h2, td { font-size: 30px; }\n              p, input, button { font-size: 18px; }\n            }\n          </style>\n          ".concat(styles, "\n        </head>\n        <body>\n          <script>window.os = window.os || {};</script>\n          <script>window.__DATA__=").concat(dataString, "</script>\n          <div id=\"app\" role=\"main\">").concat(body, "</div>\n          <script>").concat(bundle, "</script>\n          <script defer>\n            fetch('https://npm-data-storage.herokuapp.com/addData', {\n              method:\"POST\",\n              headers: { 'Content-Type': 'application/json' },\n              body: JSON.stringify({\n                type: \"pageload\",\n                date: new Date(),\n                url: window.origin,\n                device: window.navigator.appVersion,\n                referrer: document.referrer,\n                performance: window.performance.timing\n              })\n            })\n            .then((res) => res.text())\n            .then((data) => console.log(\"page load\"))\n            window.addEventListener('click', (e) => {\n              fetch('https://npm-data-storage.herokuapp.com/addData', {\n                method:\"POST\",\n                headers: { 'Content-Type': 'application/json' },\n                body: JSON.stringify({\n                  type: \"click\",\n                  date: new Date(),\n                  url: window.origin,\n                  device: window.navigator.appVersion,\n                  referrer: document.referrer,\n                  performance: window.performance.timing,\n                  clickThing: e.target.outerHTML\n                })\n              })\n              .then((res) => res.text())\n              .then((data) => console.log(\"click\"))\n            })\n          </script>\n          <!-- Global site tag (gtag.js) - Google Analytics -->\n          <script async src=\"https://www.googletagmanager.com/gtag/js?id=UA-182243768-1\">\n          </script>\n          <script>\n            window.dataLayer = window.dataLayer || [];\n            function gtag(){dataLayer.push(arguments);}\n            gtag('js', new Date());\n            gtag('config', 'UA-182243768-1');\n          </script>\n        </body>\n      </html>\n    ");
+  return "\n      <html lang=\"en\">\n        <head>\n          <link data-default-icon=\"/images/cj_icon.ico\" data-badged-icon=\"/images/cj_icon.ico\" rel=\"shortcut icon\" href=\"/images/cj_icon.ico\">\n          <meta name=\"google-site-verification\" content=\"hzAIEHsN0e84-jcUhXzS7ahusAox1Ha14-sfJyMoq2w\" />\n          <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n          <title>Cafe Juniper Milkman Service | Salt Lake City Coffee Subscriptions</title>\n          <meta name=\"Description\" content=\"Subscribe to downtown Salt Lake's newest coffee shop catering service! Offering coffee to go. Order for your home or office today!\">\n          <link rel=\"stylesheet\" href=\"https://use.typekit.net/mno0keq.css\">\n          <script src=\"https://kit.fontawesome.com/7fa747235e.js\" crossorigin=\"anonymous\"></script>\n          <style>\n            body, button, input, textarea {\n              margin: 0;\n              font-family: diazo-mvb-ex-cond, sans-serif;\n              font-weight: 400; font-style: normal;\n              overflow-x: hidden; font-size: 14px;\n              width: 100%; max-width: 100%; height: auto;\n            }\n            h1, h2 { font-weight: 700; font-size: 16px; }\n            th { font-weight: 700; font-size: 14px; }\n            td, button, input { font-size: 12px; }\n            p { font-weight: 100; font-size: 12px; }\n            a { text-decoration: none;}\n            i { font-size: 30px;}\n            @media (min-width: 700px){\n              body, th, h1, h2, td { font-size: 30px; }\n              p, input, button { font-size: 18px; }\n            }\n          </style>\n          ".concat(styles, "\n        </head>\n        <body>\n          <script>window.os = window.os || {};</script>\n          <script>window.__DATA__=").concat(dataString, "</script>\n          <div id=\"app\" role=\"main\">").concat(body, "</div>\n          <script>").concat(bundle, "</script>\n          <script defer>\n            fetch('https://npm-data-storage.herokuapp.com/addData', {\n              method:\"POST\",\n              headers: { 'Content-Type': 'application/json' },\n              body: JSON.stringify({\n                type: \"pageload\",\n                date: new Date(),\n                url: window.origin,\n                device: window.navigator.appVersion,\n                referrer: document.referrer,\n                performance: window.performance.timing\n              })\n            })\n            .then((res) => res.text())\n            .then((data) => console.log(\"page load\"))\n            window.addEventListener('click', (e) => {\n              fetch('https://npm-data-storage.herokuapp.com/addData', {\n                method:\"POST\",\n                headers: { 'Content-Type': 'application/json' },\n                body: JSON.stringify({\n                  type: \"click\",\n                  date: new Date(),\n                  url: window.origin,\n                  device: window.navigator.appVersion,\n                  referrer: document.referrer,\n                  performance: window.performance.timing,\n                  clickThing: e.target.outerHTML\n                })\n              })\n              .then((res) => res.text())\n              .then((data) => console.log(\"click\"))\n            })\n          </script>\n          <!-- Global site tag (gtag.js) - Google Analytics -->\n          <script async src=\"https://www.googletagmanager.com/gtag/js?id=UA-182243768-1\">\n          </script>\n          <script>\n            window.dataLayer = window.dataLayer || [];\n            function gtag(){dataLayer.push(arguments);}\n            gtag('js', new Date());\n            gtag('config', 'UA-182243768-1');\n          </script>\n        </body>\n      </html>\n    ");
 }
 
 function errHandle(err) {

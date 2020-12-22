@@ -83,7 +83,7 @@ var Cart = /*#__PURE__*/function (_Component) {
     key: "render",
     value: function render() {
       var currentCart = this.state.user.currentCart;
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_cart.CartContent, null, currentCart.map(function (subscription, i) {
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_cart.CartContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), currentCart.map(function (subscription, i) {
         return /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
           key: i,
           subscription: subscription

@@ -19,12 +19,15 @@ class Chooseproducts extends Component {
       frequencySelected: "",
       startDateSelected: setMinDate(),
       timeSelected: "09:00",
+      notes: "",
       selectedPrice: "",
       paymentFrequency: "Month",
       pricePerPayPeriod: "",
       reelPosition: "",
       validTime: true,
-      user: {},
+      user: {
+        _id: ""
+      },
       subscription: {}
     };
   }
@@ -106,7 +109,7 @@ class Chooseproducts extends Component {
   slider = (id) => {
     setTimeout(() => {
       document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 200)
+    }, 100)
   }
   checkPrice = () => {
     let { productSelected: { basePrice }, flavorSelected, sizeSelected, quantitySelected, frequencySelected } = this.state;
@@ -114,24 +117,24 @@ class Chooseproducts extends Component {
     let size = sizeSelected.length ? sizeSelected[1] : [1,1];
     let price = Math.round(quantitySelected * basePrice * flavor[0] * (1/flavor[1]) * size[0] * (1/size[1])*100)/100;
     let pppp = "";
-    let payFreq = "Month";
+    let payFreq = "Monthly";
     if(frequencySelected){
       pppp = price;
       switch(frequencySelected.name){
         case "Daily":
           pppp *= 7;
-          payFreq = "Week";
+          payFreq = "Weekly";
           break;
         case "Work Days":
           pppp *= 5;
-          payFreq = "Week";
+          payFreq = "Weekly";
           break;
         case "Weekend":
           pppp *= 2;
-          payFreq = "Week";
+          payFreq = "Weekly";
           break;
         case "Weekly":
-          payFreq = "Week";
+          payFreq = "Weekly";
           break;
         case "Bi-Weekly":
           payFreq = "Bi-Weekly";
@@ -146,7 +149,7 @@ class Chooseproducts extends Component {
   }
   createSubscription = (e) => {
     if(this.state.validTime){
-      const { productSelected, flavorSelected, sizeSelected, quantitySelected, frequencySelected, startDateSelected, timeSelected, selectedPrice, paymentFrequency, pricePerPayPeriod, user } = this.state;
+      const { productSelected, flavorSelected, sizeSelected, quantitySelected, frequencySelected, startDateSelected, timeSelected, selectedPrice, paymentFrequency, pricePerPayPeriod, user, notes } = this.state;
       const { subscriptionID } = this.props.data;
       fetch('/api/subscriptions', {
         method: "POST",
@@ -163,7 +166,7 @@ class Chooseproducts extends Component {
           pricePerPayPeriod: pricePerPayPeriod,
           payPeriodFrequency: paymentFrequency,
           recurringPayment: true,
-          user
+          notes, user: user._id
         })
       })
       .then((res) => {
@@ -199,6 +202,9 @@ class Chooseproducts extends Component {
       window.location.href = `/cart`;
     })
   }
+  changeNotes = (e) => {
+    this.setState({notes: e.currentTarget.value});
+  }
   componentDidUpdate() {
     let time_select = document.getElementById('time_select')
     if(time_select && this.state.validTime){
@@ -211,7 +217,6 @@ class Chooseproducts extends Component {
           if(response.status !== 200) throw Error(response.statusText);
           return response.json();
       }).then((user) => {
-        console.log(user);
           this.setState({ user })
       }).catch(err => console.log(err))
     const { subscriptionID } = this.props;
@@ -225,7 +230,7 @@ class Chooseproducts extends Component {
   }
 
   render(){
-    const { productSelected, flavorSelected, sizeSelected, selectedPrice, frequencySelected, quantitySelected, pricePerPayPeriod, startDateSelected, timeSelected, reelPosition, paymentFrequency } = this.state;
+    const { productSelected, flavorSelected, sizeSelected, selectedPrice, frequencySelected, quantitySelected, pricePerPayPeriod, startDateSelected, timeSelected, reelPosition, paymentFrequency, notes } = this.state;
     let sizeoptions = ""
     if(productSelected){
       sizeoptions = flavorSelected[0] == "rotating single origin" ? "singleoriginsizes" : productSelected.sizeOptions;
@@ -376,7 +381,7 @@ class Chooseproducts extends Component {
                     <h2 id="step5">Step 5: Select Start Date and Preferred Time of Delivery</h2>
                     <p>We deliver between the hours of 7AM and 12PM. If you have a deliver requirement outside of this range, please call us.</p>
                     <ProductBox
-                      style={{margin: "auto"}}
+                      style={{margin: "8px auto"}}
                       className={startDateSelected ? "productSelected" : ""}
                     >
                       <input
@@ -390,7 +395,7 @@ class Chooseproducts extends Component {
                       />
                     </ProductBox>
                     <ProductBox
-                      style={{margin: "auto"}}
+                      style={{margin: "8px auto"}}
                       className={timeSelected ? "productSelected" : ""}
                     >
                       <input
@@ -406,6 +411,25 @@ class Chooseproducts extends Component {
                     </ProductBox>
                   </Fragment>
                 }
+                {
+                  productSelected && flavorSelected && sizeSelected && frequencySelected && startDateSelected && timeSelected &&
+                  <Fragment>
+                    <h2 id="step5">Step 6: Select Start Date and Preferred Time of Delivery</h2>
+                    <ProductBox
+                      style={{margin: "8px auto"}}
+                      className={notes ? "productSelected" : ""}
+                    >
+                      <textarea
+                        style={{width: "230px", textAlign: "center"}}
+                        placeholder="Did we miss anything? If there are any other details about your subscription that you would like, please let us know here."
+                        type="number"
+                        value={notes}
+                        onChange={this.changeNotes}
+                      />
+                    </ProductBox>
+                  </Fragment>
+                }
+
                 {
                   productSelected && flavorSelected && sizeSelected && frequencySelected && startDateSelected && timeSelected &&
                   <Button onClick={this.createSubscription}>Add To Cart</Button>

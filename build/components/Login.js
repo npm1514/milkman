@@ -58,27 +58,6 @@ var LoginComponent = /*#__PURE__*/function (_Component) {
       _this.setState(obj);
     });
 
-    _defineProperty(_assertThisInitialized(_this), "login", function (e) {
-      var _this$state = _this.state,
-          email = _this$state.email,
-          password = _this$state.password;
-      e.preventDefault();
-      fetch('/api/auth', {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        })
-      }).then(function (res) {
-        return res.text();
-      }).then(function (data) {
-        window.location.href = "/myaccount";
-      });
-    });
-
     _this.state = {
       email: "",
       password: ""
@@ -91,18 +70,23 @@ var LoginComponent = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var switchDisplay = this.props.switchDisplay;
-      var _this$state2 = this.state,
-          email = _this$state2.email,
-          password = _this$state2.password;
+      var _this$props = this.props,
+          switchDisplay = _this$props.switchDisplay,
+          login = _this$props.login;
+      var _this$state = this.state,
+          email = _this$state.email,
+          password = _this$state.password;
       return /*#__PURE__*/_react["default"].createElement(_login.LoginWrap, null, /*#__PURE__*/_react["default"].createElement("a", {
         onClick: switchDisplay
       }, /*#__PURE__*/_react["default"].createElement("p", null, "No login? Create an account")), /*#__PURE__*/_react["default"].createElement("h2", null, "Sign In"), /*#__PURE__*/_react["default"].createElement("form", {
-        onSubmit: this.login
+        onSubmit: function onSubmit(e) {
+          login(e, _this2.state);
+        }
       }, /*#__PURE__*/_react["default"].createElement("input", {
         placeholder: "Email Address",
         type: "email",
         value: email,
+        autocomplete: "on",
         onChange: function onChange(e) {
           _this2.updateState(e, "email");
         }

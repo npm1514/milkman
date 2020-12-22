@@ -46,6 +46,12 @@ var subscriptionSchema = new mongoose.Schema({
     type: Boolean,
     "default": true
   },
-  scheduledDays: [Date]
+  notes: {
+    type: String
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users"
+  }
 });
 module.exports = mongoose.model('subscriptions', subscriptionSchema);

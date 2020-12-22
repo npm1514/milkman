@@ -18,8 +18,10 @@ class Myaccount extends Component {
           city: "",
           state: "",
           zip: "",
-          subscriptions: []
-        }
+          subscriptions: [],
+          currentCart: []
+        },
+        verified: false
       };
     }
     componentDidMount(){
@@ -32,23 +34,30 @@ class Myaccount extends Component {
           if(!user._id){
             window.location.href = "/login";
           } else {
-            this.setState({ user })
+            this.setState({ user, verified: true })
           }
         }).catch(err => console.log(err))
     }
     render(){
-      const { user: { _id, firstName, lastName, email, password, phone, address, city, state, zip, subscriptions } } = this.state;
+      const { user: { _id, firstName, lastName, email, password, phone, address, city, state, zip, subscriptions, currentCart }, verified } = this.state;
       return (
           <PageWrapper>
               <Header/>
               <ContentWrapper>
-                <MyaccountContent>
-                  <span>{firstName} {lastName}</span>
-                  <a href="/chooseproducts"><Button>Add New Subscription</Button></a>
-                  <div>calendar here</div>
-                  <div>list of subscriptions</div>
-                  <a href="/cart"><Button>Go To Cart</Button></a>
-                </MyaccountContent>
+                {
+                  verified &&
+                  <MyaccountContent>
+                    <span>{firstName} {lastName}</span>
+                    <a href="/chooseproducts"><Button>Add New Subscription</Button></a>
+                    <div>calendar here</div>
+                    <div>list of subscriptions</div>
+                    {
+                      currentCart.length &&
+                      <a href="/cart"><Button>Go To Cart ({currentCart.length})</Button></a>
+                    }
+                  </MyaccountContent>
+                }
+
               </ContentWrapper>
               <Footer/>
           </PageWrapper>

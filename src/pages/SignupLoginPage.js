@@ -8,12 +8,28 @@ class SignupLogin extends Component {
     super(props)
     this.state = {
       loggingIn: props.data.loggingIn,
-      user: {}
+      user: {},
+      verified: false
     }
   }
   switchDisplay = () => {
     this.setState({
       loggingIn: !this.state.loggingIn
+    })
+  }
+  login = (e, obj) => {
+    fetch('/api/auth', {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(obj)
+    })
+    .then((res) => res.text())
+    .then((data) => {
+      if(this.props.data.subscriptionID){
+        window.location.href = "/cart";
+      } else {
+        window.location.href = "/myaccount"
+      }
     })
   }
   componentDidMount(){
@@ -26,29 +42,37 @@ class SignupLogin extends Component {
         if(user._id){
           window.location.href = "/myaccount";
         } else {
-          this.setState({ user })
+          this.setState({ user, verified: true })
         }
       }).catch(err => console.log(err))
   }
   render(){
-    let { subscription, subscriptionID } = this.props.data
+    const { subscription, subscriptionID } = this.props.data
+    const { verified } = this.state;
     return (
         <PageWrapper>
             <Header/>
             <ContentWrapper>
-              <SignupLoginContent>
-                {
-                  subscriptionID &&
-                  <SubscriptionPreview subscription={subscription}/>
-                }
-                <SignupOrLoginWrap>
-                {
-                  this.state.loggingIn ?
-                  <Login switchDisplay={this.switchDisplay} subscriptionID={subscriptionID}/> :
-                  <Signup switchDisplay={this.switchDisplay} subscriptionID={subscriptionID}/>
-                }
-                </SignupOrLoginWrap>
-              </SignupLoginContent>
+              {
+                verified &&
+                <SignupLoginContent>
+                  {
+                    subscriptionID &&
+                    <div>
+                    <h2>Your Cart</h2>
+                    <SubscriptionPreview subscription={subscription}/>
+                    </div>
+                  }
+                  <SignupOrLoginWrap>
+                  {
+                    this.state.loggingIn ?
+                    <Login switchDisplay={this.switchDisplay} login={this.login}/> :
+                    <Signup switchDisplay={this.switchDisplay} login={this.login}/>
+                  }
+                  </SignupOrLoginWrap>
+                </SignupLoginContent>
+              }
+
             </ContentWrapper>
             <Footer/>
         </PageWrapper>

@@ -33,6 +33,7 @@ class Cart extends Component {
               <Header/>
               <ContentWrapper>
                 <CartContent>
+                  <h2>Your Cart</h2>
                   {
                     currentCart.map((subscription, i) => {
                       return (

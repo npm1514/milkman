@@ -15,31 +15,19 @@ class LoginComponent extends Component {
     obj[prop] = e.currentTarget.value;
     this.setState(obj);
   }
-  login = (e) => {
-    const { email, password } = this.state;
-    e.preventDefault()
-    fetch('/api/auth', {
-      method: "POST",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    })
-    .then((res) => res.text())
-    .then((data) => {
-        window.location.href = "/myaccount";
-    })
-  }
   render(){
-    const { switchDisplay } = this.props;
+    const { switchDisplay, login } = this.props;
     const { email, password } = this.state;
     return (
       <LoginWrap>
         <a onClick={switchDisplay}><p>No login? Create an account</p></a>
         <h2>Sign In</h2>
-        <form onSubmit={this.login}>
+        <form onSubmit={(e) => {login(e, this.state)}}>
           <input
             placeholder="Email Address"
             type="email"
             value={email}
+            autocomplete="on"
             onChange={(e) => {this.updateState(e, "email")}}
           />
           <input

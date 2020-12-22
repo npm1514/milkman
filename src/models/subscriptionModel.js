@@ -12,7 +12,8 @@ var subscriptionSchema = new mongoose.Schema({
   pricePerPayPeriod: {type: Number},
   payPeriodFrequency: {type: String, default: "Monthly"},
   recurringPayment: {type: Boolean, default: true},
-  scheduledDays: [Date]
+  notes: {type: String},
+  user: {type: mongoose.Schema.Types.ObjectId, ref: "users"}
 });
 
 module.exports = mongoose.model('subscriptions', subscriptionSchema);

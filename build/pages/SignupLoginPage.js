@@ -59,9 +59,28 @@ var SignupLogin = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "login", function (e, obj) {
+      fetch('/api/auth', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(obj)
+      }).then(function (res) {
+        return res.text();
+      }).then(function (data) {
+        if (_this.props.data.subscriptionID) {
+          window.location.href = "/cart";
+        } else {
+          window.location.href = "/myaccount";
+        }
+      });
+    });
+
     _this.state = {
       loggingIn: props.data.loggingIn,
-      user: {}
+      user: {},
+      verified: false
     };
     return _this;
   }
@@ -81,7 +100,8 @@ var SignupLogin = /*#__PURE__*/function (_Component) {
           window.location.href = "/myaccount";
         } else {
           _this2.setState({
-            user: user
+            user: user,
+            verified: true
           });
         }
       })["catch"](function (err) {
@@ -94,14 +114,15 @@ var SignupLogin = /*#__PURE__*/function (_Component) {
       var _this$props$data = this.props.data,
           subscription = _this$props$data.subscription,
           subscriptionID = _this$props$data.subscriptionID;
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_signuplogin.SignupLoginContent, null, subscriptionID && /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
+      var verified = this.state.verified;
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_signuplogin.SignupLoginContent, null, subscriptionID && /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
         subscription: subscription
-      }), /*#__PURE__*/_react["default"].createElement(_signuplogin.SignupOrLoginWrap, null, this.state.loggingIn ? /*#__PURE__*/_react["default"].createElement(_components.Login, {
+      })), /*#__PURE__*/_react["default"].createElement(_signuplogin.SignupOrLoginWrap, null, this.state.loggingIn ? /*#__PURE__*/_react["default"].createElement(_components.Login, {
         switchDisplay: this.switchDisplay,
-        subscriptionID: subscriptionID
+        login: this.login
       }) : /*#__PURE__*/_react["default"].createElement(_components.Signup, {
         switchDisplay: this.switchDisplay,
-        subscriptionID: subscriptionID
+        login: this.login
       })))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);

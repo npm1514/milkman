@@ -14,6 +14,7 @@ module.exports = {
   read: function(req, res){
     SubscriptionModel
     .find(req.query)
+    .populate('user')
     .exec(function(err, result){
       if(err){
         res.send(err);
@@ -25,6 +26,7 @@ module.exports = {
   readOne: function(req, res){
     SubscriptionModel
     .findById(req.params.id)
+    .populate('user')
     .exec(function(err, result){
       if(err){
         res.send(err);

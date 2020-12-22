@@ -14,7 +14,7 @@ module.exports = {
     });
   },
   read: function read(req, res) {
-    SubscriptionModel.find(req.query).exec(function (err, result) {
+    SubscriptionModel.find(req.query).populate('user').exec(function (err, result) {
       if (err) {
         res.send(err);
       } else {
@@ -23,7 +23,7 @@ module.exports = {
     });
   },
   readOne: function readOne(req, res) {
-    SubscriptionModel.findById(req.params.id).exec(function (err, result) {
+    SubscriptionModel.findById(req.params.id).populate('user').exec(function (err, result) {
       if (err) {
         res.send(err);
       } else {

@@ -20,9 +20,7 @@ import { LandingRoot, ChooseproductsRoot, SignupLoginRoot, CartRoot, CheckoutRoo
 
 import passportConfig from './config/passport';
 import config from './config';
-import userCtrl from './controllers/userCtrl';
-import subscriptionCtrl from './controllers/subscriptionCtrl';
-import orderCtrl from './controllers/orderCtrl';
+import { userCtrl, subscriptionCtrl, orderCtrl, payCtrl } from './controllers';
 
 var PORT = process.env.PORT || 3003;
 
@@ -185,6 +183,16 @@ app.post('/api/orders', orderCtrl.create);
 app.put('/api/orders/:id', orderCtrl.update);
 app.delete('/api/orders/:id', orderCtrl.destroy);
 
+app.post('/api/pay', payCtrl.pay);
+app.post('/api/card', (req, res) => {
+  let body = req.body;
+  let props = Object.keys(body);
+  props.map(a => {
+    body[a] = cryptr.encrypt(body[a])
+  })
+  res.send(body)
+});
+
 app.get('/health', (req, res) => res.send('OK'));
 
 var mongoUri = 'mongodb+srv://'+cryptr.decrypt(config.dbuser)+':'+cryptr.decrypt(config.dbpass)+'@milkman.bjixf.mongodb.net/milkman?retryWrites=true&w=majority';
@@ -239,7 +247,7 @@ function returnHTML(data, bundle, Page, title){
           <link rel="stylesheet" href="https://use.typekit.net/mno0keq.css">
           <script src="https://kit.fontawesome.com/7fa747235e.js" crossorigin="anonymous"></script>
           <style>
-            body, button, input {
+            body, button, input, textarea {
               margin: 0;
               font-family: diazo-mvb-ex-cond, sans-serif;
               font-weight: 400; font-style: normal;

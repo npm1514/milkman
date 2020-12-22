@@ -19,7 +19,7 @@ export const ContentWrapper = styled.div`
   }
 `;
 
-export const Button = styled.div`
+export const Button = styled.button`
   background: ${pink};
   padding: 6px 12px;
   margin: 12px auto;

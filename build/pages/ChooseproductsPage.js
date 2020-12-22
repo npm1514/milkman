@@ -188,7 +188,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
           behavior: 'smooth',
           block: 'start'
         });
-      }, 200);
+      }, 100);
     });
 
     _defineProperty(_assertThisInitialized(_this), "checkPrice", function () {
@@ -202,7 +202,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
       var size = sizeSelected.length ? sizeSelected[1] : [1, 1];
       var price = Math.round(quantitySelected * basePrice * flavor[0] * (1 / flavor[1]) * size[0] * (1 / size[1]) * 100) / 100;
       var pppp = "";
-      var payFreq = "Month";
+      var payFreq = "Monthly";
 
       if (frequencySelected) {
         pppp = price;
@@ -210,21 +210,21 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         switch (frequencySelected.name) {
           case "Daily":
             pppp *= 7;
-            payFreq = "Week";
+            payFreq = "Weekly";
             break;
 
           case "Work Days":
             pppp *= 5;
-            payFreq = "Week";
+            payFreq = "Weekly";
             break;
 
           case "Weekend":
             pppp *= 2;
-            payFreq = "Week";
+            payFreq = "Weekly";
             break;
 
           case "Weekly":
-            payFreq = "Week";
+            payFreq = "Weekly";
             break;
 
           case "Bi-Weekly":
@@ -253,7 +253,8 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
             selectedPrice = _this$state3.selectedPrice,
             paymentFrequency = _this$state3.paymentFrequency,
             pricePerPayPeriod = _this$state3.pricePerPayPeriod,
-            user = _this$state3.user;
+            user = _this$state3.user,
+            notes = _this$state3.notes;
         var subscriptionID = _this.props.data.subscriptionID;
         fetch('/api/subscriptions', {
           method: "POST",
@@ -272,7 +273,8 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
             pricePerPayPeriod: pricePerPayPeriod,
             payPeriodFrequency: paymentFrequency,
             recurringPayment: true,
-            user: user
+            notes: notes,
+            user: user._id
           })
         }).then(function (res) {
           if (res.status !== 200) throw Error(res.statusText);
@@ -313,6 +315,12 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "changeNotes", function (e) {
+      _this.setState({
+        notes: e.currentTarget.value
+      });
+    });
+
     _this.state = {
       productSelected: "",
       flavorSelected: "",
@@ -321,12 +329,15 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
       frequencySelected: "",
       startDateSelected: setMinDate(),
       timeSelected: "09:00",
+      notes: "",
       selectedPrice: "",
       paymentFrequency: "Month",
       pricePerPayPeriod: "",
       reelPosition: "",
       validTime: true,
-      user: {},
+      user: {
+        _id: ""
+      },
       subscription: {}
     };
     return _this;
@@ -350,8 +361,6 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         if (response.status !== 200) throw Error(response.statusText);
         return response.json();
       }).then(function (user) {
-        console.log(user);
-
         _this2.setState({
           user: user
         });
@@ -386,7 +395,8 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
           startDateSelected = _this$state5.startDateSelected,
           timeSelected = _this$state5.timeSelected,
           reelPosition = _this$state5.reelPosition,
-          paymentFrequency = _this$state5.paymentFrequency;
+          paymentFrequency = _this$state5.paymentFrequency,
+          notes = _this$state5.notes;
       var sizeoptions = "";
 
       if (productSelected) {
@@ -480,7 +490,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         id: "step5"
       }, "Step 5: Select Start Date and Preferred Time of Delivery"), /*#__PURE__*/_react["default"].createElement("p", null, "We deliver between the hours of 7AM and 12PM. If you have a deliver requirement outside of this range, please call us."), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
         style: {
-          margin: "auto"
+          margin: "8px auto"
         },
         className: startDateSelected ? "productSelected" : ""
       }, /*#__PURE__*/_react["default"].createElement("input", {
@@ -493,7 +503,7 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         max: setMaxDate()
       })), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
         style: {
-          margin: "auto"
+          margin: "8px auto"
         },
         className: timeSelected ? "productSelected" : ""
       }, /*#__PURE__*/_react["default"].createElement("input", {
@@ -505,6 +515,22 @@ var Chooseproducts = /*#__PURE__*/function (_Component) {
         onChange: this.selectTime,
         min: "07:00",
         max: "12:00"
+      }))), productSelected && flavorSelected && sizeSelected && frequencySelected && startDateSelected && timeSelected && /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("h2", {
+        id: "step5"
+      }, "Step 6: Select Start Date and Preferred Time of Delivery"), /*#__PURE__*/_react["default"].createElement(_chooseproducts.ProductBox, {
+        style: {
+          margin: "8px auto"
+        },
+        className: notes ? "productSelected" : ""
+      }, /*#__PURE__*/_react["default"].createElement("textarea", {
+        style: {
+          width: "230px",
+          textAlign: "center"
+        },
+        placeholder: "Did we miss anything? If there are any other details about your subscription that you would like, please let us know here.",
+        type: "number",
+        value: notes,
+        onChange: this.changeNotes
       }))), productSelected && flavorSelected && sizeSelected && frequencySelected && startDateSelected && timeSelected && /*#__PURE__*/_react["default"].createElement(_global.Button, {
         onClick: this.createSubscription
       }, "Add To Cart"))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
