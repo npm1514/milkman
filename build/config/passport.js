@@ -26,21 +26,34 @@ module.exports = function (passport) {
 
         if (user) {
           if (user.validPassword(password)) {
-            console.log(user.id + " logged in");
             return done(null, user);
           } else {
-            console.log('Invalid email or password');
-            return done(null, false);
+            return done(null, false, {
+              message: 'Invalid email or password'
+            });
           }
         } else {
-          var newUser = new User(req.body);
-          newUser.email = email;
-          newUser.password = newUser.generateHash(password);
-          newUser.save(function (err) {
-            if (err) throw err;
-            console.log(newUser.id + " logged in");
-            return done(null, newUser);
-          });
+          if (Object.keys(req.body).length == 2) {
+            return done({
+              message: "No account"
+            }, false);
+          } else {
+            var newUser = new User(req.body);
+            newUser.email = email;
+            newUser.password = newUser.generateHash(password);
+            newUser.save(function (err) {
+              if (err) {
+                return done(null, false, {
+                  message: 'Missing Information'
+                });
+              }
+
+              ;
+              return done(null, newUser, {
+                message: newUser.id + " logged in"
+              });
+            });
+          }
         }
       });
     });

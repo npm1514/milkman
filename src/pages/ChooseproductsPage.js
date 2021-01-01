@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Header, Footer } from '../components';
-import { ChooseproductsContent, ProductWrapper, ProductBox, FlagWrapper, Flag } from '../styled-components/pages/chooseproducts';
-import { PageWrapper, ContentWrapper, Button } from '../styled-components/global';
+import { ChooseproductsContent, ProductWrapper, FlagWrapper, Flag } from '../styled-components/pages/chooseproducts';
+import { PageWrapper, ContentWrapper, Button, ProductBox } from '../styled-components/global';
 import sizes from '../data/sizes';
 import flavors from '../data/flavors';
 import frequencies from '../data/frequencies';
@@ -32,12 +32,10 @@ class Chooseproducts extends Component {
     };
   }
   selectProduct = (product) => {
-    let flavor = product.name == "Cold Brew" ? ["House", [1,1]] : "";
-    let size = product.name == "Amour Jam" ? ["9 oz", [1,1]] : "";
     this.setState({
       productSelected: product,
-      flavorSelected: flavor,
-      sizeSelected: size,
+      flavorSelected: "",
+      sizeSelected: "",
       reelPosition: "showReel",
       quantitySelected: 1,
       frequencySelected: ""
@@ -48,15 +46,8 @@ class Chooseproducts extends Component {
 
   }
   selectFlavor = (flavor) => {
-    const { productSelected: { name }, sizeSelected } = this.state;
-    let size = name == "Amour Jam" ? ["9 oz", [1,1]] : sizeSelected;
-    if(sizeSelected && name == "Prebrewed Drip Coffee"){
-      let option = flavor[0] == "rotating single origin" ? "singleoriginsizes" : "coffeeteasizes"
-      size = sizes[option].find(a => a[0] == sizeSelected[0])
-    }
     this.setState({
-      flavorSelected: flavor,
-      sizeSelected: size
+      flavorSelected: flavor
     }, () => {
       this.slider("step3");
       this.checkPrice();
@@ -199,7 +190,8 @@ class Chooseproducts extends Component {
       return res.json();
     })
     .then((response) => {
-      window.location.href = `/cart`;
+      console.log("change user", response);
+      // window.location.href = `/cart`;
     })
   }
   changeNotes = (e) => {
@@ -235,6 +227,7 @@ class Chooseproducts extends Component {
     if(productSelected){
       sizeoptions = flavorSelected[0] == "rotating single origin" ? "singleoriginsizes" : productSelected.sizeOptions;
     }
+    console.log(flavors[productSelected.flavorOptions]);
     return (
         <PageWrapper>
             <Header/>
@@ -303,12 +296,14 @@ class Chooseproducts extends Component {
                   productSelected &&
                   <Fragment>
                     <h2 id="step2">Step 2: Select Flavor</h2>
+                    <p>Hover for better description</p>
                     <ProductWrapper>
                       {
                         flavors[productSelected.flavorOptions].map((flavor, i) => {
                           return (
                             <ProductBox
                               key={i}
+                              title={flavor[2]}
                               onClick={() => this.selectFlavor(flavor)}
                               className={flavor[0] == flavorSelected[0] ? "productSelected" : ""}
                             >

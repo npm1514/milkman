@@ -135,7 +135,7 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
       password1: "",
       password2: "",
       passwordMessage: "",
-      currentCart: [_this.props.subscriptionID || ""]
+      currentCart: _this.props.subscriptionID ? [_this.props.subscriptionID] : []
     };
     return _this;
   }

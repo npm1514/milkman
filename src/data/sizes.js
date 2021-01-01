@@ -1,11 +1,17 @@
 module.exports = {
-  coffeeteasizes: [
+  coffeesizes: [
     ["16 oz", [1,1]],
     ["32 oz", [11,6]],
     ["64 oz", [20,6]],
     ["128 oz", [38,6]]
   ],
-  singleoriginsizes: [
+  teasizes: [
+    ["16 oz", [1,1]],
+    ["32 oz", [11,6]],
+    ["64 oz", [20,6]],
+    ["128 oz", [38,6]]
+  ],
+  hotcocoasizes: [
     ["16 oz", [1,1]],
     ["32 oz", [12,6.5]],
     ["64 oz", [22,6.5]],
@@ -23,5 +29,10 @@ module.exports = {
   ],
   jamsizes: [
     ["9 oz", [1,1]]
+  ],
+  pastrysizes: [
+    ["Single", [1,1]],
+    ["1/2 Dozen", [5.5,1]],
+    ["Dozen", [11,1]],
   ]
 }

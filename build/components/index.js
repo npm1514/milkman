@@ -3,6 +3,18 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+Object.defineProperty(exports, "About", {
+  enumerable: true,
+  get: function get() {
+    return _About["default"];
+  }
+});
+Object.defineProperty(exports, "CateringMenu", {
+  enumerable: true,
+  get: function get() {
+    return _CateringMenu["default"];
+  }
+});
 Object.defineProperty(exports, "Footer", {
   enumerable: true,
   get: function get() {
@@ -15,16 +27,16 @@ Object.defineProperty(exports, "Header", {
     return _Header["default"];
   }
 });
-Object.defineProperty(exports, "Signup", {
-  enumerable: true,
-  get: function get() {
-    return _Signup["default"];
-  }
-});
 Object.defineProperty(exports, "Login", {
   enumerable: true,
   get: function get() {
     return _Login["default"];
+  }
+});
+Object.defineProperty(exports, "Signup", {
+  enumerable: true,
+  get: function get() {
+    return _Signup["default"];
   }
 });
 Object.defineProperty(exports, "SubscriptionPreview", {
@@ -34,13 +46,17 @@ Object.defineProperty(exports, "SubscriptionPreview", {
   }
 });
 
+var _About = _interopRequireDefault(require("./About"));
+
+var _CateringMenu = _interopRequireDefault(require("./CateringMenu"));
+
 var _Footer = _interopRequireDefault(require("./Footer"));
 
 var _Header = _interopRequireDefault(require("./Header"));
 
-var _Signup = _interopRequireDefault(require("./Signup"));
-
 var _Login = _interopRequireDefault(require("./Login"));
+
+var _Signup = _interopRequireDefault(require("./Signup"));
 
 var _SubscriptionPreview = _interopRequireDefault(require("./SubscriptionPreview"));
 

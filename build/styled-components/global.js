@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Button = exports.ContentWrapper = exports.PageWrapper = void 0;
+exports.ProductBox = exports.Button = exports.ContentWrapper = exports.PageWrapper = void 0;
 
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
@@ -11,8 +11,18 @@ var _colors = require("./colors");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+function _templateObject4() {
+  var data = _taggedTemplateLiteral(["\n  height: max-content;\n  width: max-content;\n  padding: 8px;\n  margin: 8px;\n  text-align: center;\n  border: 1px solid #8d8d8d;\n  border-radius: 4px;\n  &.productSelected {\n    border: 2px solid #000;\n  }\n  img {\n    height: 150px;\n  }\n  input, textarea {\n    padding: 4px;\n  }\n"]);
+
+  _templateObject4 = function _templateObject4() {
+    return data;
+  };
+
+  return data;
+}
+
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  background: ", ";\n  padding: 6px 12px;\n  margin: 12px auto;\n  border: 1px solid #8d8d8d;\n  border-radius: 3px;\n  width: max-content;\n  &:hover {\n    cursor: pointer;\n    border: 2px solid #8d8d8d;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  background: ", ";\n  padding: 6px 12px;\n  margin: 13px;\n  border: 1px solid #8d8d8d;\n  border-radius: 3px;\n  width: max-content;\n  &:hover {\n    cursor: pointer;\n    margin: 12px;\n    border: 2px solid #8d8d8d;\n  }\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -54,3 +64,7 @@ exports.ContentWrapper = ContentWrapper;
 var Button = _styledComponents["default"].button(_templateObject3(), _colors.pink);
 
 exports.Button = Button;
+
+var ProductBox = _styledComponents["default"].div(_templateObject4());
+
+exports.ProductBox = ProductBox;

@@ -22,12 +22,32 @@ export const ContentWrapper = styled.div`
 export const Button = styled.button`
   background: ${pink};
   padding: 6px 12px;
-  margin: 12px auto;
+  margin: 13px;
   border: 1px solid #8d8d8d;
   border-radius: 3px;
   width: max-content;
   &:hover {
     cursor: pointer;
+    margin: 12px;
     border: 2px solid #8d8d8d;
+  }
+`;
+
+export const ProductBox = styled.div`
+  height: max-content;
+  width: max-content;
+  padding: 8px;
+  margin: 8px;
+  text-align: center;
+  border: 1px solid #8d8d8d;
+  border-radius: 4px;
+  &.productSelected {
+    border: 2px solid #000;
+  }
+  img {
+    height: 150px;
+  }
+  input, textarea {
+    padding: 4px;
   }
 `;

@@ -14,8 +14,6 @@ var _nodeFetch = _interopRequireDefault(require("node-fetch"));
 
 var _fs = _interopRequireDefault(require("fs"));
 
-var _compression = _interopRequireDefault(require("compression"));
-
 var _cors = _interopRequireDefault(require("cors"));
 
 var _bodyParser = _interopRequireDefault(require("body-parser"));
@@ -38,6 +36,7 @@ var _controllers = require("./controllers");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+// import compression from 'compression';
 var cron = require('node-cron');
 
 var cryptr = new _cryptr["default"](_config["default"].key);
@@ -52,12 +51,12 @@ app.use((0, _expressSession["default"])({
 }));
 app.use(_passport["default"].initialize());
 app.use(_passport["default"].session());
-app.use((0, _cors["default"])());
-app.use((0, _compression["default"])());
+app.use((0, _cors["default"])()); // app.use(compression());
+
 app.use(_bodyParser["default"].json());
 app.use(_bodyParser["default"].urlencoded());
 cron.schedule('* * 1 * *', function () {
-  (0, _nodeFetch["default"])('https://drcastillo.herokuapp.com/').then(function (res) {
+  (0, _nodeFetch["default"])('https://milkmancoffee.herokuapp.com/').then(function (res) {
     return console.log("requested at " + new Date());
   });
 });
@@ -185,10 +184,11 @@ app.get('/images/:id', function (req, res) {
   res.set('Cache-Control', 'public, max-age=31557600');
   res.sendFile(_path["default"].join(__dirname, '../images/' + req.params.id));
 });
-app.post('/api/auth', _passport["default"].authenticate('local-signup'), _controllers.userCtrl.login);
+app.post('/api/auth', _controllers.userCtrl.login);
 app.get('/api/getMe', _controllers.userCtrl.getMe);
 app.get('/api/logout', _controllers.userCtrl.logout);
 app.get('/api/users', _controllers.userCtrl.read);
+app.get('/api/users/:id', _controllers.userCtrl.readOne);
 app.put('/api/users/:id', _controllers.userCtrl.update);
 app.get('/api/subscriptions', _controllers.subscriptionCtrl.read);
 app.get('/api/subscriptions/:id', _controllers.subscriptionCtrl.readOne);

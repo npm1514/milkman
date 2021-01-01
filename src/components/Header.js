@@ -61,23 +61,21 @@ class HeaderComponent extends Component {
           this.state.menuOpen &&
           <MobileMenu id="mobile-menu">
             <div><a onClick={this.closeMenu} href="/">Home</a></div>
-            <div><a onClick={this.closeMenu} href="/#about">About Us</a></div>
-            <div><a onClick={this.closeMenu} href="/#map">Location</a></div>
-            <div><a onClick={this.closeMenu} href="/#contact">Contact</a></div>
-            <div><a onClick={this.closeMenu} href="/catering">Catering</a></div>
+            <div><a onClick={this.closeMenu} href="/myaccount">My Account</a></div>
+            <div><a onClick={this.closeMenu} href="/cart">Cart</a></div>
+            <div><a onClick={this.closeMenu} href="/chooseproducts">Add New Product</a></div>
           </MobileMenu>
         }
         <HeaderWrap menuStuck={menuStuck}>
           <a href="/subscriptions"><DesktopOrder>Cafe Juniper Subscriptions</DesktopOrder></a>
           <DesktopHeader menuStuck={menuStuck}>
-            <a name="link to home" href="/">
+            <a name="link to home" href="https://www.cafejuniperslc.com">
               <img style={{width: "120px"}} alt="secondary logo" src="/images/Cafe-Juniper_Secondary_02.png"/>
             </a>
             <a href="/">Home</a>
-            <a href="/#about">About Us</a>
-            <a href="/#map">Location</a>
-            <a href="/#contact">Contact</a>
-            <a href="/catering">Catering</a>
+            <a href="/myaccount">My Account</a>
+            <a href="/cart">Cart</a>
+            <a href="/chooseproducts">Add New Product</a>
           </DesktopHeader>
         </HeaderWrap>
         <Spacer menuStuck={menuStuck}/>

@@ -6,7 +6,7 @@ import path from 'path'
 import express from "express";
 import fetch from "node-fetch";
 import fs from 'fs';
-import compression from 'compression';
+// import compression from 'compression';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
@@ -36,12 +36,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors());
-app.use(compression());
+// app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 
 cron.schedule('* * 1 * *', () => {
-  fetch('https://drcastillo.herokuapp.com/')
+  fetch('https://milkmancoffee.herokuapp.com/')
   .then(res => console.log("requested at " + new Date()));
 });
 
@@ -165,10 +165,11 @@ app.get('/images/:id', (req, res) => {
   res.sendFile(path.join(__dirname, '../images/' + req.params.id));
 });
 
-app.post('/api/auth', passport.authenticate('local-signup'), userCtrl.login);
+app.post('/api/auth', userCtrl.login);
 app.get('/api/getMe', userCtrl.getMe);
 app.get('/api/logout', userCtrl.logout);
 app.get('/api/users', userCtrl.read);
+app.get('/api/users/:id', userCtrl.readOne);
 app.put('/api/users/:id', userCtrl.update);
 
 app.get('/api/subscriptions', subscriptionCtrl.read);

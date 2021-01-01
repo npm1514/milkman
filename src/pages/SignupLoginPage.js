@@ -23,13 +23,41 @@ class SignupLogin extends Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(obj)
     })
-    .then((res) => res.text())
+    .then((res) => {
+      res.json();
+    })
     .then((data) => {
+      console.log("auth response", data);
       if(this.props.data.subscriptionID){
-        window.location.href = "/cart";
+        this.setState({
+          user: data
+        }, () => {
+          this.addSubscriptionToUser();
+        })
       } else {
         window.location.href = "/myaccount"
       }
+    })
+    .catch((err) => {
+      console.log("login err", err);
+    })
+  }
+  addSubscriptionToUser = () => {
+    let { user, user: { currentCart, _id }} = this.state;
+    currentCart.push(this.props.data.subscriptionID);
+    currentCart = [...new Set(currentCart)]
+    fetch('/api/users/' + _id, {
+      method: "PUT",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user })
+    })
+    .then((res) => {
+      if(res.status !== 200) throw Error(res.statusText);
+      return res.json();
+    })
+    .then((response) => {
+      console.log("update user", response);
+      // window.location.href = "/cart";
     })
   }
   componentDidMount(){
@@ -38,7 +66,6 @@ class SignupLogin extends Component {
           if(response.status !== 200) throw Error(response.statusText);
           return response.json();
       }).then((user) => {
-        console.log(user);
         if(user._id){
           window.location.href = "/myaccount";
         } else {
@@ -72,7 +99,6 @@ class SignupLogin extends Component {
                   </SignupOrLoginWrap>
                 </SignupLoginContent>
               }
-
             </ContentWrapper>
             <Footer/>
         </PageWrapper>

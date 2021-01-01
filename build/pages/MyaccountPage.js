@@ -90,7 +90,7 @@ var Myaccount = /*#__PURE__*/function (_Component) {
           });
         }
       })["catch"](function (err) {
-        return console.log(err);
+        console.log(err);
       });
     }
   }, {
@@ -111,11 +111,11 @@ var Myaccount = /*#__PURE__*/function (_Component) {
           subscriptions = _this$state$user.subscriptions,
           currentCart = _this$state$user.currentCart,
           verified = _this$state.verified;
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_myaccount.MyaccountContent, null, /*#__PURE__*/_react["default"].createElement("span", null, firstName, " ", lastName), /*#__PURE__*/_react["default"].createElement("a", {
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_myaccount.MyaccountContent, null, /*#__PURE__*/_react["default"].createElement("a", {
         href: "/chooseproducts"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Add New Subscription")), /*#__PURE__*/_react["default"].createElement("div", null, "calendar here"), /*#__PURE__*/_react["default"].createElement("div", null, "list of subscriptions"), currentCart.length && /*#__PURE__*/_react["default"].createElement("a", {
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Add New Subscription")), /*#__PURE__*/_react["default"].createElement("div", null, "calendar here"), currentCart.length ? /*#__PURE__*/_react["default"].createElement("a", {
         href: "/cart"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Go To Cart (", currentCart.length, ")")))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Go To Cart (", currentCart.length, ")")) : null, /*#__PURE__*/_react["default"].createElement(_global.ProductBox, null, /*#__PURE__*/_react["default"].createElement("h2", null, "User Info"), /*#__PURE__*/_react["default"].createElement("p", null, firstName, " ", lastName), /*#__PURE__*/_react["default"].createElement("p", null, address), /*#__PURE__*/_react["default"].createElement("p", null, city, ", ", state, " ", zip), /*#__PURE__*/_react["default"].createElement("p", null, email), /*#__PURE__*/_react["default"].createElement("p", null, phone), /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Edit")))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 

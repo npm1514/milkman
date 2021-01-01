@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Header, Footer } from '../components';
 import { MyaccountContent } from '../styled-components/pages/myaccount';
-import { PageWrapper, ContentWrapper, Button } from '../styled-components/global';
+import { PageWrapper, ContentWrapper, Button, ProductBox } from '../styled-components/global';
 
 class Myaccount extends Component {
     constructor(props){
@@ -33,10 +33,13 @@ class Myaccount extends Component {
           console.log(user);
           if(!user._id){
             window.location.href = "/login";
-          } else {
+          }
+          else {
             this.setState({ user, verified: true })
           }
-        }).catch(err => console.log(err))
+        }).catch((err) => {
+          console.log(err)
+        })
     }
     render(){
       const { user: { _id, firstName, lastName, email, password, phone, address, city, state, zip, subscriptions, currentCart }, verified } = this.state;
@@ -47,14 +50,26 @@ class Myaccount extends Component {
                 {
                   verified &&
                   <MyaccountContent>
-                    <span>{firstName} {lastName}</span>
+
+
                     <a href="/chooseproducts"><Button>Add New Subscription</Button></a>
+
                     <div>calendar here</div>
-                    <div>list of subscriptions</div>
+
                     {
-                      currentCart.length &&
-                      <a href="/cart"><Button>Go To Cart ({currentCart.length})</Button></a>
+                      currentCart.length ?
+                      <a href="/cart"><Button>Go To Cart ({currentCart.length})</Button></a> : null
                     }
+
+                    <ProductBox>
+                      <h2>User Info</h2>
+                      <p>{firstName} {lastName}</p>
+                      <p>{address}</p>
+                      <p>{city}, {state} {zip}</p>
+                      <p>{email}</p>
+                      <p>{phone}</p>
+                      <Button>Edit</Button>
+                    </ProductBox>
                   </MyaccountContent>
                 }
 

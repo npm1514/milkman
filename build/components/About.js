@@ -9,11 +9,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _components = require("../components");
+var _about = require("../styled-components/components/about");
 
-var _landing = require("../styled-components/pages/landing");
-
-var _global = require("../styled-components/global");
+var _colors = require("../styled-components/colors");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -39,63 +37,35 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Landing = /*#__PURE__*/function (_Component) {
-  _inherits(Landing, _Component);
+var AboutComponent = /*#__PURE__*/function (_Component) {
+  _inherits(AboutComponent, _Component);
 
-  var _super = _createSuper(Landing);
+  var _super = _createSuper(AboutComponent);
 
-  function Landing(props) {
-    var _this;
+  function AboutComponent() {
+    _classCallCheck(this, AboutComponent);
 
-    _classCallCheck(this, Landing);
-
-    _this = _super.call(this, props);
-    _this.state = {
-      user: {}
-    };
-    return _this;
+    return _super.apply(this, arguments);
   }
 
-  _createClass(Landing, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      fetch("/api/getMe").then(function (response) {
-        if (response.status !== 200) throw Error(response.statusText);
-        return response.json();
-      }).then(function (user) {
-        _this2.setState({
-          user: user
-        });
-      })["catch"](function (err) {
-        return console.log(err);
-      });
-    }
-  }, {
+  _createClass(AboutComponent, [{
     key: "render",
     value: function render() {
-      var user = this.state.user;
-      console.log(user);
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_components.About, {
-        noLogo: true,
-        noHexes: true
-      }, /*#__PURE__*/_react["default"].createElement("h2", null, "Subscription / Catering Program"), /*#__PURE__*/_react["default"].createElement("p", null, "We are providing premium coffee to anybody and any business within the Salt Lake valley."), /*#__PURE__*/_react["default"].createElement("p", null, "We deliver to any location within 30 miles of downtown Salt Lake City. "), /*#__PURE__*/_react["default"].createElement("p", null, "Please consider our catering menu and if you are interested, Get Started!"), /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/chooseproducts"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Get Started"))), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_landing.LandingContent, null, /*#__PURE__*/_react["default"].createElement(_components.CateringMenu, null), /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/chooseproducts"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Get Started")), user ? /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/myaccount"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Your Account")) : /*#__PURE__*/_react["default"].createElement(Fragment, null, /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/login"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Login")), /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/signup"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Sign Up"))))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      var _this$props = this.props,
+          noHexes = _this$props.noHexes,
+          noLogo = _this$props.noLogo,
+          id = _this$props.id;
+      return /*#__PURE__*/_react["default"].createElement(_about.AboutWrap, {
+        id: id
+      }, /*#__PURE__*/_react["default"].createElement(_about.About, null, !noLogo && /*#__PURE__*/_react["default"].createElement(_about.AboutLeft, null, /*#__PURE__*/_react["default"].createElement("img", {
+        src: "/images/Cafe-Juniper_Primary_03.png",
+        alt: "primary logo"
+      })), /*#__PURE__*/_react["default"].createElement(_about.AboutRight, null, this.props.children)));
     }
   }]);
 
-  return Landing;
+  return AboutComponent;
 }(_react.Component);
 
-var _default = Landing;
+var _default = AboutComponent;
 exports["default"] = _default;

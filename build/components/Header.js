@@ -146,17 +146,14 @@ var HeaderComponent = /*#__PURE__*/function (_Component) {
         href: "/"
       }, "Home")), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("a", {
         onClick: this.closeMenu,
-        href: "/#about"
-      }, "About Us")), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/myaccount"
+      }, "My Account")), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("a", {
         onClick: this.closeMenu,
-        href: "/#map"
-      }, "Location")), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/cart"
+      }, "Cart")), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("a", {
         onClick: this.closeMenu,
-        href: "/#contact"
-      }, "Contact")), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("a", {
-        onClick: this.closeMenu,
-        href: "/catering"
-      }, "Catering"))), /*#__PURE__*/_react["default"].createElement(_header.HeaderWrap, {
+        href: "/chooseproducts"
+      }, "Add New Product"))), /*#__PURE__*/_react["default"].createElement(_header.HeaderWrap, {
         menuStuck: menuStuck
       }, /*#__PURE__*/_react["default"].createElement("a", {
         href: "/subscriptions"
@@ -164,7 +161,7 @@ var HeaderComponent = /*#__PURE__*/function (_Component) {
         menuStuck: menuStuck
       }, /*#__PURE__*/_react["default"].createElement("a", {
         name: "link to home",
-        href: "/"
+        href: "https://www.cafejuniperslc.com"
       }, /*#__PURE__*/_react["default"].createElement("img", {
         style: {
           width: "120px"
@@ -174,14 +171,12 @@ var HeaderComponent = /*#__PURE__*/function (_Component) {
       })), /*#__PURE__*/_react["default"].createElement("a", {
         href: "/"
       }, "Home"), /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/#about"
-      }, "About Us"), /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/#map"
-      }, "Location"), /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/#contact"
-      }, "Contact"), /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/catering"
-      }, "Catering"))), /*#__PURE__*/_react["default"].createElement(_header.Spacer, {
+        href: "/myaccount"
+      }, "My Account"), /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/cart"
+      }, "Cart"), /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/chooseproducts"
+      }, "Add New Product"))), /*#__PURE__*/_react["default"].createElement(_header.Spacer, {
         menuStuck: menuStuck
       }));
     }

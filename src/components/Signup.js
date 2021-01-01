@@ -17,7 +17,7 @@ class SignupComponent extends Component {
       password1: "",
       password2: "",
       passwordMessage: "",
-      currentCart: [this.props.subscriptionID || ""]
+      currentCart: this.props.subscriptionID ? [this.props.subscriptionID] : []
     }
   }
   badPassword = (passwordMessage) => {

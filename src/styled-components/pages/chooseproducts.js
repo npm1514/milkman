@@ -18,24 +18,6 @@ export const ProductWrapper = styled.div`
   align-items: center;
 `;
 
-export const ProductBox = styled.div`
-  height: max-content;
-  width: max-content;
-  padding: 8px;
-  margin: 8px;
-  text-align: center;
-  border: 1px solid #8d8d8d;
-  border-radius: 4px;
-  &.productSelected {
-    border: 2px solid #000;
-  }
-  img {
-    height: 150px;
-  }
-  input, textarea {
-    padding: 4px;
-  }
-`;
 export const FlagWrapper = styled.div`
   top: -120px;
   right: 0;

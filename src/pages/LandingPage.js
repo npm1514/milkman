@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Footer } from '../components';
+import { Header, Footer, About, CateringMenu } from '../components';
 import { LandingContent } from '../styled-components/pages/landing';
 import { PageWrapper, ContentWrapper, Button } from '../styled-components/global';
 
@@ -25,10 +25,16 @@ class Landing extends Component {
       return (
           <PageWrapper>
               <Header/>
+              <About noLogo noHexes>
+                <h2>Subscription / Catering Program</h2>
+                <p>We are providing premium coffee to anybody and any business within the Salt Lake valley.</p>
+                <p>We deliver to any location within 30 miles of downtown Salt Lake City. </p>
+                <p>Please consider our catering menu and if you are interested, Get Started!</p>
+                <a href="/chooseproducts"><Button>Get Started</Button></a>
+              </About>
               <ContentWrapper>
                 <LandingContent>
-                  <h2>Delivery Subscriptions</h2>
-                  <p>This is where I talk about subscriptions.</p>
+                  <CateringMenu/>
                   <a href="/chooseproducts">
                     <Button>Get Started</Button>
                   </a>
