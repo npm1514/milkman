@@ -6,11 +6,11 @@ import path from 'path'
 import express from "express";
 import fetch from "node-fetch";
 import fs from 'fs';
-// import compression from 'compression';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import passport from 'passport';
+import flash from 'connect-flash';
 import session from 'express-session';
 var cron = require('node-cron');
 import Cryptr from 'cryptr';
@@ -28,6 +28,10 @@ passportConfig(passport);//self invokes passport
 
 const app = express();
 
+app.use(cors());
+app.use(flash());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 app.use(session({
     secret: 'banana',
     resave: true,
@@ -35,12 +39,9 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
-// app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
 
-cron.schedule('* * 1 * *', () => {
+
+cron.schedule('* * * 1 *', () => {
   fetch('https://milkmancoffee.herokuapp.com/')
   .then(res => console.log("requested at " + new Date()));
 });
@@ -165,7 +166,7 @@ app.get('/images/:id', (req, res) => {
   res.sendFile(path.join(__dirname, '../images/' + req.params.id));
 });
 
-app.post('/api/auth', userCtrl.login);
+app.post('/api/auth', passport.authenticate('local-signup'), userCtrl.login);
 app.get('/api/getMe', userCtrl.getMe);
 app.get('/api/logout', userCtrl.logout);
 app.get('/api/users', userCtrl.read);
@@ -321,5 +322,5 @@ function returnHTML(data, bundle, Page, title){
 }
 
 function errHandle(err){
-    console.log(err);
+    console.log("errHandle", err);
 }

@@ -22,6 +22,8 @@ var _mongoose = _interopRequireDefault(require("mongoose"));
 
 var _passport = _interopRequireDefault(require("passport"));
 
+var _connectFlash = _interopRequireDefault(require("connect-flash"));
+
 var _expressSession = _interopRequireDefault(require("express-session"));
 
 var _cryptr = _interopRequireDefault(require("cryptr"));
@@ -36,7 +38,6 @@ var _controllers = require("./controllers");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-// import compression from 'compression';
 var cron = require('node-cron');
 
 var cryptr = new _cryptr["default"](_config["default"].key);
@@ -44,6 +45,10 @@ var PORT = process.env.PORT || 3003;
 (0, _passport2["default"])(_passport["default"]); //self invokes passport
 
 var app = (0, _express["default"])();
+app.use((0, _cors["default"])());
+app.use((0, _connectFlash["default"])());
+app.use(_bodyParser["default"].json());
+app.use(_bodyParser["default"].urlencoded());
 app.use((0, _expressSession["default"])({
   secret: 'banana',
   resave: true,
@@ -51,11 +56,7 @@ app.use((0, _expressSession["default"])({
 }));
 app.use(_passport["default"].initialize());
 app.use(_passport["default"].session());
-app.use((0, _cors["default"])()); // app.use(compression());
-
-app.use(_bodyParser["default"].json());
-app.use(_bodyParser["default"].urlencoded());
-cron.schedule('* * 1 * *', function () {
+cron.schedule('* * * 1 *', function () {
   (0, _nodeFetch["default"])('https://milkmancoffee.herokuapp.com/').then(function (res) {
     return console.log("requested at " + new Date());
   });
@@ -184,7 +185,7 @@ app.get('/images/:id', function (req, res) {
   res.set('Cache-Control', 'public, max-age=31557600');
   res.sendFile(_path["default"].join(__dirname, '../images/' + req.params.id));
 });
-app.post('/api/auth', _controllers.userCtrl.login);
+app.post('/api/auth', _passport["default"].authenticate('local-signup'), _controllers.userCtrl.login);
 app.get('/api/getMe', _controllers.userCtrl.getMe);
 app.get('/api/logout', _controllers.userCtrl.logout);
 app.get('/api/users', _controllers.userCtrl.read);
@@ -263,5 +264,5 @@ function returnHTML(data, bundle, Page, title) {
 }
 
 function errHandle(err) {
-  console.log(err);
+  console.log("errHandle", err);
 }

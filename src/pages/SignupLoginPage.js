@@ -71,7 +71,7 @@ class SignupLogin extends Component {
         } else {
           this.setState({ user, verified: true })
         }
-      }).catch(err => console.log(err))
+      }).catch(err => console.log("get me catch", err))
   }
   render(){
     const { subscription, subscriptionID } = this.props.data

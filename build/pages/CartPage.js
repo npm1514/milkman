@@ -76,7 +76,7 @@ var Cart = /*#__PURE__*/function (_Component) {
           });
         }
       })["catch"](function (err) {
-        return console.log(err);
+        return console.log("getme catch", err);
       });
     }
   }, {

@@ -52,6 +52,10 @@ var subscriptionSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users"
+  },
+  order: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "orders"
   }
 });
 module.exports = mongoose.model('subscriptions', subscriptionSchema);

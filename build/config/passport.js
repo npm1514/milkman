@@ -22,21 +22,23 @@ module.exports = function (passport) {
       User.findOne({
         'email': email
       }, function (err, user) {
-        if (err) return done(err);
+        if (err) {
+          return done(null, false, {
+            message: err
+          });
+        }
 
         if (user) {
           if (user.validPassword(password)) {
             return done(null, user);
           } else {
-            return done(null, false, {
-              message: 'Invalid email or password'
-            });
+            return done(null, false, req.flash('Incorrect password.'));
           }
         } else {
           if (Object.keys(req.body).length == 2) {
-            return done({
+            return done(null, false, {
               message: "No account"
-            }, false);
+            });
           } else {
             var newUser = new User(req.body);
             newUser.email = email;

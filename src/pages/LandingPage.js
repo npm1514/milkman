@@ -17,11 +17,11 @@ class Landing extends Component {
             return response.json();
         }).then((user) => {
             this.setState({ user })
-        }).catch(err => console.log(err))
+        }).catch(err => console.log("getme catch", err))
     }
     render(){
       const { user } = this.state;
-      console.log(user);
+      console.log("shuser", user);
       return (
           <PageWrapper>
               <Header/>

@@ -30,7 +30,7 @@ class Myaccount extends Component {
             if(response.status !== 200) throw Error(response.statusText);
             return response.json();
         }).then((user) => {
-          console.log(user);
+          console.log("myaccount user", user);
           if(!user._id){
             window.location.href = "/login";
           }
@@ -38,7 +38,7 @@ class Myaccount extends Component {
             this.setState({ user, verified: true })
           }
         }).catch((err) => {
-          console.log(err)
+          console.log("getme catch", err)
         })
     }
     render(){

@@ -2,15 +2,8 @@ var UserModel = require('./../models/userModel');
 var passport = require('passport');
 
 module.exports = {
-  login: (req, res, next) => {
-    passport.authenticate('local-signup', (err, user, info) => {
-      console.log(err, user, info);
-      if(user){
-        res.send(user);
-      } else {
-        res.send(info);
-      }
-    })(req, res, next);
+  login: (req, res) => {
+    res.send(req.user);
   },
   getMe: (req, res) =>  {
     console.log("get me", req.user);
@@ -34,7 +27,7 @@ module.exports = {
   logout: (req, res) =>  {
     var message = req.user ? req.user.id + " logged out!" : "No user is logged in!";
     req.logout();
-    console.log(message);
+    console.log("logout", message);
     res.send(message);
   },
   read: (req, res) => {

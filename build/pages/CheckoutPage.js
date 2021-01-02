@@ -259,7 +259,7 @@ var Checkout = /*#__PURE__*/function (_Component) {
         if (response.status !== 200) throw Error(response.statusText);
         return response.json();
       }).then(function (user) {
-        console.log(user);
+        console.log("checkout user", user);
 
         if (!user._id) {
           window.location.href = "/login";
@@ -275,7 +275,7 @@ var Checkout = /*#__PURE__*/function (_Component) {
           });
         }
       })["catch"](function (err) {
-        return console.log(err);
+        return console.log("getme catch", err);
       });
     }
   }, {

@@ -24,7 +24,7 @@ class Cart extends Component {
           } else {
             this.setState({ user })
           }
-        }).catch(err => console.log(err))
+        }).catch(err => console.log("getme catch", err))
     }
     render(){
       const { currentCart } = this.state.user;

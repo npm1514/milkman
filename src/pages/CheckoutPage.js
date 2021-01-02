@@ -156,7 +156,7 @@ class Checkout extends Component {
             if(response.status !== 200) throw Error(response.statusText);
             return response.json();
         }).then((user) => {
-          console.log(user);
+          console.log("checkout user", user);
           if(!user._id){
             window.location.href = "/login";
           } else if(!user.currentCart.length){
@@ -168,7 +168,7 @@ class Checkout extends Component {
               subtotal: user.currentCart.reduce((a, b) => a + b.pricePerDelivery, 0)
             })
           }
-        }).catch(err => console.log(err))
+        }).catch(err => console.log("getme catch", err))
 
     }
     render(){

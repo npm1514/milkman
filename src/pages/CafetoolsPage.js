@@ -23,7 +23,7 @@ class Cafetools extends Component {
           } else {
             window.location.href = "/login";
           }
-        }).catch(err => console.log(err))
+        }).catch(err => console.log("getme catch", err))
     }
     render(){
       return (

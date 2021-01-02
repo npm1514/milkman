@@ -147,7 +147,7 @@ var SignupLogin = /*#__PURE__*/function (_Component) {
           });
         }
       })["catch"](function (err) {
-        return console.log(err);
+        return console.log("get me catch", err);
       });
     }
   }, {

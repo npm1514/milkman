@@ -75,7 +75,7 @@ var Cafetools = /*#__PURE__*/function (_Component) {
           window.location.href = "/login";
         }
       })["catch"](function (err) {
-        return console.log(err);
+        return console.log("getme catch", err);
       });
     }
   }, {

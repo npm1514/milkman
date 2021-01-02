@@ -69,14 +69,14 @@ var Landing = /*#__PURE__*/function (_Component) {
           user: user
         });
       })["catch"](function (err) {
-        return console.log(err);
+        return console.log("getme catch", err);
       });
     }
   }, {
     key: "render",
     value: function render() {
       var user = this.state.user;
-      console.log(user);
+      console.log("shuser", user);
       return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_components.About, {
         noLogo: true,
         noHexes: true
