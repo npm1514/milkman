@@ -3,9 +3,11 @@ var User = require('../models/userModel.js');
 
 module.exports = function(passport) {
     passport.serializeUser(function(user, done) {
+        console.log("USER", user);
         done(null, user.id);
     });
     passport.deserializeUser(function(id, done) {
+        console.log("ID", id);
         User.findById(id, function(err, user) {
             done(err, user);
         });

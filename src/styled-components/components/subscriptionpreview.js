@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const SubscriptionPreviewWrap = styled.div`
-  width: calc(100vw - 56px);
+  /* width: calc(100vw - 56px); */
   margin: 12px;
   padding: 12px;
   padding-bottom: 24px;

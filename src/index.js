@@ -27,9 +27,6 @@ passportConfig(passport);//self invokes passport
 
 const app = express();
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
 app.use(session({
     secret: 'banana',
     resave: true,
@@ -37,6 +34,11 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+
 
 
 cron.schedule('* * * 1 *', () => {
@@ -148,6 +150,7 @@ app.get('/confirmation/:orderID', (req, res) => {
   };
   fetcher('https://milkmancoffee.herokuapp.com/api/orders/' + req.params.orderID).then((response) => {
     data.order = response;
+    console.log("order response", response);
     res.set('Cache-Control', 'public, max-age=31557600');
     res.send(returnHTML(data, confirmationBundle, ConfirmationRoot, "confirmation"));
   });

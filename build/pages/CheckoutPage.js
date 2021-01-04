@@ -54,6 +54,10 @@ var Checkout = /*#__PURE__*/function (_Component) {
     _this = _super.call(this, props);
 
     _defineProperty(_assertThisInitialized(_this), "submitPayment", function (e) {
+      _this.setState({
+        loading: true
+      });
+
       e.preventDefault();
       var _this$state = _this.state,
           ccNum = _this$state.ccNum,
@@ -162,6 +166,31 @@ var Checkout = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "updateSubscriptions", function (orderID) {
+      var currentCart = _this.state.user.currentCart;
+      var promises = currentCart.map(function (a) {
+        return fetch('/api/subscriptions/' + _id, {
+          method: "PUT",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            active: true
+          })
+        }).then(function (res) {
+          if (res.status !== 200) throw Error(res.statusText);
+          return res.json();
+        }).then(function (data) {
+          console.log("update subscription success", data);
+        })["catch"](function (err) {
+          console.log("update user error", err);
+        });
+      });
+      Promise.all(promises).then(function () {
+        _this.updateUser(orderID);
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_this), "updateUser", function (orderId) {
       var _this$state4 = _this.state,
           _this$state4$user = _this$state4.user,
@@ -177,8 +206,6 @@ var Checkout = /*#__PURE__*/function (_Component) {
       var cartSubscriptions = currentCart.map(function (a) {
         subscriptions.push(a._id);
       });
-      console.log(subscriptions);
-      console.log(orderId);
       orders.push(orderId);
       fetch('/api/users/' + _id, {
         method: "PUT",
@@ -245,7 +272,8 @@ var Checkout = /*#__PURE__*/function (_Component) {
       saveCard: false,
       verified: false,
       payMessage: "",
-      subtotal: 0
+      subtotal: 0,
+      loading: false
     };
     return _this;
   }
@@ -293,11 +321,11 @@ var Checkout = /*#__PURE__*/function (_Component) {
           saveCard = _this$state5.saveCard,
           verified = _this$state5.verified,
           payMessage = _this$state5.payMessage,
-          subtotal = _this$state5.subtotal;
-      console.log(this.state);
+          subtotal = _this$state5.subtotal,
+          loading = _this$state5.loading;
       return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, {
         user: user
-      }), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_checkout.CheckoutContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), currentCart.map(function (subscription, index) {
+      }), loading && /*#__PURE__*/_react["default"].createElement(_components.Loading, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_checkout.CheckoutContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), currentCart.map(function (subscription, index) {
         return /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
           key: index,
           subscription: subscription

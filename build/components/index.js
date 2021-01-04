@@ -27,6 +27,12 @@ Object.defineProperty(exports, "Header", {
     return _Header["default"];
   }
 });
+Object.defineProperty(exports, "Loading", {
+  enumerable: true,
+  get: function get() {
+    return _Loading["default"];
+  }
+});
 Object.defineProperty(exports, "Login", {
   enumerable: true,
   get: function get() {
@@ -53,6 +59,8 @@ var _CateringMenu = _interopRequireDefault(require("./CateringMenu"));
 var _Footer = _interopRequireDefault(require("./Footer"));
 
 var _Header = _interopRequireDefault(require("./Header"));
+
+var _Loading = _interopRequireDefault(require("./Loading"));
 
 var _Login = _interopRequireDefault(require("./Login"));
 

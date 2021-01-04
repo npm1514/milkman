@@ -33,7 +33,7 @@ module.exports = {
     .populate('orders')
     .populate('subscriptions')
     .populate('currentCart')
-    .exec(function(err, result){
+    .exec((err, result) => {
       if(err){
         res.send(err);
       } else {
@@ -47,7 +47,7 @@ module.exports = {
     .populate('orders')
     .populate('subscriptions')
     .populate('currentCart')
-    .exec(function(err, result){
+    .exec((err, result) => {
       if(err){
         res.send(err);
       } else {
@@ -55,8 +55,8 @@ module.exports = {
       }
     });
   },
-  update: function(req, res){
-    User.findByIdAndUpdate(req.params.id, req.body, function(err, result){
+  update: (req, res) => {
+    User.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, result) => {
       res.send(result);
     });
   }

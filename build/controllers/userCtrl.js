@@ -44,7 +44,9 @@ module.exports = {
     });
   },
   update: function update(req, res) {
-    User.findByIdAndUpdate(req.params.id, req.body, function (err, result) {
+    User.findByIdAndUpdate(req.params.id, req.body, {
+      "new": true
+    }, function (err, result) {
       res.send(result);
     });
   }

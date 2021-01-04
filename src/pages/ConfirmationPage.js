@@ -27,12 +27,13 @@ class Confirmation extends Component {
     render(){
       const { orderID, order } = this.props;
       const { verified, user } = this.state;
+      console.log(order);
       return (
           <PageWrapper>
               <Header user={user}/>
               <ContentWrapper>
                 {
-                  !verified &&
+                  !verified && order &&
                   <ConfirmationContent>
                     <h2>confirmation page: {orderID}</h2>
                     <p>Date: {order.date}</p>

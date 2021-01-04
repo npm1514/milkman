@@ -177,22 +177,21 @@ class Chooseproducts extends Component {
 
   }
   addSubscriptionToUser = (subscriptionID) => {
-    let { user, user: { subscriptions, _id } } = this.state;
-    // subscriptions.push(subscriptionID);
-    // subscriptions = [...new Set(subscriptions)]
-    // console.log("add subscription", user);
-    user.firstName = "Bob"
+    let { user, user: { currentCart, _id } } = this.state;
+    currentCart = currentCart.map(a => a._id);
+    currentCart.push(subscriptionID);
+    currentCart = [...new Set(currentCart)];
     fetch('/api/users/' + _id, {
       method: "PUT",
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user })
+      body: JSON.stringify({ currentCart })
     })
     .then((res) => {
       if(res.status !== 200) throw Error(res.statusText);
       return res.json();
     })
     .then((response) => {
-      console.log(response);
+      console.log("put response", response);
       window.location.href = '/cart';
     })
   }
@@ -229,7 +228,6 @@ class Chooseproducts extends Component {
     if(productSelected){
       sizeoptions = flavorSelected[0] == "rotating single origin" ? "singleoriginsizes" : productSelected.sizeOptions;
     }
-    console.log(flavors[productSelected.flavorOptions]);
     return (
         <PageWrapper>
             <Header user={user}/>

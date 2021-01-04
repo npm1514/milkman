@@ -43,9 +43,6 @@ var PORT = process.env.PORT || 3003;
 (0, _passport2["default"])(_passport["default"]); //self invokes passport
 
 var app = (0, _express["default"])();
-app.use((0, _cors["default"])());
-app.use(_bodyParser["default"].json());
-app.use(_bodyParser["default"].urlencoded());
 app.use((0, _expressSession["default"])({
   secret: 'banana',
   resave: true,
@@ -53,6 +50,9 @@ app.use((0, _expressSession["default"])({
 }));
 app.use(_passport["default"].initialize());
 app.use(_passport["default"].session());
+app.use((0, _cors["default"])());
+app.use(_bodyParser["default"].json());
+app.use(_bodyParser["default"].urlencoded());
 cron.schedule('* * * 1 *', function () {
   (0, _nodeFetch["default"])('https://milkmancoffee.herokuapp.com/').then(function (res) {
     return console.log("requested at " + new Date());
@@ -169,6 +169,7 @@ app.get('/confirmation/:orderID', function (req, res) {
   };
   fetcher('https://milkmancoffee.herokuapp.com/api/orders/' + req.params.orderID).then(function (response) {
     data.order = response;
+    console.log("order response", response);
     res.set('Cache-Control', 'public, max-age=31557600');
     res.send(returnHTML(data, confirmationBundle, _roots.ConfirmationRoot, "confirmation"));
   });

@@ -8,19 +8,9 @@ module.exports = {
       if(err){
         res.send(err);
       } else {
-        console.log(result);
-        this.updateSubscriptions(result);
         res.send(result);
       }
     });
-  },
-  updateSubscriptions: function(order){
-    console.log(order);
-    order.subscriptions.map(a => {
-      Subscription.findByIdAndUpdate(a, { active: true }, function(err, result){
-        return result;
-      });
-    })
   },
   read: function(req, res){
     Order

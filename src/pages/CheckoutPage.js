@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Footer, SubscriptionPreview } from '../components';
+import { Header, Footer, SubscriptionPreview, Loading } from '../components';
 import { CheckoutContent } from '../styled-components/pages/checkout';
 import { PageWrapper, ContentWrapper, Button } from '../styled-components/global';
 
@@ -21,10 +21,12 @@ class Checkout extends Component {
         saveCard: false,
         verified: false,
         payMessage: "",
-        subtotal: 0
+        subtotal: 0,
+        loading: false
       }
     }
     submitPayment = (e) => {
+      this.setState({loading: true})
       e.preventDefault();
       const { ccNum, ccExp, ccCVV, ccZip, saveCard } = this.state;
       fetch('/api/pay', {
@@ -104,13 +106,38 @@ class Checkout extends Component {
         console.log("order creation error", err);
       })
     }
+    updateSubscriptions = (orderID) => {
+      let { currentCart } = this.state.user;
+
+      let promises = currentCart.map(a => {
+        return fetch('/api/subscriptions/' + _id, {
+          method: "PUT",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            active: true
+          })
+        })
+        .then((res) => {
+          if(res.status !== 200) throw Error(res.statusText);
+          return res.json()
+        })
+        .then((data) => {
+          console.log("update subscription success", data);
+        })
+        .catch((err) => {
+          console.log("update user error", err);
+        })
+      });
+      Promise.all(promises)
+      .then(() => {
+        this.updateUser(orderID)
+      })
+    }
     updateUser = (orderId) => {
       let { user: {_id, currentCart, subscriptions, orders }, subtotal, ccNumEncrypted, ccExpEncrypted, ccCVVEncrypted, ccZipEncrypted } = this.state;
       let cartSubscriptions = currentCart.map(a => {
         subscriptions.push(a._id)
       });
-      console.log(subscriptions);
-      console.log(orderId);
       orders.push(orderId);
       fetch('/api/users/' + _id, {
         method: "PUT",
@@ -172,11 +199,12 @@ class Checkout extends Component {
 
     }
     render(){
-      const { user, user: { currentCart }, ccNum, ccExp, ccCVV, ccZip, saveCard, verified, payMessage, subtotal } = this.state;
-console.log(this.state);
+      const { user, user: { currentCart }, ccNum, ccExp, ccCVV, ccZip, saveCard, verified, payMessage, subtotal, loading } = this.state;
+
       return (
           <PageWrapper>
               <Header user={user}/>
+              { loading && <Loading/> }
               <ContentWrapper>
                 {
                   verified &&

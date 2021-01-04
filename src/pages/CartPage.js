@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Header, Footer, SubscriptionPreview } from '../components';
 import { CartContent } from '../styled-components/pages/cart';
 import { PageWrapper, ContentWrapper, Button } from '../styled-components/global';
+import { green } from '../styled-components/colors'
 
 class Cart extends Component {
     constructor(props){
@@ -37,10 +38,14 @@ class Cart extends Component {
                   {
                     currentCart.map((subscription, i) => {
                       return (
-                        <SubscriptionPreview key={i} subscription={subscription}/>
+                        <SubscriptionPreview key={i}
+                        style={{width: "initial"}} subscription={subscription}/>
                       )
                     })
                   }
+                  <a href="/chooseproducts"><Button style={{
+                    background: green, color: '#fff'
+                  }}>Add More</Button></a>
                   <a href="/checkout"><Button>Proceed To Checkout</Button></a>
                 </CartContent>
               </ContentWrapper>

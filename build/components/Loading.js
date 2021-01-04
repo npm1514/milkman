@@ -9,11 +9,7 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _components = require("../components");
-
-var _confirmation = require("../styled-components/pages/confirmation");
-
-var _global = require("../styled-components/global");
+var _loading = require("../styled-components/components/loading");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -39,70 +35,28 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Confirmation = /*#__PURE__*/function (_Component) {
-  _inherits(Confirmation, _Component);
+var LoadingComponent = /*#__PURE__*/function (_Component) {
+  _inherits(LoadingComponent, _Component);
 
-  var _super = _createSuper(Confirmation);
+  var _super = _createSuper(LoadingComponent);
 
-  function Confirmation(props) {
-    var _this;
+  function LoadingComponent() {
+    _classCallCheck(this, LoadingComponent);
 
-    _classCallCheck(this, Confirmation);
-
-    _this = _super.call(this, props);
-    _this.state = {
-      user: {},
-      verified: false
-    };
-    return _this;
+    return _super.apply(this, arguments);
   }
 
-  _createClass(Confirmation, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      fetch("/api/getMe").then(function (response) {
-        if (response.status !== 200) throw Error(response.statusText);
-        return response.json();
-      }).then(function (user) {
-        if (user._id) {
-          _this2.setState({
-            user: user,
-            verified: true
-          });
-        } else {
-          window.location.href = "/login";
-        }
-      })["catch"](function (err) {
-        return console.log(err);
-      });
-    }
-  }, {
+  _createClass(LoadingComponent, [{
     key: "render",
     value: function render() {
-      var _this$props = this.props,
-          orderID = _this$props.orderID,
-          order = _this$props.order;
-      var _this$state = this.state,
-          verified = _this$state.verified,
-          user = _this$state.user;
-      console.log(order);
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, {
-        user: user
-      }), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, !verified && order && /*#__PURE__*/_react["default"].createElement(_confirmation.ConfirmationContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "confirmation page: ", orderID), /*#__PURE__*/_react["default"].createElement("p", null, "Date: ", order.date), order.subscriptions.map(function (subscription, index) {
-        return /*#__PURE__*/_react["default"].createElement(SubscriptionPreview, {
-          key: index,
-          subscription: subscription
-        });
-      }), /*#__PURE__*/_react["default"].createElement("p", null, "Price: ", order.price), /*#__PURE__*/_react["default"].createElement("p", null, user.firstName, " ", user.lastName), /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/myaccount"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Go Back To Your Account")))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      return /*#__PURE__*/_react["default"].createElement(_loading.LoadingWrap, null, /*#__PURE__*/_react["default"].createElement("img", {
+        src: "/images/loading.gif"
+      }));
     }
   }]);
 
-  return Confirmation;
+  return LoadingComponent;
 }(_react.Component);
 
-var _default = Confirmation;
+var _default = LoadingComponent;
 exports["default"] = _default;
