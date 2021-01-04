@@ -50,4 +50,7 @@ export const ProductBox = styled.div`
   input, textarea {
     padding: 4px;
   }
+  &:hover {
+    cursor: pointer;
+  }
 `;

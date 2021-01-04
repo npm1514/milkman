@@ -78,7 +78,7 @@ var HeaderComponent = /*#__PURE__*/function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "logout", function () {
       fetch("/api/logout").then(function (response) {
         if (response.status !== 200) throw Error(response.statusText);
-        return response.json();
+        return response.text();
       }).then(function (user) {
         window.location.href = "/login";
       })["catch"](function (err) {

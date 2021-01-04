@@ -37,7 +37,7 @@ class HeaderComponent extends Component {
     fetch("/api/logout")
       .then((response) => {
           if(response.status !== 200) throw Error(response.statusText);
-          return response.json();
+          return response.text();
       }).then((user) => {
         window.location.href = "/login";
       }).catch((err) => {
@@ -95,7 +95,7 @@ class HeaderComponent extends Component {
             <a href="/chooseproducts">Add New Product</a>
             {
               _id &&
-              <a onClick={this.logout} >Logout</a>
+              <a onClick={this.logout}>Logout</a>
             }
           </DesktopHeader>
         </HeaderWrap>

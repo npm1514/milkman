@@ -52,7 +52,7 @@ function _templateObject5() {
 }
 
 function _templateObject4() {
-  var data = _taggedTemplateLiteral(["\n  width: 100%;\n  max-width: 732px;\n  margin: auto;\n  background-color: ", ";\n  height: 140px;\n  display: flex;\n  position: fixed;\n  top: 102px;\n  left: 0;\n  align-items: center;\n  justify-content: space-between;\n  flex-wrap: wrap;\n  z-index: 20;\n  div {\n    width: 50%;\n    text-align: center;\n    a {\n      text-decoration: none;\n      text-align: center;\n      font-size: 24px;\n      color: ", ";\n      margin: auto;\n    }\n  }\n  .online-order {\n    color: ", ";\n    width: 100%;\n    padding: 8px 0;\n    background-color: ", ";\n  }\n  a:hover {\n    color: ", ";\n    transition: color 0.5s;\n  }\n  @media(min-width: 700px){\n    display: none;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  width: 100%;\n  max-width: 732px;\n  margin: auto;\n  background-color: ", ";\n  height: 140px;\n  display: flex;\n  position: fixed;\n  top: 102px;\n  left: 0;\n  align-items: center;\n  justify-content: space-between;\n  flex-wrap: wrap;\n  z-index: 20;\n  div {\n    width: 50%;\n    text-align: center;\n    a {\n      text-decoration: none;\n      text-align: center;\n      font-size: 24px;\n      color: ", ";\n      margin: auto;\n    }\n  }\n  .online-order {\n    color: ", ";\n    width: 100%;\n    padding: 8px 0;\n    background-color: ", ";\n  }\n  a:hover {\n    color: ", ";\n    transition: color 0.5s;\n    cursor: pointer;\n  }\n  @media(min-width: 700px){\n    display: none;\n  }\n"]);
 
   _templateObject4 = function _templateObject4() {
     return data;
@@ -72,7 +72,7 @@ function _templateObject3() {
 }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  width: 100%;\n  max-width: 732px;\n  margin: auto;\n  background-color: ", ";\n  position: relative;\n  height: 72px;\n  color: ", ";\n  display: none;\n  align-items: center;\n  justify-content: center;\n  z-index: 10;\n  a {\n    text-decoration: none;\n    text-align: center;\n    font-size: 24px;\n    color: ", ";\n    margin: 0 12px;\n  }\n  a:hover {\n    color: ", ";\n    transition: color 0.5s;\n  }\n  @media (min-width: 700px){\n    display: flex;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  width: 100%;\n  max-width: 732px;\n  margin: auto;\n  background-color: ", ";\n  position: relative;\n  height: 72px;\n  color: ", ";\n  display: none;\n  align-items: center;\n  justify-content: center;\n  z-index: 10;\n  a {\n    text-decoration: none;\n    text-align: center;\n    font-size: 24px;\n    color: ", ";\n    margin: 0 12px;\n  }\n  a:hover {\n    color: ", ";\n    transition: color 0.5s;\n    cursor: pointer;\n  }\n  @media (min-width: 700px){\n    display: flex;\n  }\n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;

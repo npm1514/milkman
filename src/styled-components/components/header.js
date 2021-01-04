@@ -31,6 +31,7 @@ export const DesktopHeader = styled.header`
   a:hover {
     color: ${lightblue};
     transition: color 0.5s;
+    cursor: pointer;
   }
   @media (min-width: 700px){
     display: flex;
@@ -105,6 +106,7 @@ export const MobileMenu = styled.div`
   a:hover {
     color: ${lightblue};
     transition: color 0.5s;
+    cursor: pointer;
   }
   @media(min-width: 700px){
     display: none;
