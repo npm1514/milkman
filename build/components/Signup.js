@@ -62,6 +62,7 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "signup", function (e) {
+      e.preventDefault();
       var _this$state = _this.state,
           firstName = _this$state.firstName,
           lastName = _this$state.lastName,
@@ -84,7 +85,7 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
       } else if (!/[a-zA-Z]/.test(password1)) {
         _this.badPassword("Password must contain at least one letter");
       } else {
-        _this.props.login(e, {
+        _this.props.signup(e, {
           firstName: firstName,
           lastName: lastName,
           email: email,
@@ -160,7 +161,7 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
           passwordMessage = _this$state3.passwordMessage;
       return /*#__PURE__*/_react["default"].createElement(_signup.SignupWrap, null, /*#__PURE__*/_react["default"].createElement("a", {
         onClick: switchDisplay
-      }, /*#__PURE__*/_react["default"].createElement("p", null, "Have an account? Sign In Here")), /*#__PURE__*/_react["default"].createElement("h2", null, "Create an Account"), /*#__PURE__*/_react["default"].createElement("form", {
+      }, /*#__PURE__*/_react["default"].createElement("p", null, "Have an account? Log In Here")), /*#__PURE__*/_react["default"].createElement("h2", null, "Create an Account"), /*#__PURE__*/_react["default"].createElement("form", {
         onSubmit: this.signup
       }, /*#__PURE__*/_react["default"].createElement("input", {
         placeholder: "First Name",
@@ -252,7 +253,7 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
         type: "submit"
       }, "Sign Up")), /*#__PURE__*/_react["default"].createElement("a", {
         onClick: switchDisplay
-      }, /*#__PURE__*/_react["default"].createElement("p", null, "Have an account? Sign In Here")));
+      }, /*#__PURE__*/_react["default"].createElement("p", null, "Have an account? Log In Here")));
     }
   }]);
 

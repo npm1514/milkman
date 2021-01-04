@@ -27,10 +27,10 @@ class Cart extends Component {
         }).catch(err => console.log("getme catch", err))
     }
     render(){
-      const { currentCart } = this.state.user;
+      const { user, user: {currentCart} } = this.state;
       return (
           <PageWrapper>
-              <Header/>
+              <Header user={user}/>
               <ContentWrapper>
                 <CartContent>
                   <h2>Your Cart</h2>

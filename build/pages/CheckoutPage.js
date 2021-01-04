@@ -284,6 +284,7 @@ var Checkout = /*#__PURE__*/function (_Component) {
       var _this3 = this;
 
       var _this$state5 = this.state,
+          user = _this$state5.user,
           currentCart = _this$state5.user.currentCart,
           ccNum = _this$state5.ccNum,
           ccExp = _this$state5.ccExp,
@@ -294,7 +295,9 @@ var Checkout = /*#__PURE__*/function (_Component) {
           payMessage = _this$state5.payMessage,
           subtotal = _this$state5.subtotal;
       console.log(this.state);
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_checkout.CheckoutContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), currentCart.map(function (subscription, index) {
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, {
+        user: user
+      }), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_checkout.CheckoutContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), currentCart.map(function (subscription, index) {
         return /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
           key: index,
           subscription: subscription

@@ -84,8 +84,12 @@ var Confirmation = /*#__PURE__*/function (_Component) {
       var _this$props = this.props,
           orderID = _this$props.orderID,
           order = _this$props.order;
-      var verified = this.state.verified;
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, !verified && /*#__PURE__*/_react["default"].createElement(_confirmation.ConfirmationContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "confirmation page: ", orderID), /*#__PURE__*/_react["default"].createElement("p", null, "Date: ", order.date), order.subscriptions.map(function (subscription, index) {
+      var _this$state = this.state,
+          verified = _this$state.verified,
+          user = _this$state.user;
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, {
+        user: user
+      }), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, !verified && /*#__PURE__*/_react["default"].createElement(_confirmation.ConfirmationContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "confirmation page: ", orderID), /*#__PURE__*/_react["default"].createElement("p", null, "Date: ", order.date), order.subscriptions.map(function (subscription, index) {
         return /*#__PURE__*/_react["default"].createElement(SubscriptionPreview, {
           key: index,
           subscription: subscription

@@ -81,7 +81,10 @@ var Cafetools = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_cafetools.CafetoolsContent, null, "cafetools page")), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      var user = this.state.user;
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, {
+        user: user
+      }), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, /*#__PURE__*/_react["default"].createElement(_cafetools.CafetoolsContent, null, "cafetools page")), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);
 

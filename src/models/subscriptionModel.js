@@ -14,7 +14,8 @@ var subscriptionSchema = new mongoose.Schema({
   recurringPayment: {type: Boolean, default: true},
   notes: {type: String},
   user: {type: mongoose.Schema.Types.ObjectId, ref: "users"},
-  order: {type: mongoose.Schema.Types.ObjectId, ref: "orders"}
+  order: {type: mongoose.Schema.Types.ObjectId, ref: "orders"},
+  active: {type: Boolean, default: false}
 });
 
 module.exports = mongoose.model('subscriptions', subscriptionSchema);

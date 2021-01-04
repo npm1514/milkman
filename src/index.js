@@ -10,7 +10,6 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import passport from 'passport';
-import flash from 'connect-flash';
 import session from 'express-session';
 var cron = require('node-cron');
 import Cryptr from 'cryptr';
@@ -29,7 +28,6 @@ passportConfig(passport);//self invokes passport
 const app = express();
 
 app.use(cors());
-app.use(flash());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(session({
@@ -165,8 +163,8 @@ app.get('/images/:id', (req, res) => {
   res.set('Cache-Control', 'public, max-age=31557600');
   res.sendFile(path.join(__dirname, '../images/' + req.params.id));
 });
-
-app.post('/api/auth', passport.authenticate('local-signup'), userCtrl.login);
+app.post('/api/login', passport.authenticate('local-login'), userCtrl.login);
+app.post('/api/signup', passport.authenticate('local-signup'), userCtrl.login);
 app.get('/api/getMe', userCtrl.getMe);
 app.get('/api/logout', userCtrl.logout);
 app.get('/api/users', userCtrl.read);

@@ -78,7 +78,7 @@ var LoginComponent = /*#__PURE__*/function (_Component) {
           password = _this$state.password;
       return /*#__PURE__*/_react["default"].createElement(_login.LoginWrap, null, /*#__PURE__*/_react["default"].createElement("a", {
         onClick: switchDisplay
-      }, /*#__PURE__*/_react["default"].createElement("p", null, "No login? Create an account")), /*#__PURE__*/_react["default"].createElement("h2", null, "Sign In"), /*#__PURE__*/_react["default"].createElement("form", {
+      }, /*#__PURE__*/_react["default"].createElement("p", null, "No login? Create an account")), /*#__PURE__*/_react["default"].createElement("h2", null, "Log In"), /*#__PURE__*/_react["default"].createElement("form", {
         onSubmit: function onSubmit(e) {
           login(e, _this2.state);
         }
@@ -99,7 +99,7 @@ var LoginComponent = /*#__PURE__*/function (_Component) {
         }
       }), /*#__PURE__*/_react["default"].createElement("button", {
         type: "submit"
-      }, "Sign In")));
+      }, "Log In")));
     }
   }]);
 

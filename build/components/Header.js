@@ -75,6 +75,17 @@ var HeaderComponent = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "logout", function () {
+      fetch("/api/logout").then(function (response) {
+        if (response.status !== 200) throw Error(response.statusText);
+        return response.json();
+      }).then(function (user) {
+        window.location.href = "/login";
+      })["catch"](function (err) {
+        console.log("logout catch", err);
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_this), "onBlur", function (e) {
       if (!e.path.find(function (a) {
         return a.id == "mobile-header";
@@ -94,6 +105,8 @@ var HeaderComponent = /*#__PURE__*/function (_Component) {
     key: "render",
     value: function render() {
       var menuStuck = this.state.menuStuck;
+      var _id = this.props.user._id;
+      console.log(_id);
       return /*#__PURE__*/_react["default"].createElement(_header.HeaderWrap, null, /*#__PURE__*/_react["default"].createElement(_header.OnlineOrder, null, "Cafe Juniper Subscriptions"), /*#__PURE__*/_react["default"].createElement(_header.MobileHeader, {
         id: "mobile-header"
       }, /*#__PURE__*/_react["default"].createElement(_subcomponents.Hex, {
@@ -153,7 +166,9 @@ var HeaderComponent = /*#__PURE__*/function (_Component) {
       }, "Cart")), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("a", {
         onClick: this.closeMenu,
         href: "/chooseproducts"
-      }, "Add New Product"))), /*#__PURE__*/_react["default"].createElement(_header.HeaderWrap, {
+      }, "Add New Product")), _id && /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("a", {
+        onClick: this.logout
+      }, "Logout"))), /*#__PURE__*/_react["default"].createElement(_header.HeaderWrap, {
         menuStuck: menuStuck
       }, /*#__PURE__*/_react["default"].createElement("a", {
         href: "/subscriptions"
@@ -176,7 +191,9 @@ var HeaderComponent = /*#__PURE__*/function (_Component) {
         href: "/cart"
       }, "Cart"), /*#__PURE__*/_react["default"].createElement("a", {
         href: "/chooseproducts"
-      }, "Add New Product"))), /*#__PURE__*/_react["default"].createElement(_header.Spacer, {
+      }, "Add New Product"), _id && /*#__PURE__*/_react["default"].createElement("a", {
+        onClick: this.logout
+      }, "Logout"))), /*#__PURE__*/_react["default"].createElement(_header.Spacer, {
         menuStuck: menuStuck
       }));
     }

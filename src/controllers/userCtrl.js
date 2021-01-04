@@ -1,16 +1,14 @@
-var UserModel = require('./../models/userModel');
-var passport = require('passport');
+var User = require('./../models/userModel');
 
 module.exports = {
   login: (req, res) => {
     res.send(req.user);
   },
   getMe: (req, res) =>  {
-    console.log("get me", req.user);
     if(!req.user){
       return res.send({});
     }
-    UserModel
+    User
     .findById(req.user._id)
     .populate('orders')
     .populate('subscriptions')
@@ -19,7 +17,6 @@ module.exports = {
       if (err) {
         return res.send({});
       } else {
-        console.log("get me result", result);
         res.send(result);
       }
     });
@@ -31,10 +28,11 @@ module.exports = {
     res.send(message);
   },
   read: (req, res) => {
-    UserModel
+    User
     .find(req.query)
     .populate('orders')
     .populate('subscriptions')
+    .populate('currentCart')
     .exec(function(err, result){
       if(err){
         res.send(err);
@@ -44,10 +42,11 @@ module.exports = {
     });
   },
   readOne: (req, res) => {
-    UserModel
+    User
     .findById(req.params.id)
     .populate('orders')
     .populate('subscriptions')
+    .populate('currentCart')
     .exec(function(err, result){
       if(err){
         res.send(err);
@@ -56,16 +55,9 @@ module.exports = {
       }
     });
   },
-  update: (req, res) => {
-    UserModel.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      function(err, result){
-      if(err){
-        res.send(err);
-      } else {
-        res.send(result);
-      }
+  update: function(req, res){
+    User.findByIdAndUpdate(req.params.id, req.body, function(err, result){
+      res.send(result);
     });
   }
 };

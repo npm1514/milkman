@@ -22,8 +22,6 @@ var _mongoose = _interopRequireDefault(require("mongoose"));
 
 var _passport = _interopRequireDefault(require("passport"));
 
-var _connectFlash = _interopRequireDefault(require("connect-flash"));
-
 var _expressSession = _interopRequireDefault(require("express-session"));
 
 var _cryptr = _interopRequireDefault(require("cryptr"));
@@ -46,7 +44,6 @@ var PORT = process.env.PORT || 3003;
 
 var app = (0, _express["default"])();
 app.use((0, _cors["default"])());
-app.use((0, _connectFlash["default"])());
 app.use(_bodyParser["default"].json());
 app.use(_bodyParser["default"].urlencoded());
 app.use((0, _expressSession["default"])({
@@ -185,7 +182,8 @@ app.get('/images/:id', function (req, res) {
   res.set('Cache-Control', 'public, max-age=31557600');
   res.sendFile(_path["default"].join(__dirname, '../images/' + req.params.id));
 });
-app.post('/api/auth', _passport["default"].authenticate('local-signup'), _controllers.userCtrl.login);
+app.post('/api/login', _passport["default"].authenticate('local-login'), _controllers.userCtrl.login);
+app.post('/api/signup', _passport["default"].authenticate('local-signup'), _controllers.userCtrl.login);
 app.get('/api/getMe', _controllers.userCtrl.getMe);
 app.get('/api/logout', _controllers.userCtrl.logout);
 app.get('/api/users', _controllers.userCtrl.read);

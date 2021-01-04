@@ -26,10 +26,10 @@ class Confirmation extends Component {
     }
     render(){
       const { orderID, order } = this.props;
-      const { verified } = this.state;
+      const { verified, user } = this.state;
       return (
           <PageWrapper>
-              <Header/>
+              <Header user={user}/>
               <ContentWrapper>
                 {
                   !verified &&

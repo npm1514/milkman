@@ -172,11 +172,11 @@ class Checkout extends Component {
 
     }
     render(){
-      const { user: { currentCart }, ccNum, ccExp, ccCVV, ccZip, saveCard, verified, payMessage, subtotal } = this.state;
+      const { user, user: { currentCart }, ccNum, ccExp, ccCVV, ccZip, saveCard, verified, payMessage, subtotal } = this.state;
 console.log(this.state);
       return (
           <PageWrapper>
-              <Header/>
+              <Header user={user}/>
               <ContentWrapper>
                 {
                   verified &&

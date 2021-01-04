@@ -56,6 +56,10 @@ var subscriptionSchema = new mongoose.Schema({
   order: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "orders"
+  },
+  active: {
+    type: Boolean,
+    "default": false
   }
 });
 module.exports = mongoose.model('subscriptions', subscriptionSchema);

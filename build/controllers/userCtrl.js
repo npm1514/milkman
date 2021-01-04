@@ -1,25 +1,20 @@
 "use strict";
 
-var UserModel = require('./../models/userModel');
-
-var passport = require('passport');
+var User = require('./../models/userModel');
 
 module.exports = {
   login: function login(req, res) {
     res.send(req.user);
   },
   getMe: function getMe(req, res) {
-    console.log("get me", req.user);
-
     if (!req.user) {
       return res.send({});
     }
 
-    UserModel.findById(req.user._id).populate('orders').populate('subscriptions').populate('currentCart').exec(function (err, result) {
+    User.findById(req.user._id).populate('orders').populate('subscriptions').populate('currentCart').exec(function (err, result) {
       if (err) {
         return res.send({});
       } else {
-        console.log("get me result", result);
         res.send(result);
       }
     });
@@ -31,7 +26,7 @@ module.exports = {
     res.send(message);
   },
   read: function read(req, res) {
-    UserModel.find(req.query).populate('orders').populate('subscriptions').exec(function (err, result) {
+    User.find(req.query).populate('orders').populate('subscriptions').populate('currentCart').exec(function (err, result) {
       if (err) {
         res.send(err);
       } else {
@@ -40,7 +35,7 @@ module.exports = {
     });
   },
   readOne: function readOne(req, res) {
-    UserModel.findById(req.params.id).populate('orders').populate('subscriptions').exec(function (err, result) {
+    User.findById(req.params.id).populate('orders').populate('subscriptions').populate('currentCart').exec(function (err, result) {
       if (err) {
         res.send(err);
       } else {
@@ -49,12 +44,8 @@ module.exports = {
     });
   },
   update: function update(req, res) {
-    UserModel.findByIdAndUpdate(req.params.id, req.body, function (err, result) {
-      if (err) {
-        res.send(err);
-      } else {
-        res.send(result);
-      }
+    User.findByIdAndUpdate(req.params.id, req.body, function (err, result) {
+      res.send(result);
     });
   }
 };

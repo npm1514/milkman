@@ -42,10 +42,10 @@ class Myaccount extends Component {
         })
     }
     render(){
-      const { user: { _id, firstName, lastName, email, password, phone, address, city, state, zip, subscriptions, currentCart }, verified } = this.state;
+      const { user, user: { _id, firstName, lastName, email, password, phone, address, city, state, zip, subscriptions, currentCart }, verified } = this.state;
       return (
           <PageWrapper>
-              <Header/>
+              <Header user={user}/>
               <ContentWrapper>
                 {
                   verified &&

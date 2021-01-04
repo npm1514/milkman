@@ -177,9 +177,11 @@ class Chooseproducts extends Component {
 
   }
   addSubscriptionToUser = (subscriptionID) => {
-    let { user, user: { currentCart, _id }} = this.state;
-    currentCart.push(subscriptionID);
-    currentCart = [...new Set(currentCart)]
+    let { user, user: { subscriptions, _id } } = this.state;
+    // subscriptions.push(subscriptionID);
+    // subscriptions = [...new Set(subscriptions)]
+    // console.log("add subscription", user);
+    user.firstName = "Bob"
     fetch('/api/users/' + _id, {
       method: "PUT",
       headers: { 'Content-Type': 'application/json' },
@@ -190,8 +192,8 @@ class Chooseproducts extends Component {
       return res.json();
     })
     .then((response) => {
-      console.log("change user", response);
-      // window.location.href = `/cart`;
+      console.log(response);
+      window.location.href = '/cart';
     })
   }
   changeNotes = (e) => {
@@ -222,7 +224,7 @@ class Chooseproducts extends Component {
   }
 
   render(){
-    const { productSelected, flavorSelected, sizeSelected, selectedPrice, frequencySelected, quantitySelected, pricePerPayPeriod, startDateSelected, timeSelected, reelPosition, paymentFrequency, notes } = this.state;
+    const { productSelected, flavorSelected, sizeSelected, selectedPrice, frequencySelected, quantitySelected, pricePerPayPeriod, startDateSelected, timeSelected, reelPosition, paymentFrequency, notes, user } = this.state;
     let sizeoptions = ""
     if(productSelected){
       sizeoptions = flavorSelected[0] == "rotating single origin" ? "singleoriginsizes" : productSelected.sizeOptions;
@@ -230,7 +232,7 @@ class Chooseproducts extends Component {
     console.log(flavors[productSelected.flavorOptions]);
     return (
         <PageWrapper>
-            <Header/>
+            <Header user={user}/>
             <ContentWrapper>
               <ChooseproductsContent>
                 <FlagWrapper className={reelPosition} onClick={this.manageReel}>

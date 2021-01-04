@@ -21,10 +21,9 @@ class Landing extends Component {
     }
     render(){
       const { user } = this.state;
-      console.log("shuser", user);
       return (
           <PageWrapper>
-              <Header/>
+              <Header user={user}/>
               <About noLogo noHexes>
                 <h2>Subscription / Catering Program</h2>
                 <p>We are providing premium coffee to anybody and any business within the Salt Lake valley.</p>

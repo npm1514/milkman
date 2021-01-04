@@ -76,8 +76,9 @@ var Landing = /*#__PURE__*/function (_Component) {
     key: "render",
     value: function render() {
       var user = this.state.user;
-      console.log("shuser", user);
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_components.About, {
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, {
+        user: user
+      }), /*#__PURE__*/_react["default"].createElement(_components.About, {
         noLogo: true,
         noHexes: true
       }, /*#__PURE__*/_react["default"].createElement("h2", null, "Subscription / Catering Program"), /*#__PURE__*/_react["default"].createElement("p", null, "We are providing premium coffee to anybody and any business within the Salt Lake valley."), /*#__PURE__*/_react["default"].createElement("p", null, "We deliver to any location within 30 miles of downtown Salt Lake City. "), /*#__PURE__*/_react["default"].createElement("p", null, "Please consider our catering menu and if you are interested, Get Started!"), /*#__PURE__*/_react["default"].createElement("a", {

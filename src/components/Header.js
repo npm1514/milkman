@@ -33,11 +33,24 @@ class HeaderComponent extends Component {
       }
     )
   }
+  logout = () => {
+    fetch("/api/logout")
+      .then((response) => {
+          if(response.status !== 200) throw Error(response.statusText);
+          return response.json();
+      }).then((user) => {
+        window.location.href = "/login";
+      }).catch((err) => {
+        console.log("logout catch", err)
+      })
+  }
   onBlur = (e) => {
     if(!e.path.find(a => a.id == "mobile-header") && !e.path.find(a => a.id == "mobile-menu")) this.closeMenu();
   }
   render(){
     const { menuStuck } = this.state;
+    const { _id } = this.props.user;
+    console.log(_id);
     return (
       <HeaderWrap>
         <OnlineOrder>Cafe Juniper Subscriptions</OnlineOrder>
@@ -64,6 +77,10 @@ class HeaderComponent extends Component {
             <div><a onClick={this.closeMenu} href="/myaccount">My Account</a></div>
             <div><a onClick={this.closeMenu} href="/cart">Cart</a></div>
             <div><a onClick={this.closeMenu} href="/chooseproducts">Add New Product</a></div>
+            {
+              _id &&
+              <div><a onClick={this.logout}>Logout</a></div>
+            }
           </MobileMenu>
         }
         <HeaderWrap menuStuck={menuStuck}>
@@ -76,6 +93,10 @@ class HeaderComponent extends Component {
             <a href="/myaccount">My Account</a>
             <a href="/cart">Cart</a>
             <a href="/chooseproducts">Add New Product</a>
+            {
+              _id &&
+              <a onClick={this.logout} >Logout</a>
+            }
           </DesktopHeader>
         </HeaderWrap>
         <Spacer menuStuck={menuStuck}/>

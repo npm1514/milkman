@@ -1,20 +1,21 @@
 "use strict";
 
-var SubscriptionModel = require('./../models/subscriptionModel');
+var Subscription = require('./../models/subscriptionModel');
 
 module.exports = {
   create: function create(req, res) {
-    var subscription = new SubscriptionModel(req.body);
+    var subscription = new Subscription(req.body);
     subscription.save(function (err, result) {
       if (err) {
         res.send(err);
       } else {
+        console.log(result);
         res.send(result);
       }
     });
   },
   read: function read(req, res) {
-    SubscriptionModel.find(req.query).populate('user').exec(function (err, result) {
+    Subscription.find(req.query).populate('user').exec(function (err, result) {
       if (err) {
         res.send(err);
       } else {
@@ -23,7 +24,7 @@ module.exports = {
     });
   },
   readOne: function readOne(req, res) {
-    SubscriptionModel.findById(req.params.id).populate('user').exec(function (err, result) {
+    Subscription.findById(req.params.id).populate('user').exec(function (err, result) {
       if (err) {
         res.send(err);
       } else {
@@ -32,7 +33,7 @@ module.exports = {
     });
   },
   update: function update(req, res) {
-    SubscriptionModel.findByIdAndUpdate(req.params.id, req.body, function (err, result) {
+    Subscription.findByIdAndUpdate(req.params.id, req.body, function (err, result) {
       if (err) {
         res.send(err);
       } else {
@@ -41,7 +42,7 @@ module.exports = {
     });
   },
   destroy: function destroy(req, res) {
-    SubscriptionModel.findByIdAndRemove(req.params.id, req.body, function (err, result) {
+    Subscription.findByIdAndRemove(req.params.id, req.body, function (err, result) {
       if (err) {
         res.send(err);
       } else {

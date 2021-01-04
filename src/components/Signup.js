@@ -27,6 +27,7 @@ class SignupComponent extends Component {
     this.setState({ passwordMessage })
   }
   signup = (e) => {
+    e.preventDefault()
     const { firstName, lastName, email, password1, password2, phone, address, city, state, zip, currentCart } = this.state;
     if(password1 != password2){
       this.badPassword("Passwords do not match!");
@@ -37,7 +38,7 @@ class SignupComponent extends Component {
     } else if(!/[a-zA-Z]/.test(password1)){
       this.badPassword("Password must contain at least one letter");
     } else {
-      this.props.login(e, { firstName, lastName, email, password: password1, phone, address, city, state, zip, currentCart })
+      this.props.signup(e, { firstName, lastName, email, password: password1, phone, address, city, state, zip, currentCart })
     }
   }
   updateState = (e, prop) => {
@@ -59,7 +60,7 @@ class SignupComponent extends Component {
     const { firstName, lastName, email, password1, password2, phone, address, city, state, zip, passwordMessage } = this.state;
     return (
       <SignupWrap>
-        <a onClick={switchDisplay}><p>Have an account? Sign In Here</p></a>
+        <a onClick={switchDisplay}><p>Have an account? Log In Here</p></a>
         <h2>Create an Account</h2>
         <form onSubmit={this.signup}>
           <input
@@ -144,7 +145,7 @@ class SignupComponent extends Component {
           }
           <button type="submit">Sign Up</button>
         </form>
-        <a onClick={switchDisplay}><p>Have an account? Sign In Here</p></a>
+        <a onClick={switchDisplay}><p>Have an account? Log In Here</p></a>
       </SignupWrap>
     );
   }

@@ -71,26 +71,66 @@ var SignupLogin = /*#__PURE__*/function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "login", function (e, obj) {
-      fetch('/api/auth', {
+    _defineProperty(_assertThisInitialized(_this), "signup", function (e, obj) {
+      e.preventDefault();
+      fetch('/api/signup', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(obj)
       }).then(function (res) {
-        res.json();
+        if (res.status === 200) return res.json();else if (res.status === 401) return {
+          message: "Account already exists! Login."
+        };else return {};
       }).then(function (data) {
         console.log("auth response", data);
 
-        if (_this.props.data.subscriptionID) {
-          _this.setState({
-            user: data
-          }, function () {
-            _this.addSubscriptionToUser();
-          });
-        } else {
-          window.location.href = "/myaccount";
+        if (data.message) {
+          alert(data.message);
+        } else if (data._id) {
+          if (_this.props.data.subscriptionID) {
+            _this.setState({
+              user: data
+            }, function () {
+              _this.addSubscriptionToUser();
+            });
+          } else {
+            window.location.href = "/myaccount";
+          }
+        }
+      })["catch"](function (err) {
+        console.log("login err", err);
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "login", function (e, obj) {
+      e.preventDefault();
+      fetch('/api/login', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(obj)
+      }).then(function (res) {
+        if (res.status === 200) return res.json();else if (res.status === 401) return {
+          message: "Incorrect email or password"
+        };else return {};
+      }).then(function (data) {
+        console.log("auth response", data);
+
+        if (data.message) {
+          alert(data.message);
+        } else if (data._id) {
+          if (_this.props.data.subscriptionID) {
+            _this.setState({
+              user: data
+            }, function () {
+              _this.addSubscriptionToUser();
+            });
+          } else {
+            window.location.href = "/myaccount";
+          }
         }
       })["catch"](function (err) {
         console.log("login err", err);
@@ -117,7 +157,8 @@ var SignupLogin = /*#__PURE__*/function (_Component) {
         if (res.status !== 200) throw Error(res.statusText);
         return res.json();
       }).then(function (response) {
-        console.log("update user", response); // window.location.href = "/cart";
+        console.log("update user", response);
+        window.location.href = "/cart";
       });
     });
 
@@ -156,15 +197,19 @@ var SignupLogin = /*#__PURE__*/function (_Component) {
       var _this$props$data = this.props.data,
           subscription = _this$props$data.subscription,
           subscriptionID = _this$props$data.subscriptionID;
-      var verified = this.state.verified;
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_signuplogin.SignupLoginContent, null, subscriptionID && /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
+      var _this$state2 = this.state,
+          verified = _this$state2.verified,
+          user = _this$state2.user;
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, {
+        user: user
+      }), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_signuplogin.SignupLoginContent, null, subscriptionID && /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
         subscription: subscription
       })), /*#__PURE__*/_react["default"].createElement(_signuplogin.SignupOrLoginWrap, null, this.state.loggingIn ? /*#__PURE__*/_react["default"].createElement(_components.Login, {
         switchDisplay: this.switchDisplay,
         login: this.login
       }) : /*#__PURE__*/_react["default"].createElement(_components.Signup, {
         switchDisplay: this.switchDisplay,
-        login: this.login
+        signup: this.signup
       })))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }
   }]);

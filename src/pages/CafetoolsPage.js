@@ -26,9 +26,10 @@ class Cafetools extends Component {
         }).catch(err => console.log("getme catch", err))
     }
     render(){
+      const { user } = this.state;
       return (
           <PageWrapper>
-              <Header/>
+              <Header user={user}/>
               <ContentWrapper>
                 <CafetoolsContent>
                   cafetools page

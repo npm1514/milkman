@@ -17,25 +17,64 @@ class SignupLogin extends Component {
       loggingIn: !this.state.loggingIn
     })
   }
-  login = (e, obj) => {
-    fetch('/api/auth', {
+  signup = (e, obj) => {
+    e.preventDefault();
+    fetch('/api/signup', {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(obj)
     })
     .then((res) => {
-      res.json();
+      if(res.status === 200) return res.json();
+      else if(res.status === 401) return { message: "Account already exists! Login."}
+      else return {}
     })
     .then((data) => {
       console.log("auth response", data);
-      if(this.props.data.subscriptionID){
-        this.setState({
-          user: data
-        }, () => {
-          this.addSubscriptionToUser();
-        })
-      } else {
-        window.location.href = "/myaccount"
+      if(data.message){
+        alert(data.message);
+      } else if(data._id){
+        if(this.props.data.subscriptionID){
+          this.setState({
+            user: data
+          }, () => {
+            this.addSubscriptionToUser();
+          })
+        } else {
+          window.location.href = "/myaccount"
+        }
+      }
+    })
+    .catch((err) => {
+      console.log("login err", err);
+    })
+  }
+  login = (e, obj) => {
+    e.preventDefault();
+    fetch('/api/login', {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(obj)
+    })
+    .then((res) => {
+      if(res.status === 200) return res.json();
+      else if(res.status === 401) return { message: "Incorrect email or password"}
+      else return {}
+    })
+    .then((data) => {
+      console.log("auth response", data);
+      if(data.message){
+        alert(data.message);
+      } else if(data._id){
+        if(this.props.data.subscriptionID){
+          this.setState({
+            user: data
+          }, () => {
+            this.addSubscriptionToUser();
+          })
+        } else {
+          window.location.href = "/myaccount"
+        }
       }
     })
     .catch((err) => {
@@ -57,7 +96,7 @@ class SignupLogin extends Component {
     })
     .then((response) => {
       console.log("update user", response);
-      // window.location.href = "/cart";
+      window.location.href = "/cart";
     })
   }
   componentDidMount(){
@@ -75,10 +114,11 @@ class SignupLogin extends Component {
   }
   render(){
     const { subscription, subscriptionID } = this.props.data
-    const { verified } = this.state;
+    const { verified, user } = this.state;
+
     return (
         <PageWrapper>
-            <Header/>
+            <Header user={user}/>
             <ContentWrapper>
               {
                 verified &&
@@ -94,7 +134,7 @@ class SignupLogin extends Component {
                   {
                     this.state.loggingIn ?
                     <Login switchDisplay={this.switchDisplay} login={this.login}/> :
-                    <Signup switchDisplay={this.switchDisplay} login={this.login}/>
+                    <Signup switchDisplay={this.switchDisplay} signup={this.signup}/>
                   }
                   </SignupOrLoginWrap>
                 </SignupLoginContent>

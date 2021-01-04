@@ -21,7 +21,7 @@ class LoginComponent extends Component {
     return (
       <LoginWrap>
         <a onClick={switchDisplay}><p>No login? Create an account</p></a>
-        <h2>Sign In</h2>
+        <h2>Log In</h2>
         <form onSubmit={(e) => {login(e, this.state)}}>
           <input
             placeholder="Email Address"
@@ -36,7 +36,7 @@ class LoginComponent extends Component {
             value={password}
             onChange={(e) => {this.updateState(e, "password")}}
           />
-          <button type="submit">Sign In</button>
+          <button type="submit">Log In</button>
         </form>
       </LoginWrap>
     );

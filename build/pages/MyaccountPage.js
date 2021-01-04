@@ -97,6 +97,7 @@ var Myaccount = /*#__PURE__*/function (_Component) {
     key: "render",
     value: function render() {
       var _this$state = this.state,
+          user = _this$state.user,
           _this$state$user = _this$state.user,
           _id = _this$state$user._id,
           firstName = _this$state$user.firstName,
@@ -111,7 +112,9 @@ var Myaccount = /*#__PURE__*/function (_Component) {
           subscriptions = _this$state$user.subscriptions,
           currentCart = _this$state$user.currentCart,
           verified = _this$state.verified;
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, null), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_myaccount.MyaccountContent, null, /*#__PURE__*/_react["default"].createElement("a", {
+      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, {
+        user: user
+      }), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_myaccount.MyaccountContent, null, /*#__PURE__*/_react["default"].createElement("a", {
         href: "/chooseproducts"
       }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Add New Subscription")), /*#__PURE__*/_react["default"].createElement("div", null, "calendar here"), currentCart.length ? /*#__PURE__*/_react["default"].createElement("a", {
         href: "/cart"
