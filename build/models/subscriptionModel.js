@@ -23,6 +23,9 @@ var subscriptionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  deliveryDays: [{
+    type: Date
+  }],
   startDate: {
     type: String,
     required: true
@@ -42,10 +45,9 @@ var subscriptionSchema = new mongoose.Schema({
     type: String,
     "default": "Monthly"
   },
-  recurringPayment: {
-    type: Boolean,
-    "default": true
-  },
+  paymentDays: [{
+    type: Date
+  }],
   notes: {
     type: String
   },

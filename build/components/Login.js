@@ -99,7 +99,9 @@ var LoginComponent = /*#__PURE__*/function (_Component) {
         }
       }), /*#__PURE__*/_react["default"].createElement("button", {
         type: "submit"
-      }, "Log In")));
+      }, "Log In")), /*#__PURE__*/_react["default"].createElement("a", {
+        href: "/passwordrecovery"
+      }, /*#__PURE__*/_react["default"].createElement("p", null, "Forgot Your Password?")));
     }
   }]);
 

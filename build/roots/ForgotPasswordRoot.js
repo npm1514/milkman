@@ -9,13 +9,7 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _components = require("../components");
-
-var _cart = require("../styled-components/pages/cart");
-
-var _global = require("../styled-components/global");
-
-var _colors = require("../styled-components/colors");
+var _pages = require("../pages");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -41,82 +35,29 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Cart = /*#__PURE__*/function (_Component) {
-  _inherits(Cart, _Component);
+var Root = /*#__PURE__*/function (_Component) {
+  _inherits(Root, _Component);
 
-  var _super = _createSuper(Cart);
+  var _super = _createSuper(Root);
 
-  function Cart(props) {
-    var _this;
+  function Root() {
+    _classCallCheck(this, Root);
 
-    _classCallCheck(this, Cart);
-
-    _this = _super.call(this, props);
-    _this.state = {
-      user: {
-        currentCart: []
-      },
-      currentCart: [],
-      verified: false
-    };
-    return _this;
+    return _super.apply(this, arguments);
   }
 
-  _createClass(Cart, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      fetch("/api/getMe").then(function (response) {
-        if (response.status !== 200) throw Error(response.statusText);
-        return response.json();
-      }).then(function (user) {
-        console.log("myaccount user", user);
-
-        if (!user._id) {
-          window.location.href = "/login";
-        } else {
-          _this2.setState({
-            user: user,
-            verified: true
-          });
-        }
-      })["catch"](function (err) {
-        console.log("getme catch", err);
-      });
-    }
-  }, {
+  _createClass(Root, [{
     key: "render",
     value: function render() {
-      var _this$state = this.state,
-          user = _this$state.user,
-          currentCart = _this$state.user.currentCart,
-          verified = _this$state.verified;
-      return /*#__PURE__*/_react["default"].createElement(_global.PageWrapper, null, /*#__PURE__*/_react["default"].createElement(_components.Header, {
-        user: user
-      }), /*#__PURE__*/_react["default"].createElement(_global.ContentWrapper, null, verified && /*#__PURE__*/_react["default"].createElement(_cart.CartContent, null, /*#__PURE__*/_react["default"].createElement("h2", null, "Your Cart"), currentCart.length && currentCart.map(function (subscription, i) {
-        return /*#__PURE__*/_react["default"].createElement(_components.SubscriptionPreview, {
-          key: i,
-          style: {
-            width: "initial"
-          },
-          subscription: subscription
-        });
-      }), /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/chooseproducts"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, {
-        style: {
-          background: _colors.green,
-          color: '#fff'
-        }
-      }, "Add More")), /*#__PURE__*/_react["default"].createElement("a", {
-        href: "/checkout"
-      }, /*#__PURE__*/_react["default"].createElement(_global.Button, null, "Proceed To Checkout")))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
+      var data = this.props.data;
+      return /*#__PURE__*/_react["default"].createElement(_pages.ForgotPasswordPage, {
+        data: data ? data : {}
+      });
     }
   }]);
 
-  return Cart;
+  return Root;
 }(_react.Component);
 
-var _default = Cart;
+var _default = Root;
 exports["default"] = _default;

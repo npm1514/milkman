@@ -17,8 +17,6 @@ class Checkout extends Component {
         ccNumEncrypted: "",
         ccExpEncrypted: "",
         ccCVVEncrypted: "",
-        ccZipEncrypted: "",
-        saveCard: false,
         verified: false,
         payMessage: "",
         subtotal: 0,
@@ -28,7 +26,7 @@ class Checkout extends Component {
     submitPayment = (e) => {
       this.setState({loading: true})
       e.preventDefault();
-      const { ccNum, ccExp, ccCVV, ccZip, saveCard } = this.state;
+      const { ccNum, ccExp, ccCVV, ccZip } = this.state;
       fetch('/api/pay', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
@@ -41,11 +39,7 @@ class Checkout extends Component {
       .then(res => {
         console.log("res", res.message);
         if(res.message == "success"){
-          if(saveCard){
-            this.encryptCardInfo()
-          } else {
-            this.createOrder()
-          }
+          this.encryptCardInfo()
         } else {
           this.setMessage(res.message)
         }
@@ -57,7 +51,7 @@ class Checkout extends Component {
     }
     encryptCardInfo = () => {
       console.log("encryption");
-      const { ccNum, ccExp, ccCVV, ccZip } = this.state;
+      const { ccNum, ccExp, ccCVV } = this.state;
       fetch('/api/card', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
@@ -72,8 +66,7 @@ class Checkout extends Component {
         this.setState({
           ccNumEncrypted: data.ccNum,
           ccExpEncrypted: data.ccExp,
-          ccCVVEncrypted: data.ccCVV,
-          ccZipEncrypted: data.ccZip,
+          ccCVVEncrypted: data.ccCVV
         }, () => {
           this.createOrder()
         })
@@ -108,7 +101,6 @@ class Checkout extends Component {
     }
     updateSubscriptions = (orderID) => {
       let { currentCart } = this.state.user;
-
       let promises = currentCart.map(a => {
         return fetch('/api/subscriptions/' + _id, {
           method: "PUT",
@@ -134,7 +126,7 @@ class Checkout extends Component {
       })
     }
     updateUser = (orderId) => {
-      let { user: {_id, currentCart, subscriptions, orders }, subtotal, ccNumEncrypted, ccExpEncrypted, ccCVVEncrypted, ccZipEncrypted } = this.state;
+      let { user: {_id, currentCart, subscriptions, orders }, subtotal, ccNum, ccNumEncrypted, ccExpEncrypted, ccCVVEncrypted, ccZip } = this.state;
       let cartSubscriptions = currentCart.map(a => {
         subscriptions.push(a._id)
       });
@@ -146,9 +138,9 @@ class Checkout extends Component {
           encryptedCard: ccNumEncrypted,
           encryptedCVV: ccExpEncrypted,
           encryptedExp: ccCVVEncrypted,
-          encryptedZip: ccZipEncrypted,
+          last4CC: ccNum.slice(ccNum.length - 4),
           currentCart: [],
-          subscriptions, orders
+          ccZip, subscriptions, orders
         })
       })
       .then((res) => {
@@ -167,9 +159,6 @@ class Checkout extends Component {
       let obj = {};
       obj[prop] = e.currentTarget.value;
       this.setState(obj);
-    }
-    updateCheckbox = (e) => {
-      this.setState({saveCard: e.target.checked});
     }
     setMessage = (message) => {
       this.setState({message})
@@ -199,7 +188,7 @@ class Checkout extends Component {
 
     }
     render(){
-      const { user, user: { currentCart }, ccNum, ccExp, ccCVV, ccZip, saveCard, verified, payMessage, subtotal, loading } = this.state;
+      const { user, user: { currentCart }, ccNum, ccExp, ccCVV, ccZip, verified, payMessage, subtotal, loading } = this.state;
 
       return (
           <PageWrapper>
@@ -252,18 +241,6 @@ class Checkout extends Component {
                         required
                         onChange={(e) => {this.updateState(e, "ccZip")}}
                       />
-                      <div className="checkbox">
-                        <label for="saveCard">Save Card Info?</label>
-                        <input
-                          id="saveCard"
-                          style={{marginTop: '8px', marginLeft: '8px'}}
-                          type="checkbox"
-                          name="saveCard"
-                          checked={saveCard}
-                          required
-                          onChange={this.updateCheckbox}
-                        />
-                      </div>
                       <Button type="submit">Submit Payment</Button>
                     </form>
                   </CheckoutContent>

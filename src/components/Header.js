@@ -49,8 +49,7 @@ class HeaderComponent extends Component {
   }
   render(){
     const { menuStuck } = this.state;
-    const { _id } = this.props.user;
-    console.log(_id);
+    const { user } = this.props;
     return (
       <HeaderWrap>
         <OnlineOrder>Cafe Juniper Subscriptions</OnlineOrder>
@@ -78,7 +77,7 @@ class HeaderComponent extends Component {
             <div><a onClick={this.closeMenu} href="/cart">Cart</a></div>
             <div><a onClick={this.closeMenu} href="/chooseproducts">Add New Product</a></div>
             {
-              _id &&
+              user && user._id &&
               <div><a onClick={this.logout}>Logout</a></div>
             }
           </MobileMenu>
@@ -94,7 +93,7 @@ class HeaderComponent extends Component {
             <a href="/cart">Cart</a>
             <a href="/chooseproducts">Add New Product</a>
             {
-              _id &&
+              user && user._id &&
               <a onClick={this.logout}>Logout</a>
             }
           </DesktopHeader>

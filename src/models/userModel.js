@@ -14,7 +14,8 @@ var userSchema = new mongoose.Schema({
   encryptedCard: {type: String},
   encryptedCVV: {type: String},
   encryptedExp: {type: String},
-  EncryptedZip: {type: String},
+  cardZip: {type: String},
+  last4CC: {type: String},
   currentCart: [{type: mongoose.Schema.Types.ObjectId, ref: "subscriptions"}],
   subscriptions: [{type: mongoose.Schema.Types.ObjectId, ref: "subscriptions"}],
   orders: [{type: mongoose.Schema.Types.ObjectId, ref: "orders"}]

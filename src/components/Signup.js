@@ -21,9 +21,8 @@ class SignupComponent extends Component {
     }
   }
   badPassword = (passwordMessage) => {
-    let p1Border = document.getElementById('password1').style.border;
-    let p2border = document.getElementById('password2').style.border;
-    let bad = '1px solid red';
+    document.getElementById('password1').style.border = '1px solid red';
+    document.getElementById('password2').style.border = '1px solid red';
     this.setState({ passwordMessage })
   }
   signup = (e) => {
@@ -44,16 +43,17 @@ class SignupComponent extends Component {
   updateState = (e, prop) => {
     let obj = {};
     obj[prop] = e.currentTarget.value;
-    this.setState(obj);
+    this.setState(obj, () => {
+      this.updatePassword();
+    });
   }
-  updatePassword = (e, prop) => {
+  updatePassword = () => {
     const { password1, password2 } = this.state;
     if(password1 == password2){
       document.getElementById('password1').style.border = '1px solid #8d8d8d';
       document.getElementById('password2').style.border = '1px solid #8d8d8d';
       this.setState({ passwordMessage: "" })
     }
-    this.updateState(e,prop);
   }
   render(){
     const { switchDisplay } = this.props;
@@ -122,14 +122,14 @@ class SignupComponent extends Component {
           <p>Password must...</p>
           <p>-contain at least 8 characters</p>
           <p>-contain at least 1 letter</p>
-          <p>-contain at least 1 letter</p>
+          <p>-contain at least 1 number</p>
           <input
             id="password1"
             placeholder="Password"
             type="password"
             value={password1}
             required
-            onChange={(e) => {this.updatePassword(e, "password1")}}
+            onChange={(e) => {this.updateState(e, "password1")}}
           />
           <input
             id="password2"
@@ -137,7 +137,7 @@ class SignupComponent extends Component {
             type="password"
             value={password2}
             required
-            onChange={(e) => {this.updatePassword(e, "password2")}}
+            onChange={(e) => {this.updateState(e, "password2")}}
           />
           {
             passwordMessage &&

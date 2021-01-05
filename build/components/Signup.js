@@ -52,9 +52,8 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
     _this = _super.call(this, props);
 
     _defineProperty(_assertThisInitialized(_this), "badPassword", function (passwordMessage) {
-      var p1Border = document.getElementById('password1').style.border;
-      var p2border = document.getElementById('password2').style.border;
-      var bad = '1px solid red';
+      document.getElementById('password1').style.border = '1px solid red';
+      document.getElementById('password2').style.border = '1px solid red';
 
       _this.setState({
         passwordMessage: passwordMessage
@@ -104,10 +103,12 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
       var obj = {};
       obj[prop] = e.currentTarget.value;
 
-      _this.setState(obj);
+      _this.setState(obj, function () {
+        _this.updatePassword();
+      });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "updatePassword", function (e, prop) {
+    _defineProperty(_assertThisInitialized(_this), "updatePassword", function () {
       var _this$state2 = _this.state,
           password1 = _this$state2.password1,
           password2 = _this$state2.password2;
@@ -120,8 +121,6 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
           passwordMessage: ""
         });
       }
-
-      _this.updateState(e, prop);
     });
 
     _this.state = {
@@ -227,14 +226,14 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
         onChange: function onChange(e) {
           _this2.updateState(e, "zip");
         }
-      }), /*#__PURE__*/_react["default"].createElement("p", null, "Password must..."), /*#__PURE__*/_react["default"].createElement("p", null, "-contain at least 8 characters"), /*#__PURE__*/_react["default"].createElement("p", null, "-contain at least 1 letter"), /*#__PURE__*/_react["default"].createElement("p", null, "-contain at least 1 letter"), /*#__PURE__*/_react["default"].createElement("input", {
+      }), /*#__PURE__*/_react["default"].createElement("p", null, "Password must..."), /*#__PURE__*/_react["default"].createElement("p", null, "-contain at least 8 characters"), /*#__PURE__*/_react["default"].createElement("p", null, "-contain at least 1 letter"), /*#__PURE__*/_react["default"].createElement("p", null, "-contain at least 1 number"), /*#__PURE__*/_react["default"].createElement("input", {
         id: "password1",
         placeholder: "Password",
         type: "password",
         value: password1,
         required: true,
         onChange: function onChange(e) {
-          _this2.updatePassword(e, "password1");
+          _this2.updateState(e, "password1");
         }
       }), /*#__PURE__*/_react["default"].createElement("input", {
         id: "password2",
@@ -243,7 +242,7 @@ var SignupComponent = /*#__PURE__*/function (_Component) {
         value: password2,
         required: true,
         onChange: function onChange(e) {
-          _this2.updatePassword(e, "password2");
+          _this2.updateState(e, "password2");
         }
       }), passwordMessage && /*#__PURE__*/_react["default"].createElement("p", {
         style: {

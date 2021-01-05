@@ -11,7 +11,8 @@ class Cart extends Component {
         user: {
           currentCart: []
         },
-        currentCart: []
+        currentCart: [],
+        verified: false
       }
     }
     componentDidMount(){
@@ -20,34 +21,42 @@ class Cart extends Component {
             if(response.status !== 200) throw Error(response.statusText);
             return response.json();
         }).then((user) => {
+          console.log("myaccount user", user);
           if(!user._id){
             window.location.href = "/login";
-          } else {
-            this.setState({ user })
           }
-        }).catch(err => console.log("getme catch", err))
+          else {
+            this.setState({ user, verified: true })
+          }
+        }).catch((err) => {
+          console.log("getme catch", err)
+        })
     }
     render(){
-      const { user, user: {currentCart} } = this.state;
+      const { user, user: {currentCart}, verified } = this.state;
       return (
           <PageWrapper>
               <Header user={user}/>
               <ContentWrapper>
-                <CartContent>
-                  <h2>Your Cart</h2>
-                  {
-                    currentCart.map((subscription, i) => {
-                      return (
-                        <SubscriptionPreview key={i}
-                        style={{width: "initial"}} subscription={subscription}/>
-                      )
-                    })
-                  }
-                  <a href="/chooseproducts"><Button style={{
-                    background: green, color: '#fff'
-                  }}>Add More</Button></a>
-                  <a href="/checkout"><Button>Proceed To Checkout</Button></a>
-                </CartContent>
+                {
+                  verified &&
+                  <CartContent>
+                    <h2>Your Cart</h2>
+                    {
+                      currentCart.length &&
+                      currentCart.map((subscription, i) => {
+                        return (
+                          <SubscriptionPreview key={i}
+                          style={{width: "initial"}} subscription={subscription}/>
+                        )
+                      })
+                    }
+                    <a href="/chooseproducts"><Button style={{
+                      background: green, color: '#fff'
+                    }}>Add More</Button></a>
+                    <a href="/checkout"><Button>Proceed To Checkout</Button></a>
+                  </CartContent>
+                }
               </ContentWrapper>
               <Footer/>
           </PageWrapper>

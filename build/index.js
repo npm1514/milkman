@@ -24,13 +24,13 @@ var _passport = _interopRequireDefault(require("passport"));
 
 var _expressSession = _interopRequireDefault(require("express-session"));
 
+var _config = _interopRequireDefault(require("./config"));
+
 var _cryptr = _interopRequireDefault(require("cryptr"));
 
 var _roots = require("./roots");
 
 var _passport2 = _interopRequireDefault(require("./config/passport"));
-
-var _config = _interopRequireDefault(require("./config"));
 
 var _controllers = require("./controllers");
 
@@ -65,6 +65,8 @@ var dataObj = {},
     cartBundle = "",
     checkoutBundle = "",
     confirmationBundle = "",
+    forgotpasswordBundle = "",
+    fourohfourBundle = "",
     myaccountBundle = "",
     cafetoolsBundle = "";
 
@@ -96,6 +98,16 @@ _fs["default"].readFile('./dist/js/checkout.bundle.min.js', "utf8", function (er
 _fs["default"].readFile('./dist/js/confirmation.bundle.min.js', "utf8", function (err, data) {
   if (err) console.log("ERR", err);
   confirmationBundle = data || "";
+});
+
+_fs["default"].readFile('./dist/js/forgotpassword.bundle.min.js', "utf8", function (err, data) {
+  if (err) console.log("ERR", err);
+  forgotpasswordBundle = data || "";
+});
+
+_fs["default"].readFile('./dist/js/fourohfour.bundle.min.js', "utf8", function (err, data) {
+  if (err) console.log("ERR", err);
+  fourohfourBundle = data || "";
 });
 
 _fs["default"].readFile('./dist/js/myaccount.bundle.min.js', "utf8", function (err, data) {
@@ -174,10 +186,28 @@ app.get('/confirmation/:orderID', function (req, res) {
     res.send(returnHTML(data, confirmationBundle, _roots.ConfirmationRoot, "confirmation"));
   });
 });
+app.get('/passwordrecovery', function (req, res) {
+  var data = {};
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, forgotpasswordBundle, _roots.ForgotPasswordRoot, "password recovery"));
+});
+app.get('/passwordrecovery/:id', function (req, res) {
+  var data = {
+    userID: req.params.id,
+    timer: req.query.pr
+  };
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, forgotpasswordBundle, _roots.ForgotPasswordRoot, "password recovery"));
+});
 app.get('/cafetools', function (req, res) {
   var data = {};
   res.set('Cache-Control', 'public, max-age=31557600');
   res.send(returnHTML(data, cafetoolsBundle, _roots.CafetoolsRoot, "cafetools"));
+});
+app.get('/error', function (req, res) {
+  var data = {};
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, fourohfourBundle, _roots.FourOhFourRoot, "error"));
 });
 app.get('/images/:id', function (req, res) {
   res.set('Cache-Control', 'public, max-age=31557600');
@@ -195,6 +225,7 @@ app.get('/api/subscriptions/:id', _controllers.subscriptionCtrl.readOne);
 app.post('/api/subscriptions', _controllers.subscriptionCtrl.create);
 app.put('/api/subscriptions/:id', _controllers.subscriptionCtrl.update);
 app["delete"]('/api/subscriptions/:id', _controllers.subscriptionCtrl.destroy);
+app.get('/api/subscriptions/destroyEverything', _controllers.subscriptionCtrl.destroyEverything);
 app.get('/api/orders', _controllers.orderCtrl.read);
 app.get('/api/orders/:id', _controllers.orderCtrl.readOne);
 app.post('/api/orders', _controllers.orderCtrl.create);
@@ -209,8 +240,19 @@ app.post('/api/card', function (req, res) {
   });
   res.send(body);
 });
+app.post('/api/recover', function (req, res, next) {
+  req.nodeEmail = cryptr.decrypt(_config["default"].nodemailerEmail);
+  req.nodePW = cryptr.decrypt(_config["default"].nodemailerPW);
+  next();
+}, _controllers.userCtrl.recover);
+app.post('/api/changePassword/:id', _controllers.userCtrl.passwordChange);
 app.get('/health', function (req, res) {
   return res.send('OK');
+});
+app.get('/*', function (req, res) {
+  var data = {};
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, fourohfourBundle, _roots.FourOhFourRoot, "error"));
 });
 var mongoUri = 'mongodb+srv://' + cryptr.decrypt(_config["default"].dbuser) + ':' + cryptr.decrypt(_config["default"].dbpass) + '@milkman.bjixf.mongodb.net/milkman?retryWrites=true&w=majority';
 

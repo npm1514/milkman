@@ -50,9 +50,23 @@ class Myaccount extends Component {
                 {
                   verified &&
                   <MyaccountContent>
-
-
+                  <ProductBox>
+                    <h2>{firstName} {lastName}</h2>
+                    <p>{address} {city}, {state} {zip}</p>
+                    <p>{email} - {phone}</p>
+                    <Button>Edit</Button>
+                  </ProductBox>
+                    <h2>Your Subscriptions</h2>
+                    {
+                      subscriptions.map((a, i) => {
+                        return (
+                          <div>{a.size} {a.flavor} {a.name} - {a.deliveryFrequency}</div>
+                        )
+                      })
+                    }
                     <a href="/chooseproducts"><Button>Add New Subscription</Button></a>
+
+
 
                     <div>calendar here</div>
 
@@ -61,15 +75,7 @@ class Myaccount extends Component {
                       <a href="/cart"><Button>Go To Cart ({currentCart.length})</Button></a> : null
                     }
 
-                    <ProductBox>
-                      <h2>User Info</h2>
-                      <p>{firstName} {lastName}</p>
-                      <p>{address}</p>
-                      <p>{city}, {state} {zip}</p>
-                      <p>{email}</p>
-                      <p>{phone}</p>
-                      <Button>Edit</Button>
-                    </ProductBox>
+
                   </MyaccountContent>
                 }
 

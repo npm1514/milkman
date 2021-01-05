@@ -12,13 +12,14 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 import session from 'express-session';
 var cron = require('node-cron');
+import config from './config';
 import Cryptr from 'cryptr';
 const cryptr = new Cryptr(config.key);
 
-import { LandingRoot, ChooseproductsRoot, SignupLoginRoot, CartRoot, CheckoutRoot, ConfirmationRoot, MyaccountRoot, CafetoolsRoot } from './roots';
+import { LandingRoot, ChooseproductsRoot, SignupLoginRoot, CartRoot, CheckoutRoot, ConfirmationRoot, ForgotPasswordRoot, FourOhFourRoot, MyaccountRoot, CafetoolsRoot } from './roots';
 
 import passportConfig from './config/passport';
-import config from './config';
+
 import { userCtrl, subscriptionCtrl, orderCtrl, payCtrl } from './controllers';
 
 var PORT = process.env.PORT || 3003;
@@ -53,6 +54,8 @@ signuploginBundle = "",
 cartBundle = "",
 checkoutBundle = "",
 confirmationBundle = "",
+forgotpasswordBundle = "",
+fourohfourBundle = "",
 myaccountBundle = "",
 cafetoolsBundle = "";
 
@@ -79,6 +82,14 @@ fs.readFile('./dist/js/checkout.bundle.min.js', "utf8", (err, data) => {
 fs.readFile('./dist/js/confirmation.bundle.min.js', "utf8", (err, data) => {
   if (err) console.log("ERR" ,err);
   confirmationBundle = data || "";
+})
+fs.readFile('./dist/js/forgotpassword.bundle.min.js', "utf8", (err, data) => {
+  if (err) console.log("ERR" ,err);
+  forgotpasswordBundle = data || "";
+})
+fs.readFile('./dist/js/fourohfour.bundle.min.js', "utf8", (err, data) => {
+  if (err) console.log("ERR" ,err);
+  fourohfourBundle = data || "";
 })
 fs.readFile('./dist/js/myaccount.bundle.min.js', "utf8", (err, data) => {
   if (err) console.log("ERR" ,err);
@@ -148,18 +159,36 @@ app.get('/confirmation/:orderID', (req, res) => {
   let data = {
     orderID: req.params.orderID,
   };
-  fetcher('https://milkmancoffee.herokuapp.com/api/orders/' + req.params.orderID).then((response) => {
+  fetcher('https://milkmancoffee.herokuapp.com/api/orders/' + req.params.orderID)
+  .then((response) => {
     data.order = response;
     console.log("order response", response);
     res.set('Cache-Control', 'public, max-age=31557600');
     res.send(returnHTML(data, confirmationBundle, ConfirmationRoot, "confirmation"));
   });
 });
-
+app.get('/passwordrecovery', (req, res) => {
+  let data = {};
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, forgotpasswordBundle, ForgotPasswordRoot, "password recovery"));
+});
+app.get('/passwordrecovery/:id', (req, res) => {
+  let data = {
+    userID: req.params.id,
+    timer: req.query.pr
+  };
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, forgotpasswordBundle, ForgotPasswordRoot, "password recovery"));
+});
 app.get('/cafetools', (req, res) => {
   let data = {};
   res.set('Cache-Control', 'public, max-age=31557600');
   res.send(returnHTML(data, cafetoolsBundle, CafetoolsRoot, "cafetools"));
+});
+app.get('/error', (req, res) => {
+  let data = {};
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, fourohfourBundle, FourOhFourRoot, "error"));
 });
 
 app.get('/images/:id', (req, res) => {
@@ -179,6 +208,7 @@ app.get('/api/subscriptions/:id', subscriptionCtrl.readOne);
 app.post('/api/subscriptions', subscriptionCtrl.create);
 app.put('/api/subscriptions/:id', subscriptionCtrl.update);
 app.delete('/api/subscriptions/:id', subscriptionCtrl.destroy);
+app.get('/api/subscriptions/destroyEverything', subscriptionCtrl.destroyEverything);
 
 app.get('/api/orders', orderCtrl.read);
 app.get('/api/orders/:id', orderCtrl.readOne);
@@ -196,7 +226,21 @@ app.post('/api/card', (req, res) => {
   res.send(body)
 });
 
+app.post('/api/recover', (req, res, next) => {
+  req.nodeEmail = cryptr.decrypt(config.nodemailerEmail)
+  req.nodePW = cryptr.decrypt(config.nodemailerPW);
+  next()
+}, userCtrl.recover)
+
+app.post('/api/changePassword/:id', userCtrl.passwordChange)
+
 app.get('/health', (req, res) => res.send('OK'));
+
+app.get('/*', (req, res) => {
+  let data = {};
+  res.set('Cache-Control', 'public, max-age=31557600');
+  res.send(returnHTML(data, fourohfourBundle, FourOhFourRoot, "error"));
+});
 
 var mongoUri = 'mongodb+srv://'+cryptr.decrypt(config.dbuser)+':'+cryptr.decrypt(config.dbpass)+'@milkman.bjixf.mongodb.net/milkman?retryWrites=true&w=majority';
 mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });

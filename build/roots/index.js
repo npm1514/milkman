@@ -33,6 +33,18 @@ Object.defineProperty(exports, "ConfirmationRoot", {
     return _ConfirmationRoot["default"];
   }
 });
+Object.defineProperty(exports, "ForgotPasswordRoot", {
+  enumerable: true,
+  get: function get() {
+    return _ForgotPasswordRoot["default"];
+  }
+});
+Object.defineProperty(exports, "FourOhFourRoot", {
+  enumerable: true,
+  get: function get() {
+    return _FourOhFourRoot["default"];
+  }
+});
 Object.defineProperty(exports, "SignupLoginRoot", {
   enumerable: true,
   get: function get() {
@@ -61,6 +73,10 @@ var _CheckoutRoot = _interopRequireDefault(require("./CheckoutRoot"));
 var _ChooseproductsRoot = _interopRequireDefault(require("./ChooseproductsRoot"));
 
 var _ConfirmationRoot = _interopRequireDefault(require("./ConfirmationRoot"));
+
+var _ForgotPasswordRoot = _interopRequireDefault(require("./ForgotPasswordRoot"));
+
+var _FourOhFourRoot = _interopRequireDefault(require("./FourOhFourRoot"));
 
 var _SignupLoginRoot = _interopRequireDefault(require("./SignupLoginRoot"));
 

@@ -51,7 +51,10 @@ var userSchema = new mongoose.Schema({
   encryptedExp: {
     type: String
   },
-  EncryptedZip: {
+  cardZip: {
+    type: String
+  },
+  last4CC: {
     type: String
   },
   currentCart: [{

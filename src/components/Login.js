@@ -38,6 +38,7 @@ class LoginComponent extends Component {
           />
           <button type="submit">Log In</button>
         </form>
+        <a href="/passwordrecovery"><p>Forgot Your Password?</p></a>
       </LoginWrap>
     );
   }

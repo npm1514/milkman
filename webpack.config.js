@@ -8,6 +8,8 @@ const pages = [
   'cart',
   'checkout',
   'confirmation',
+  'forgotpassword',
+  'fourohfour',
   'myaccount',
   'cafetools'
 ];

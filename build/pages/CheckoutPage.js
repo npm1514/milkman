@@ -63,8 +63,7 @@ var Checkout = /*#__PURE__*/function (_Component) {
           ccNum = _this$state.ccNum,
           ccExp = _this$state.ccExp,
           ccCVV = _this$state.ccCVV,
-          ccZip = _this$state.ccZip,
-          saveCard = _this$state.saveCard;
+          ccZip = _this$state.ccZip;
       fetch('/api/pay', {
         method: "POST",
         headers: {
@@ -83,11 +82,7 @@ var Checkout = /*#__PURE__*/function (_Component) {
         console.log("res", res.message);
 
         if (res.message == "success") {
-          if (saveCard) {
-            _this.encryptCardInfo();
-          } else {
-            _this.createOrder();
-          }
+          _this.encryptCardInfo();
         } else {
           _this.setMessage(res.message);
         }
@@ -103,8 +98,7 @@ var Checkout = /*#__PURE__*/function (_Component) {
       var _this$state2 = _this.state,
           ccNum = _this$state2.ccNum,
           ccExp = _this$state2.ccExp,
-          ccCVV = _this$state2.ccCVV,
-          ccZip = _this$state2.ccZip;
+          ccCVV = _this$state2.ccCVV;
       fetch('/api/card', {
         method: "POST",
         headers: {
@@ -125,8 +119,7 @@ var Checkout = /*#__PURE__*/function (_Component) {
         _this.setState({
           ccNumEncrypted: data.ccNum,
           ccExpEncrypted: data.ccExp,
-          ccCVVEncrypted: data.ccCVV,
-          ccZipEncrypted: data.ccZip
+          ccCVVEncrypted: data.ccCVV
         }, function () {
           _this.createOrder();
         });
@@ -199,10 +192,11 @@ var Checkout = /*#__PURE__*/function (_Component) {
           subscriptions = _this$state4$user.subscriptions,
           orders = _this$state4$user.orders,
           subtotal = _this$state4.subtotal,
+          ccNum = _this$state4.ccNum,
           ccNumEncrypted = _this$state4.ccNumEncrypted,
           ccExpEncrypted = _this$state4.ccExpEncrypted,
           ccCVVEncrypted = _this$state4.ccCVVEncrypted,
-          ccZipEncrypted = _this$state4.ccZipEncrypted;
+          ccZip = _this$state4.ccZip;
       var cartSubscriptions = currentCart.map(function (a) {
         subscriptions.push(a._id);
       });
@@ -216,8 +210,9 @@ var Checkout = /*#__PURE__*/function (_Component) {
           encryptedCard: ccNumEncrypted,
           encryptedCVV: ccExpEncrypted,
           encryptedExp: ccCVVEncrypted,
-          encryptedZip: ccZipEncrypted,
+          last4CC: ccNum.slice(ccNum.length - 4),
           currentCart: [],
+          ccZip: ccZip,
           subscriptions: subscriptions,
           orders: orders
         })
@@ -237,12 +232,6 @@ var Checkout = /*#__PURE__*/function (_Component) {
       obj[prop] = e.currentTarget.value;
 
       _this.setState(obj);
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "updateCheckbox", function (e) {
-      _this.setState({
-        saveCard: e.target.checked
-      });
     });
 
     _defineProperty(_assertThisInitialized(_this), "setMessage", function (message) {
@@ -268,8 +257,6 @@ var Checkout = /*#__PURE__*/function (_Component) {
       ccNumEncrypted: "",
       ccExpEncrypted: "",
       ccCVVEncrypted: "",
-      ccZipEncrypted: "",
-      saveCard: false,
       verified: false,
       payMessage: "",
       subtotal: 0,
@@ -318,7 +305,6 @@ var Checkout = /*#__PURE__*/function (_Component) {
           ccExp = _this$state5.ccExp,
           ccCVV = _this$state5.ccCVV,
           ccZip = _this$state5.ccZip,
-          saveCard = _this$state5.saveCard,
           verified = _this$state5.verified,
           payMessage = _this$state5.payMessage,
           subtotal = _this$state5.subtotal,
@@ -364,22 +350,7 @@ var Checkout = /*#__PURE__*/function (_Component) {
         onChange: function onChange(e) {
           _this3.updateState(e, "ccZip");
         }
-      }), /*#__PURE__*/_react["default"].createElement("div", {
-        className: "checkbox"
-      }, /*#__PURE__*/_react["default"].createElement("label", {
-        "for": "saveCard"
-      }, "Save Card Info?"), /*#__PURE__*/_react["default"].createElement("input", {
-        id: "saveCard",
-        style: {
-          marginTop: '8px',
-          marginLeft: '8px'
-        },
-        type: "checkbox",
-        name: "saveCard",
-        checked: saveCard,
-        required: true,
-        onChange: this.updateCheckbox
-      })), /*#__PURE__*/_react["default"].createElement(_global.Button, {
+      }), /*#__PURE__*/_react["default"].createElement(_global.Button, {
         type: "submit"
       }, "Submit Payment")))), /*#__PURE__*/_react["default"].createElement(_components.Footer, null));
     }

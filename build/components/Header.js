@@ -105,8 +105,7 @@ var HeaderComponent = /*#__PURE__*/function (_Component) {
     key: "render",
     value: function render() {
       var menuStuck = this.state.menuStuck;
-      var _id = this.props.user._id;
-      console.log(_id);
+      var user = this.props.user;
       return /*#__PURE__*/_react["default"].createElement(_header.HeaderWrap, null, /*#__PURE__*/_react["default"].createElement(_header.OnlineOrder, null, "Cafe Juniper Subscriptions"), /*#__PURE__*/_react["default"].createElement(_header.MobileHeader, {
         id: "mobile-header"
       }, /*#__PURE__*/_react["default"].createElement(_subcomponents.Hex, {
@@ -166,7 +165,7 @@ var HeaderComponent = /*#__PURE__*/function (_Component) {
       }, "Cart")), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("a", {
         onClick: this.closeMenu,
         href: "/chooseproducts"
-      }, "Add New Product")), _id && /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("a", {
+      }, "Add New Product")), user && user._id && /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("a", {
         onClick: this.logout
       }, "Logout"))), /*#__PURE__*/_react["default"].createElement(_header.HeaderWrap, {
         menuStuck: menuStuck
@@ -191,7 +190,7 @@ var HeaderComponent = /*#__PURE__*/function (_Component) {
         href: "/cart"
       }, "Cart"), /*#__PURE__*/_react["default"].createElement("a", {
         href: "/chooseproducts"
-      }, "Add New Product"), _id && /*#__PURE__*/_react["default"].createElement("a", {
+      }, "Add New Product"), user && user._id && /*#__PURE__*/_react["default"].createElement("a", {
         onClick: this.logout
       }, "Logout"))), /*#__PURE__*/_react["default"].createElement(_header.Spacer, {
         menuStuck: menuStuck
