@@ -85,7 +85,6 @@ module.exports = {
     });
   },
   passwordChange: function passwordChange(req, res, next) {
-    var user = {};
     console.log("crash", req.params.id);
     User.findById(req.params.id).exec(function (err, result) {
       if (err) {
@@ -94,10 +93,20 @@ module.exports = {
         });
       } else if (result) {
         console.log("crash1", result);
-        user = result;
-        user.password = req.body.password1;
-        delete user._id;
-        delete user.__v;
+        var user = {
+          currentCart: result.currentCart,
+          subscriptions: result.subscriptions,
+          orders: result.orders,
+          firstName: result.firstName,
+          lastName: result.lastName,
+          email: result.email,
+          password: req.body.password1,
+          phone: result.phone,
+          address: result.address,
+          city: result.city,
+          state: result.state,
+          zip: result.zip
+        };
         console.log("crash2", user);
         User.findByIdAndRemove(req.params.id, function (err, result) {
           if (err) {
@@ -107,7 +116,7 @@ module.exports = {
           } else {
             console.log("user deleted3", user);
             var newUser = new User(user);
-            newUser.password = newUser.generateHash(password);
+            newUser.password = newUser.generateHash(newUser.password);
             console.log("crash4", newUser);
             newUser.save(function (err) {
               if (err) res.send({

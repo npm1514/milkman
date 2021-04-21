@@ -36,8 +36,6 @@ var _controllers = require("./controllers");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var cron = require('node-cron');
-
 var cryptr = new _cryptr["default"](_config["default"].key);
 var PORT = process.env.PORT || 3003;
 (0, _passport2["default"])(_passport["default"]); //self invokes passport
@@ -53,11 +51,6 @@ app.use(_passport["default"].session());
 app.use((0, _cors["default"])());
 app.use(_bodyParser["default"].json());
 app.use(_bodyParser["default"].urlencoded());
-cron.schedule('* * * 1 *', function () {
-  (0, _nodeFetch["default"])('https://milkmancoffee.herokuapp.com/').then(function (res) {
-    return console.log("requested at " + new Date());
-  });
-});
 var dataObj = {},
     landingBundle = "",
     chooseproductsBundle = "",
